@@ -190,6 +190,7 @@ b, strong {
 
 /* Adjustments for responsiveness */
 @media screen and (max-width: 768px) {
+  
   .hero-content {
     flex-direction: column;
     align-items: center;
