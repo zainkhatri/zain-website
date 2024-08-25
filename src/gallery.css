@@ -21,6 +21,13 @@
   .gallery-item:hover {
     transform: scale(1.05);
   }
+
+  .gallery-item img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1; /* Ensures square aspect ratio */
+    object-fit: cover; /* Ensures the image fits within its container */
+  }
   
   /* Large screens: 4x2 layout */
   @media screen and (min-width: 1024px) {
@@ -44,5 +51,17 @@
       grid-template-columns: 1fr;
       grid-template-rows: repeat(8, 1fr);
     }
+    
+    @media screen and (max-width: 766px) {
+      .gallery-item {
+        width: 80%; /* Reduce the width of the gallery items */
+        margin: 0 auto; /* Center the images */
+      }
+    
+      .gallery-grid {
+        gap: 5px; /* Reduce the gap between items */
+      }
+    }
+    
   }
   

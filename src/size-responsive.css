@@ -48,11 +48,19 @@
     justify-content: flex-start;
   }
 
+  /* Adjustments for project images on screens up to 768px */
   .project {
     flex-direction: column;
     align-items: flex-start;
     text-align: left;
     margin-bottom: 20px;
+  }
+
+  .project-image {
+    width: 40%; /* Significantly smaller images for 768px and below */
+    height: auto;
+    margin: 10px auto;
+    order: 2; /* Ensures the image is positioned after the content */
   }
 
   .project-title {
@@ -63,13 +71,7 @@
   .project-content {
     font-size: 4vw;
     padding: 10px;
-  }
-
-  .project-image {
-    width: 100%;
-    height: auto;
-    margin: 10px 0;
-    order: 2;
+    order: 1; /* Ensures content appears before the image */
   }
 
   .content-section {
@@ -115,6 +117,7 @@
 
   .project-content {
     padding: 0 10px;
+    order: 1; /* Ensures content appears before the image */
   }
 
   .project-title {
@@ -148,7 +151,7 @@
     width: 75%;
     height: auto;
     margin: 10px 30px;
-    order: 2;
+    order: 2; /* Ensures the image is positioned after the content */
   }
 
   .contact-section {
