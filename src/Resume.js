@@ -1,6 +1,6 @@
 import React from 'react';
 import resumePDF from './Zain Khatri Resume 2024.pdf';
-import './expandable-content.css';
+import './bio.css';
 
 function Resume() {
   return (

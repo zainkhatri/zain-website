@@ -7,13 +7,13 @@
     width: 100%;
     text-align: left;
     color: #ffffff;
-  }
-  
-  .text-content {
+}
+
+.text-content {
     flex: 1;
-  }
-  
-  .hero-image {
+}
+
+.hero-image {
     width: 315px;
     height: 315px;
     border-radius: 60%;
@@ -21,18 +21,40 @@
     margin-left: 60px;
     transform: translateX(90px);
     box-shadow: 0px 4px 300px rgba(0, 0, 0, 0.5);
-  }
-  
-  .hero-content h2 {
+}
+
+.hero-content h2 {
     font-weight: 400;
     font-size: 1em;
     margin-top: 10px;
     margin-bottom: 10px;
-  }
-  
-  .hero-content p {
-    font-size: 0.76em;
-    margin-top: 40px;
+}
+
+.hero-content p {
+    font-size: 1em;
+    margin-top: 30px;
     margin-bottom: 10px;
-  }
-  
+}
+
+.contact-section {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 30px;
+    margin-top: 20px;
+    margin-left: 3px;
+}
+
+.contact-section a {
+    color: #ffffff;
+    transition: color 0.3s ease;
+}
+
+.contact-section a:hover {
+    color: #cccccc;
+}
+
+.contact-section svg {
+    width: 24px;
+    height: 24px;
+}

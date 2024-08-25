@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import './expandable-content.css';
+import './bio.css';
+import './size-responsive.css';
 
 function Bio() {
   const [isBioVisible, setIsBioVisible] = useState(false);

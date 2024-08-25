@@ -1,0 +1,180 @@
+/* General Responsive Styles */
+@media screen and (max-width: 768px) {
+  /* Adjust font size for expandable titles on medium mobile screens */
+  .expandable-title {
+    font-size: 5vw; /* Smaller font size for mobile devices */
+    cursor: pointer;
+    transition: none; /* Remove animation for font size */
+  }
+
+  .expandable-title:hover {
+    font-size: 5vw; /* Prevent font size increase on hover */
+    transform: none; /* Disable scaling effect */
+  }
+
+  .content {
+    font-size: 4vw; /* Smaller content font size */
+    transition: max-height 0.3s ease, opacity 0.3s ease; /* Keep dropdown animation */
+  }
+
+  /* Existing responsive styles */
+  .hero-content {
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    padding: 10px 20px; 
+  }
+
+  .hero-image {
+    width: 200px;
+    height: 200px;
+    margin: 20px 0;
+    transform: translateX(0);
+  }
+
+  .hero-content h1, .typewriter-text {
+    margin: 0 0 10px 0; /* Reduced top margin */
+    font-size: 14vw;
+    text-align: left;
+  }
+
+  .hero-content h2 {
+    font-size: 5vw;
+    margin: 10px 0 0 0;
+    text-align: left;
+  }
+
+  .contact-section {
+    justify-content: flex-start;
+  }
+
+  .project {
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    margin-bottom: 20px;
+  }
+
+  .project-title {
+    font-size: 5vw;
+    margin-bottom: 10px;
+  }
+
+  .project-content {
+    font-size: 4vw;
+    padding: 10px;
+  }
+
+  .project-image {
+    width: 100%;
+    height: auto;
+    margin: 10px 0;
+    order: 2;
+  }
+
+  .content-section {
+    padding: 10px;
+  }
+
+  .expandable-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease-out, opacity 0.4s ease-out;
+    opacity: 0;
+  }
+
+  .expandable-content.open {
+    max-height: 1000px;
+    opacity: 1;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  /* Adjust font size for expandable titles on smaller mobile screens */
+  .expandable-title {
+    font-size: 7vw; /* Smaller font size for mobile devices */
+    cursor: pointer;
+    transition: none; /* Remove animation for font size */
+  }
+
+  .expandable-title:hover {
+    font-size: 7vw; /* Prevent font size increase on hover */
+    transform: none; /* Disable scaling effect */
+  }
+
+  .content {
+    font-size: 5vw; /* Smaller content font size */
+    transition: max-height 0.3s ease, opacity 0.3s ease; /* Keep dropdown animation */
+  }
+
+  /* Existing responsive styles */
+  .hero-content {
+    padding: 10px;
+    font-size: 5vw;
+  }
+
+  .project-content {
+    padding: 0 10px;
+  }
+
+  .project-title {
+    font-size: 7vw;
+    margin-bottom: 20px;
+  }
+
+  .project-description {
+    font-size: 5vw;
+    margin-bottom: 5px;
+  }
+
+  .hero-image {
+    width: 150px;
+    height: 150px;
+  }
+
+  .hero-content h1, .typewriter-text {
+    margin: 0 0 10px 0;
+    font-size: 12vw; /* Slightly reduced font size for smaller screens */
+    text-align: left;
+  }
+
+  .hero-content h2 {
+    margin-top: 10px;
+    font-size: 7vw;
+    text-align: left;
+  }
+
+  .project-image {
+    width: 75%;
+    height: auto;
+    margin: 10px 30px;
+    order: 2;
+  }
+
+  .contact-section {
+    margin-top: 40px;
+    gap: 15px;
+    justify-content: flex-start;
+  }
+
+  .contact-section a {
+    font-size: 8vw;
+    gap: 30px;
+  }
+
+  .expandable-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease-out, opacity 0.4s ease-out;
+    opacity: 0;
+  }
+
+  .expandable-content.open {
+    max-height: 1000px;
+    opacity: 1;
+  }
+}
+
+button, a {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}

@@ -8,7 +8,7 @@ function Hero() {
     <header className="hero-section">
       <div className="hero-content">
         <div className="text-content">
-          <h1 style={{ fontSize: '3.2em', lineHeight: '1.2', margin: '0', fontWeight: '700' }}>
+          <h1 className="typewriter-text">
             <Typewriter
               options={{
                 loop: true,
@@ -24,6 +24,17 @@ function Hero() {
           </h1>
           <h2>Computer Science & Cognitive Science with Specialization in Machine Learning</h2>
           <p>Creating innovative solutions that merge technology and human cognition. Peace be upon you.</p>
+          <div className="contact-section">
+            <a href="mailto:zainkhatri2560@gmail.com" aria-label="Email">
+              <i className="fas fa-envelope"></i>
+            </a>
+            <a href="https://www.linkedin.com/in/zainkhatri2560" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+              <i className="fab fa-linkedin"></i>
+            </a>
+            <a href="https://github.com/zainkhatri" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+              <i className="fab fa-github"></i>
+            </a>
+          </div>
         </div>
         <img src={zainImage} alt="Zain Khatri" className="hero-image" />
       </div>

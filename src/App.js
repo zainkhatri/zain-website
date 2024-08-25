@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import './global.css';
+import React from 'react';
+import './app.css';
 import './hero.css';
-import './expandable-content.css';
+import './bio.css';
 import './projects.css';
 import './gallery.css';
-import './responsive.css';
+import './size-responsive.css';
 import Hero from './Hero';
 import Bio from './Bio';
 import Projects from './Projects';
