@@ -162,6 +162,13 @@
     text-align: left;
   }
 
+  .hero-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+  }
+
   .project-image {
     width: 75%;
     height: auto;
