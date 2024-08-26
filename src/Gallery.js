@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import img1 from './images/1.jpeg';
 import img2 from './images/2.jpeg';
 import img3 from './images/3.jpeg';
@@ -19,15 +20,25 @@ function Gallery() {
       <h2 onClick={toggleGallery} className="expandable-title">
         Photo Gallery {isGalleryVisible ? '-' : '+'}
       </h2>
-      <div className={`content ${isGalleryVisible ? 'expanded' : ''}`}>
-        <div className="gallery-grid">
-          {[img2, img4, img6, img1, img5, img8, img7, img3].map((img, index) => (
-            <div key={index} className="gallery-item">
-              <img src={img} alt={`Gallery ${index + 1}`} />
+      <AnimatePresence>
+        {isGalleryVisible && (
+          <motion.div
+            className="content expanded"
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <div className="gallery-grid">
+              {[img2, img4, img6, img1, img5, img8, img7, img3].map((img, index) => (
+                <div key={index} className="gallery-item">
+                  <img src={img} alt={`Gallery ${index + 1}`} />
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-      </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }

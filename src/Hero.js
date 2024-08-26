@@ -1,12 +1,18 @@
 import React from 'react';
 import Typewriter from 'typewriter-effect';
+import { motion } from 'framer-motion';
 import zainImage from './zain.jpeg';
 import './hero.css';
 
 function Hero() {
   return (
     <header className="hero-section">
-      <div className="hero-content">
+      <motion.div
+        className="hero-content"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.8 }}
+      >
         <div className="text-content">
           <h1 className="typewriter-text">
             <Typewriter
@@ -39,7 +45,7 @@ function Hero() {
             </a>
           </div>
         </div>
-      </div>
+      </motion.div>
     </header>
   );
 }

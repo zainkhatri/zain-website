@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import './bio.css';
 import './size-responsive.css';
 
@@ -12,14 +13,24 @@ function Bio() {
       <h2 onClick={toggleBio} className="expandable-title">
         About Me {isBioVisible ? '-' : '+'}
       </h2>
-      <div className={`content ${isBioVisible ? 'expanded' : ''}`}>
-        <p>
-        Hello! I'm Zain, a dedicated student at the University of California, San Diego, pursuing a specialization in Machine Learning. My passion lies in developing innovative solutions that blend technology and human cognition. 
-        </p>
-        <p>
-        Aside from my technical work, I love to play basketball, learn new songs on the guitar, journal, ride my skateboard through the city, and meet new people when I have the pleasure.
-        </p>
-      </div>
+      <AnimatePresence>
+        {isBioVisible && (
+          <motion.div
+            className="content expanded"
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <p>
+              Hello! I'm Zain, a dedicated student at the University of California, San Diego, pursuing a specialization in Machine Learning. My passion lies in developing innovative solutions that blend technology and human cognition.
+            </p>
+            <p>
+              Aside from my technical work, I love to play basketball, learn new songs on the guitar, journal, ride my skateboard through the city, and meet new people when I have the pleasure.
+            </p>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }
