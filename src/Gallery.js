@@ -17,7 +17,7 @@ function Gallery() {
   return (
     <section id="gallery" className="content-section gallery">
       <h2 onClick={toggleGallery} className="expandable-title">
-        Photo Gallery {isGalleryVisible ? '-' : '+'}
+        photo gallery {isGalleryVisible ? '-' : '+'}
       </h2>
       <div className={`content ${isGalleryVisible ? 'expanded' : ''}`}>
         <div className="gallery-grid">
