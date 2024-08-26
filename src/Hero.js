@@ -15,15 +15,15 @@ function Hero() {
               }}
               onInit={(typewriter) => {
                 typewriter
-                  .typeString('zain khatri')
+                  .typeString('Zain Khatri')
                   .pauseFor(2500)
                   .deleteAll()
                   .start();
               }}
             />
           </h1>
-          <h2>computer Science & cognitive Science with specialization in machine learning</h2>
-          <p>creating innovative solutions that merge technology and human cognition. peace be upon you.</p>
+          <h2>Computer Science & Cognitive Science with specialization in Machine Learning</h2>
+          <p>Creating innovative solutions that merge technology and human cognition. Peace be upon you.</p>
           <div className="contact-section">
             <a href="mailto:zainkhatri2560@gmail.com" aria-label="Email">
               <i className="fas fa-envelope"></i>

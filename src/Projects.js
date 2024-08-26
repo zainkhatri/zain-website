@@ -12,7 +12,7 @@ function Projects() {
   return (
     <section id="projects" className="content-section projects">
       <h2 onClick={toggleProjects} className="expandable-title">
-        projects {areProjectsVisible ? '-' : '+'}
+        Projects {areProjectsVisible ? '-' : '+'}
       </h2>
       <div className={`content ${areProjectsVisible ? 'expanded' : ''}`}>
         <div className="project">
