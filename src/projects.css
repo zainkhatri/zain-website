@@ -1,36 +1,48 @@
 .project {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    margin-bottom: 30px;
-    gap: 20px;
-    flex-direction: row-reverse;
-  }
-  
-  .project-image {
-    display: flex;
-    width: 250px;
-    height: 250px;
-    object-fit: cover;
-    border-radius: 10px;
-    margin-right: 30px;
-    margin-top: 10px;
-    gap: 10px; /* Adjust gap as needed */
-  }
+  display: flex;
+  flex-wrap: wrap; /* Allows wrapping of content */
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: 30px;
+  gap: 20px;
+}
 
-  .project p {
-    margin-top: 0;
-  }
-  
-  .project a {
-    color: #ffffff;
-    text-decoration: none;
-    transition: color 0.2s ease;
-  }
-  
-  .project a:hover {
-    color: #cccccc;
-  }
+.project-image {
+  width: 150px; /* Initial width */
+  height: auto;
+  object-fit: contain; /* Ensure the image is fully visible */
+  border-radius: 10px;
+  margin-right: 20px; /* Space between image and text */
+  flex-shrink: 0; /* Prevent shrinking */
+}
 
-  
-  
+.project-content {
+  flex: 1; /* Allow content to take remaining space */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.project-title {
+  font-size: 1.2em;
+  margin-bottom: 5px;
+  color: #ffffff; /* Keep the text color white */
+}
+
+.project-description {
+  color: #ffffff; /* Keep the text color white */
+}
+
+.project p {
+  margin-top: 0;
+}
+
+.project a {
+  color: #ffffff; /* Keep the text color white */
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.project a:hover {
+  color: #cccccc; /* Slightly lighter white on hover */
+}
