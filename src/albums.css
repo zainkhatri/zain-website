@@ -16,3 +16,37 @@
     height: 100%;
     object-fit: cover;
 }
+
+/* Responsive styles from size-responsive.css */
+
+/* Large screens: 4x3 layout */
+@media screen and (min-width: 1024px) {
+  .albums-grid {
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 20px;
+  }
+}
+
+/* Medium screens: 3x4 layout */
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+  .albums-grid {
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    gap: 15px;
+  }
+}
+
+/* Small screens: 2x6 layout with smaller images */
+@media screen and (max-width: 767px) {
+  .albums-grid {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(6, 1fr);
+    gap: 10px;
+  }
+
+  .albums-item {
+    width: 100%;
+    margin: 0 auto;
+  }
+}

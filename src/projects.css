@@ -46,3 +46,100 @@
 .project a:hover {
   color: #cccccc; /* Slightly lighter white on hover */
 }
+
+/* Responsive styles from size-responsive.css */
+
+/* Responsive styles for screens up to 768px */
+@media screen and (max-width: 768px) {
+  .project {
+    flex-direction: column-reverse; /* Stack content above the image */
+    align-items: center;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .project-image {
+    width: 225px; /* Increased from 150px (1.5 times larger) */
+    max-width: 450px;
+    height: auto;
+    margin: 15px 0;
+    object-fit: contain;
+  }
+
+  .project-title {
+    font-size: 4.5vw;
+    margin-bottom: 10px;
+    color: #ffffff;
+  }
+
+  .project-description {
+    font-size: 3.8vw;
+    color: #ffffff;
+  }
+
+  .project-content {
+    text-align: left;
+    margin-bottom: 15px;
+  }
+}
+
+/* Responsive styles for screens up to 480px */
+@media screen and (max-width: 480px) {
+  .project {
+    flex-direction: column-reverse;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .project-image {
+    width: 225px;
+    max-width: 420px;
+    height: auto;
+    margin: 15px 0;
+    object-fit: contain;
+  }
+
+  .project-title {
+    font-size: 8vw;
+    margin-bottom: 10px;
+    color: #ffffff;
+  }
+
+  .project-description {
+    font-size: 6.5vw;
+    color: #ffffff;
+  }
+
+  .project-content {
+    text-align: left;
+    margin-bottom: 10px;
+  }
+}
+
+/* Styles for screens larger than 768px */
+@media screen and (min-width: 769px) {
+  .project {
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+    text-align: left;
+  }
+
+  .project-image {
+    width: 250px;
+    height: auto;
+    margin-right: 20px;
+    object-fit: contain;
+  }
+
+  .project-title {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    color: #ffffff;
+  }
+
+  .project-description {
+    color: #ffffff;
+  }
+}

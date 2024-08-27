@@ -25,17 +25,39 @@
   max-height: none;
 }
 
+/* Responsive styles from size-responsive.css */
+@media screen and (max-width: 768px) {
   .expandable-title {
-    font-size: 2em;
-    font-weight: 700;
-    margin-top: 5px;
-    margin-bottom: 20px;
-    color: #ffffff;
+    font-size: 4vw;
     cursor: pointer;
-    transition: font-size 0.2s ease, transform 0.2s ease;
+    transition: none;
+  }
+
+  .expandable-title:hover {
+    font-size: 4vw;
+    transform: none;
+  }
+
+  .content {
+    font-size: 3.5vw;
+    transition: max-height 0.3s ease, opacity 0.3s ease;
+  }
 }
 
-.expandable-title:hover {
-    font-size: 2.6em;
-    transform: scale(1.02);
+@media screen and (max-width: 480px) {
+  .expandable-title {
+    font-size: 8vw;
+    cursor: pointer;
+    transition: none;
+  }
+
+  .expandable-title:hover {
+    font-size: 10vw;
+    transform: none;
+  }
+
+  .content {
+    font-size: 7vw;
+    transition: max-height 0.3s ease, opacity 0.3s ease;
+  }
 }

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import './bio.css';
-import './size-responsive.css';
 
 function Bio() {
   const [isBioVisible, setIsBioVisible] = useState(false);
