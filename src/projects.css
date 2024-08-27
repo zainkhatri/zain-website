@@ -83,6 +83,7 @@
   }
 }
 
+<<<<<<< HEAD
 /* Project section adjustments for screens up to 480px */
 @media screen and (max-width: 480px) {
   .project-title {
@@ -91,11 +92,39 @@
 
   .project-description {
     font-size: 25px; /* Same size as About Me content */
+=======
+/* Responsive styles for screens up to 480px */
+@media screen and (max-width: 480px) {
+  .project {
+    flex-direction: column-reverse;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .project-image {
+    width: 225px;
+    max-width: 420px;
+    height: auto;
+    margin: 15px 0;
+    object-fit: contain;
+  }
+
+  .project-title {
+    font-size: 8vw;
+    margin-bottom: 10px;
+    color: #ffffff;
+  }
+
+  .project-description {
+    font-size: 6.5vw;
+>>>>>>> a8fd2f2ccaab302ce8478821b7df9e034c1981fb
     color: #ffffff;
   }
 
   .project-content {
     text-align: left;
+<<<<<<< HEAD
     margin-bottom: 15px;
   }
 }
@@ -104,13 +133,27 @@
 @media screen and (min-width: 769px) {
   .project {
     flex-direction: row; /* Side-by-side layout on larger screens */
+=======
+    margin-bottom: 10px;
+  }
+}
+
+/* Styles for screens larger than 768px */
+@media screen and (min-width: 769px) {
+  .project {
+    flex-direction: row;
+>>>>>>> a8fd2f2ccaab302ce8478821b7df9e034c1981fb
     align-items: flex-start;
     justify-content: flex-start;
     text-align: left;
   }
 
   .project-image {
+<<<<<<< HEAD
     width: 250px; /* Larger images for full screen browsers */
+=======
+    width: 250px;
+>>>>>>> a8fd2f2ccaab302ce8478821b7df9e034c1981fb
     height: auto;
     margin-right: 20px;
     object-fit: contain;
