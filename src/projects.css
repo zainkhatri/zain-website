@@ -73,7 +73,7 @@
   }
 
   .project-description {
-    font-size: 3.8vw;
+    font-size: 3.5vw; /* Match About Me section */
     color: #ffffff;
   }
 
@@ -90,7 +90,7 @@
   }
 
   .project-description {
-    font-size: 25px; /* Same size as About Me content */
+    font-size: 5vw; /* Match About Me section */
     color: #ffffff;
   }
 

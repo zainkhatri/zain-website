@@ -13,7 +13,7 @@ html, body {
   background-repeat: no-repeat;
   background-attachment: fixed;
   color: #ffffff;
-  font-family: 'Work Sans', sans-serif;
+  font-family: 'Work Sans', sans-serif; /* Reverting to Open Sans for all text */
 }
 
 .App {
@@ -24,7 +24,7 @@ html, body {
 }
 
 b, strong {
-  font-family: 'Open Sans', sans-serif;
+  font-family: 'Work Sans', sans-serif; /* Using Work Sans for bold text */
   font-weight: bold;
 }
 
@@ -34,20 +34,6 @@ b, strong {
   font-size: 24px; /* Set a reasonable default size */
 }
 
-/* Gallery and Albums specific adjustments */
-.gallery-grid {
-  display: grid;
-  gap: 10px;
-  padding: 10px 0;
-}
-
-.gallery-item {
-  aspect-ratio: 1 / 1;
-  overflow: hidden;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
 button, a {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
@@ -55,39 +41,7 @@ button, a {
 /* Responsive Styles */
 
 /* For screens up to 768px */
-/* Responsive Styles */
 @media screen and (max-width: 768px) {
-  .hero-content {
-    flex-direction: column;
-    align-items: flex-start;
-    text-align: left;
-    padding: 10px 20px;
-  }
-
-  .hero-image {
-    width: 140px !important;
-    height: 140px !important;
-    margin: 20px 0;
-  }
-
-  .hero-content h1 {
-    margin: 30px 0 20px 0;
-    font-size: 40px !important;
-    text-align: left;
-  }
-
-  .hero-content h2 {
-    font-size: 20px;
-    margin: 10px 0 0 0;
-    text-align: left;
-  }
-
-  .hero-content p {
-    font-size: 18px;
-    margin-top: 20px;
-    margin-bottom: 0;
-  }
-
   .contact-section {
     justify-content: flex-start;
   }
@@ -95,74 +49,17 @@ button, a {
   .contact-section i {
     font-size: 30px;
   }
-
-  .project {
-    flex-direction: column-reverse;
-    align-items: center;
-    text-align: center;
-    margin-bottom: 20px;
-  }
 }
 
 /* For screens up to 480px */
 @media screen and (max-width: 480px) {
-  .hero-content h1 {
-    font-size: 46px !important;
-  }
-
-  .hero-content h2 {
-    font-size: 18px;
-  }
-
-  .hero-content p {
-    font-size: 16px;
-  }
-
   .contact-section i {
     font-size: 24px;
-  }
-
-  .project-title {
-    font-size: 50px;
-  }
-
-  .project-description {
-    font-size: 16px;
-  }
-}
-
-/* Large screens: 4x2 layout */
-@media screen and (min-width: 1024px) {
-  .gallery-grid {
-    grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: repeat(2, 1fr);
-  }
-}
-
-/* Medium screens: 2x4 layout */
-@media screen and (min-width: 768px) and (max-width: 1023px) {
-  .gallery-grid {
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(4, 1fr);
   }
 }
 
 /* Small screens: 2x4 layout with smaller images */
 @media screen and (max-width: 767px) {
-  .gallery-grid {
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(4, 1fr);
-  }
-
-  .gallery-item {
-    width: 90%;
-    margin: 0 auto;
-  }
-
-  .gallery-grid {
-    gap: 20px;
-  }
-
   /* Disable font-size increase on click */
   .expandable-title {
     font-size: 24px !important; /* Maintain default size */
@@ -172,3 +69,12 @@ button, a {
     font-size: 24px !important; /* Prevent increase on click */
   }
 }
+
+.Gallery {
+  margin-bottom: 40px; /* Adjust this value as needed */
+}
+
+.Albums {
+  margin-top: 40px; /* Adjust this value as needed */
+}
+

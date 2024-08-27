@@ -86,3 +86,51 @@
 .hero-content .expandable-title.expanded {
     font-size: inherit;
 }
+
+@media screen and (max-width: 768px) {
+    .hero-content {
+      flex-direction: column;
+      align-items: flex-start;
+      text-align: left;
+      padding: 10px 20px;
+    }
+  
+    .hero-image {
+      width: 140px !important;
+      height: 140px !important;
+      margin: 20px 0;
+    }
+  
+    .hero-content h1 {
+      margin: 30px 0 20px 0;
+      font-size: 40px !important;
+      text-align: left;
+    }
+  
+    .hero-content h2 {
+      font-size: 20px;
+      margin: 10px 0 0 0;
+      text-align: left;
+    }
+  
+    .hero-content p {
+      font-size: 18px;
+      margin-top: 20px;
+      margin-bottom: 0;
+    }
+}
+
+/* For screens up to 480px */
+@media screen and (max-width: 480px) {
+    .hero-content h1 {
+      font-size: 46px !important;
+    }
+  
+    .hero-content h2 {
+      font-size: 18px;
+    }
+  
+    .hero-content p {
+      font-size: 16px;
+    }
+}
