@@ -76,3 +76,13 @@
 .contact-section i {
     font-size: 34px;
 }
+
+/* Ensure expandable titles in hero section don't change size */
+.hero-content .expandable-title {
+    font-size: inherit;
+    transition: none;
+}
+
+.hero-content .expandable-title.expanded {
+    font-size: inherit;
+}

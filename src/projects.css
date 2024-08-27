@@ -46,3 +46,83 @@
 .project a:hover {
   color: #cccccc; /* Slightly lighter white on hover */
 }
+
+/* Responsive Styles */
+
+/* Project section adjustments for screens up to 768px */
+@media screen and (max-width: 768px) {
+  .project {
+    flex-direction: column-reverse; /* Stack content above the image */
+    align-items: center;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .project-image {
+    width: 100%; /* Full width on small screens */
+    max-width: 300px; /* Increase max width */
+    height: auto;
+    margin: 15px 0; /* Margin below the content */
+    object-fit: contain;
+  }
+
+  .project-title {
+    font-size: 4.5vw;
+    margin-bottom: 10px;
+    color: #ffffff;
+  }
+
+  .project-description {
+    font-size: 3.8vw;
+    color: #ffffff;
+  }
+
+  .project-content {
+    text-align: left;
+    margin-bottom: 15px;
+  }
+}
+
+/* Project section adjustments for screens up to 480px */
+@media screen and (max-width: 480px) {
+  .project-title {
+    font-size: 25px; /* Adjust title size */
+  }
+
+  .project-description {
+    font-size: 25px; /* Same size as About Me content */
+    color: #ffffff;
+  }
+
+  .project-content {
+    text-align: left;
+    margin-bottom: 15px;
+  }
+}
+
+/* For larger screens (769px and above) */
+@media screen and (min-width: 769px) {
+  .project {
+    flex-direction: row; /* Side-by-side layout on larger screens */
+    align-items: flex-start;
+    justify-content: flex-start;
+    text-align: left;
+  }
+
+  .project-image {
+    width: 250px; /* Larger images for full screen browsers */
+    height: auto;
+    margin-right: 20px;
+    object-fit: contain;
+  }
+
+  .project-title {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    color: #ffffff;
+  }
+
+  .project-description {
+    color: #ffffff;
+  }
+}
