@@ -1,41 +1,41 @@
 .expandable-title {
-    font-size: 3em;
-    font-weight: 700;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    color: #ffffff;
-    cursor: pointer;
-    transition: font-size 0.2s ease, transform 0.2s ease;
-  }
-  
-  .expandable-title:hover {
-    font-size: 3.2em;
-    transform: scale(1.05);
-  }
-  
-  .content {
-    font-size: 1.6em;
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.3s ease;
-    margin-top: 7px;
-  }
-  
-  .content.expanded {
-    max-height: none;
-  }
+  font-size: 2em; /* Adjusted font size */
+  font-weight: 700;
+  margin-top: 5px;
+  margin-bottom: 20px; /* Increased bottom margin */
+  color: #ffffff;
+  cursor: pointer;
+  transition: font-size 0.2s ease, transform 0.2s ease;
+}
+
+.expandable-title:hover {
+  font-size: 2.6em; /* Adjusted hover font size */
+  transform: scale(1.02); /* Slightly smaller scale effect */
+}
+
+.content {
+  font-size: 1.6em;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+  margin-top: 3px; /* Reduced top margin */
+}
+
+.content.expanded {
+  max-height: none;
+}
 
   .expandable-title {
-    font-size: 3em;
+    font-size: 2em;
     font-weight: 700;
     margin-top: 5px;
-    margin-bottom: 13px;
+    margin-bottom: 20px;
     color: #ffffff;
     cursor: pointer;
     transition: font-size 0.2s ease, transform 0.2s ease;
 }
 
 .expandable-title:hover {
-    font-size: 3.2em;
-    transform: scale(1.05);
+    font-size: 2.6em;
+    transform: scale(1.02);
 }

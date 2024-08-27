@@ -8,14 +8,16 @@
   }
   
   .project-image {
+    display: flex;
     width: 250px;
     height: 250px;
     object-fit: cover;
     border-radius: 10px;
     margin-right: 30px;
     margin-top: 10px;
+    gap: 10px; /* Adjust gap as needed */
   }
-  
+
   .project p {
     margin-top: 0;
   }

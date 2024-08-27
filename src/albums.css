@@ -1,0 +1,18 @@
+.albums-grid {
+    display: grid;
+    gap: 20px; /* Default gap for the grid */
+    padding: 10px 0;
+}
+
+.albums-item {
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.albums-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}

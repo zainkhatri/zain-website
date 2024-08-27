@@ -104,6 +104,21 @@
   .gallery-grid {
       gap: 5px; /* Reduce the gap between items */
   }
+
+  /* Additional gallery styling for small screens */
+  .albums-grid {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+  }
+
+  .albums-item {
+      width: 90%; /* Smaller images */
+      margin: 0 auto; /* Center the images */
+  }
+
+  .albums-grid {
+      gap: 5px; /* Reduce the gap between items */
+  }
 }
 
 @media screen and (max-width: 480px) {
@@ -213,6 +228,20 @@
   .gallery-grid {
       gap: 5px; /* Maintain reduced gap between items */
   }
+
+  .albums-grid {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+  }
+
+  .albums-item {
+      width: 85%; /* Even smaller images */
+      margin: 0 auto; /* Center the images */
+  }
+
+  .albums-grid {
+      gap: 5px; /* Maintain reduced gap between items */
+  }
 }
 
 button, a {
@@ -225,6 +254,12 @@ button, a {
       grid-template-columns: repeat(4, 1fr);
       grid-template-rows: repeat(2, 1fr);
   }
+
+  .albums-grid {
+    grid-template-columns: repeat(4, 1fr); /* 4 items per row */
+    grid-template-rows: repeat(3, 1fr); /* 3 rows */
+    gap: 20px; /* Adjust gap as needed */
+  }
 }
 
 /* Medium screens: 2x4 layout */
@@ -233,6 +268,12 @@ button, a {
       grid-template-columns: repeat(2, 1fr);
       grid-template-rows: repeat(4, 1fr);
   }
+
+  .albums-grid {
+    grid-template-columns: repeat(3, 1fr); /* 3 items per row */
+    grid-template-rows: repeat(4, 1fr); /* 4 rows */
+    gap: 15px; /* Adjust gap as needed */
+  } 
 }
 
 /* Small screens: 2x4 layout with smaller images */
@@ -251,5 +292,14 @@ button, a {
       gap: 20px; /* Reduce the gap between items */
   }
 
-  
+  .albums-grid {
+    grid-template-columns: repeat(2, 1fr); /* 2 items per row */
+    grid-template-rows: repeat(6, 1fr); /* 6 rows */
+    gap: 10px; /* Adjust gap as needed */
+  }
+
+  .albums-item {
+    width: 100%; /* Fill the container width */
+    margin: 0 auto; /* Center the images */
+  }
 }
