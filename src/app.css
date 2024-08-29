@@ -38,6 +38,21 @@ button, a {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+.footer {
+  color: #ffffff;
+  text-align: center;
+  padding: 10px 0;
+  position: relative; /* Adjust if you want it fixed or relative */
+  width: 100%;
+  bottom: 0;
+}
+
+.footer p {
+  margin: 0;
+  font-size: 12px;
+}
+
+
 /* Responsive Styles */
 
 /* For screens up to 768px */

@@ -35,6 +35,11 @@ function App() {
       </section>
       <Gallery />
       <Albums onToggle={handleToggle} />
+      
+      {/* Add Footer Here */}
+      <footer className="footer">
+        <p>© 2024 Zain Khatri. All Rights Reserved.</p>
+      </footer>
     </div>
   );
 }
