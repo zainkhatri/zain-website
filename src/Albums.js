@@ -19,15 +19,10 @@ function Albums() {
 
   const toggleAlbums = () => setIsAlbumsVisible(!isAlbumsVisible);
 
-  const images = [
-    img1, img2, img3, img4, img5, img6,
-    img7, img8, img9, img10, img11, img12,
-  ];
-
   return (
-    <section id="albums" className="content-section albums">
+    <section id="albums" className={`content-section albums ${isAlbumsVisible ? 'expanded-margin' : ''}`}>
       <h2 onClick={toggleAlbums} className="expandable-title">
-      Essential Albums {isAlbumsVisible ? '-' : '+'}
+        Essential Albums {isAlbumsVisible ? '-' : '+'}
       </h2>
       <AnimatePresence>
         {isAlbumsVisible && (
@@ -39,7 +34,7 @@ function Albums() {
             transition={{ duration: 0.3 }}
           >
             <div className="albums-grid">
-              {images.map((img, index) => (
+              {[img1, img2, img3, img4, img5, img6, img7, img8, img9, img10, img11, img12].map((img, index) => (
                 <div key={index} className="albums-item">
                   <img src={img} alt={`Albums ${index + 1}`} />
                 </div>

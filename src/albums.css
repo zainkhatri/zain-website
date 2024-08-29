@@ -17,6 +17,10 @@
     object-fit: cover;
 }
 
+.albums.expanded-margin {
+    margin-top: 40px; /* Adjust this value as needed */
+  }  
+
 /* Large screens: 4x3 layout */
 @media screen and (min-width: 1024px) {
     .albums-grid {

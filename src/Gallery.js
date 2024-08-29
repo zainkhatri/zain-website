@@ -20,7 +20,7 @@ function Gallery() {
   const toggleGallery = () => setIsGalleryVisible(!isGalleryVisible);
 
   return (
-    <section id="gallery" className="content-section gallery">
+    <section id="gallery" className={`content-section gallery ${isGalleryVisible ? 'expanded-margin' : ''}`}>
       <h2 onClick={toggleGallery} className="expandable-title">
         Photo Gallery {isGalleryVisible ? '-' : '+'}
       </h2>

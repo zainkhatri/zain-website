@@ -33,12 +33,12 @@ function App() {
           Resume +
         </h2>
       </section>
-      <Gallery />
-      <Albums onToggle={handleToggle} />
+      <Gallery />  {/* Ensure Gallery section has a margin-bottom for spacing */}
+      <Albums onToggle={handleToggle} />  {/* Ensure Albums section has a margin-top for spacing */}
       
-      {/* Add Footer Here */}
+      {/* Footer*/}
       <footer className="footer">
-        <p>© 2024 Zain Khatri. All Rights Reserved.</p>
+        <p>©2024 Zain Khatri. All Rights Reserved.</p>
       </footer>
     </div>
   );
