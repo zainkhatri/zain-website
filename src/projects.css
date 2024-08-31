@@ -50,7 +50,7 @@
 /* Responsive Styles */
 
 /* Project section adjustments for screens up to 768px */
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 767px) {
   .project {
     flex-direction: column-reverse; /* Stack content above the image */
     align-items: center;
