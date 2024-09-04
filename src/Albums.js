@@ -27,7 +27,7 @@ const spotifyLinks = [
   'https://open.spotify.com/album/1KVGLuPtrMrLlyy4Je6df7', 
   'https://open.spotify.com/album/2v6ANhWhZBUKkg6pJJBs3B', 
   'https://open.spotify.com/album/3MATDdrpHmQCmuOcozZjDa', 
-  'https://open.spotify.com/album/7Cw4LObzgnVqSlkuIyywtI', 
+  'https://open.spotify.com/album/1DNSmmRLfv97Yjq7MTFWng', 
 ];
 
 function Albums() {
