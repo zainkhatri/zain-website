@@ -40,17 +40,17 @@
   }
 }
 
-/* Small screens: 2x4 layout with smaller images */
+/* Small screens: Match albums layout */
 @media screen and (max-width: 767.98px) {
   .gallery-grid {
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(4, 1fr);
+    grid-template-columns: repeat(2, 1fr); /* Match albums grid columns */
+    grid-template-rows: repeat(6, 1fr); /* Match albums grid rows */
+    gap: 10px; /* Match albums gap */
   }
+
   .gallery-item {
-    width: 90%;
-    margin: 0 auto;
-  }
-  .gallery-grid {
-    gap: 20px;
+    width: 100%; /* Match albums item width */
+    margin: 0 auto; /* Center align items like albums */
   }
 }
+
