@@ -9,6 +9,7 @@ const MLGame = () => {
   const [message, setMessage] = useState('');
   const [timerActive, setTimerActive] = useState(false);
   const [gameStarted, setGameStarted] = useState(false);
+  const [highScore, setHighScore] = useState(0); // New state for high score
 
   useEffect(() => {
     initializeGame();
@@ -22,7 +23,7 @@ const MLGame = () => {
       }, 1000);
     } else if (timeLeft === 0 && !isGameOver) {
       clearInterval(timer);
-      handleGameOver('Time is up! Game Over.');
+      handleGameOver(`Time is up! Game Over. You reached ${current - 1}.`);
     }
 
     return () => clearInterval(timer);
@@ -77,14 +78,21 @@ const MLGame = () => {
     }
   };
 
-  const handleGameOver = (message) => {
+  const handleGameOver = (endMessage) => {
     setIsGameOver(true);
-    setMessage(message);
+    setMessage(endMessage);
     setTimerActive(false);
+
+    if (current - 1 > highScore) {
+      setHighScore(current - 1); // Update high score
+      setMessage(`${endMessage} New High Score: ${current - 1}`);
+    } else {
+      setMessage(`${endMessage} High Score: ${highScore}`);
+    }
   };
 
   return (
-    <div className={`ml-game ${!gameStarted ? 'pre-game' : ''}`}>
+    <div className={`ml-game`}>
       <div className="ml-game-header">
         <div className={`ml-game-timer ${timeLeft <= 10 ? 'red-timer' : ''}`}>{timeLeft}s</div>
         <button className="ml-game-button" onClick={handleStartOrRestart}>
@@ -96,7 +104,7 @@ const MLGame = () => {
         <div className="ml-game-description">
           <h2 className="ml-game-title">1-50 in 60: The Vision Challenge</h2>
           <p>
-            Welcome to the "1-50 in 60" game, where speed and precision are key! Your goal is to find 
+          Welcome to the "1-50 in 60" game, where speed and precision are key! Your goal is to find 
             and click all the numbers from 1 to 50 in ascending order within 60 seconds. This game tests 
             your quick-thinking abilities and sharp eyes. Pay attention, as each mistake will end the game. 
             Compete against yourself or challenge your friends to see who can achieve the highest score 
