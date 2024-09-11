@@ -302,7 +302,7 @@ const MLGame = () => {
               <ol>
                 {highScores.map((score, index) => (
                   <li key={index}>
-                    {score.initials} - Score: {score.score}, Time: {score.time}s
+                    {score.initials} - {score.score} in {score.time} seconds
                   </li>
                 ))}
               </ol>
