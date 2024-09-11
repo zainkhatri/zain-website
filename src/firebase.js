@@ -1,7 +1,7 @@
 // src/firebase.js
 
 import { initializeApp } from 'firebase/app';
-import { getDatabase, ref, set, push, onValue } from 'firebase/database'; // Import necessary Firebase functions
+import { getDatabase, ref, set, push, onValue, remove } from 'firebase/database'; // Import necessary Firebase functions
 
 // Firebase configuration using environment variables
 const firebaseConfig = {
@@ -21,4 +21,4 @@ const app = initializeApp(firebaseConfig);
 // Initialize Realtime Database and get a reference to the service
 const database = getDatabase(app);
 
-export { database, ref, set, push, onValue };
+export { database, ref, set, push, onValue, remove }; // Ensure 'remove' is exported

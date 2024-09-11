@@ -1,244 +1,315 @@
+/* Import Press Start 2P Font */
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+/* General Game Container Styling */
 .ml-game {
     width: 100%;
     max-width: 1400px;
     margin: 20px auto;
     margin-bottom: 50px;
     padding: 50px;
-    background-color: #333;
-    border: 10px solid #fff;
+    background-color: #111;
+    border: 10px solid white; /* White border for classic arcade look */
     border-radius: 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     box-sizing: border-box;
-  }
-  
-  .ml-game-header {
+    font-family: 'Press Start 2P', cursive;
+}
+
+/* Header and Button Styling */
+.ml-game-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
     margin-bottom: 20px;
     position: relative;
-  }
-  
-  .ml-game-timer {
-    color: #fff;
+}
+
+.ml-game-timer {
+    color: #128CA1; /* Teal shade */
     font-size: 18px;
     transition: color 0.5s ease;
-  }
-  
-  .ml-game-timer.red-timer {
-    color: #f00;
-  }
-  
-  .ml-game-button {
-    background-color: #555;
-    color: #fff;
-    border: none;
+}
+
+.ml-game-timer.red-timer {
+    color: #ff0000; /* Red color for low time */
+}
+
+.ml-game-button {
+    background-color: #3c3c3c; /* Dark gray for Start button */
+    color: white;
+    border: 2px solid white;
     padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 18px;
+    font-size: 14px;
     position: absolute;
     top: -10px;
     right: 0;
-  }
-  
-  .ml-game-button:hover {
-    background-color: #777;
-  }
-  
-  .ml-game-grid {
+    text-shadow: none;
+    box-shadow: none;
+    transition: background-color 0.2s ease;
+}
+
+.ml-game-button:hover {
+    background-color: #128CA1; /* Teal shade on hover */
+    color: white;
+}
+
+/* Grid Styling */
+.ml-game-grid {
     display: grid;
     grid-template-columns: repeat(10, 1fr);
     gap: 10px;
     width: 100%;
     overflow: hidden;
-  }
-  
-  .ml-game-grid.hidden {
+}
+
+.ml-game-grid.hidden {
     display: none;
-  }
-  
-  .ml-game-grid.visible {
+}
+
+.ml-game-grid.visible {
     display: grid;
-  }
-  
-  .ml-game-number {
-    background-color: #555;
-    color: #fff;
-    border: none;
+}
+
+.ml-game-number {
+    background-color: #3c3c3c; /* Dark gray for number boxes */
+    color: white;
+    border: 2px solid white;
     width: 100%;
     height: 80px;
-    font-size: 16px;
+    font-size: 20px;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 0;
     box-sizing: border-box;
-    transition: background-color 0.1s ease;
-  }
-  
-  .ml-game-number.correct {
-    background-color: #1874B7;
-    color: #fff;
-  }
-  
-  .ml-game-number.incorrect {
-    background-color: #f00;
-    color: #fff;
-  }
-  
-  .ml-game-number.highlight-next {
-    background-color: #128CA1;
-    color: #fff;
-  }
-  
-  .ml-game-number.grayed-out {
-    background-color: #888;
-    color: #ccc;
-  }
-  
-  .ml-game-message {
-    color: #fff;
+    transition: all 0.1s ease;
+    font-family: 'Press Start 2P', cursive;
+}
+
+.ml-game-number.correct {
+    background-color: #109499; /* Darker teal */
+    color: white;
+}
+
+.ml-game-number.incorrect {
+    background-color: #ff0000;
+    color: white;
+}
+
+.ml-game-number.highlight-next {
+    background-color: #128CA1; /* Teal shade */
+    color: white;
+}
+
+.ml-game-number.grayed-out {
+    background-color: #555;
+    color: #888;
+}
+
+/* Message Styling */
+.ml-game-message {
+    color: white;
     font-size: 18px;
     margin-top: 20px;
     text-align: center;
-  }
-  
-  .ml-game-description {
-    color: #fff;
+    text-shadow: none;
+}
+
+/* Game Description Styling */
+.ml-game-description {
+    color: white;
     text-align: center;
     margin-bottom: 20px;
     padding: 10px;
     width: 100%;
-  }
-  
-  .ml-game-title {
-    font-size: clamp(18px, 4vw, 32px);
+}
+
+.ml-game-title {
+    font-size: clamp(20px, 4vw, 32px);
     font-weight: bold;
     margin-bottom: 15px;
-  }
-  
-  .ml-game-description p {
-    font-size: clamp(14px, 2.5vw, 20px);
+    text-shadow: none;
+}
+
+.ml-game-description p {
+    font-size: clamp(12px, 2vw, 18px);
     line-height: 1.4;
     margin: 0 auto;
     max-width: 90%;
-  }
-  
-  .ml-game-score-input {
+}
+
+/* Score Input Styling */
+.ml-game-score-input {
     margin-top: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
-  }
-  
-  .ml-game-score-input input {
+}
+
+.ml-game-score-input input {
     padding: 5px;
-    font-size: 16px;
+    font-size: 12px;
     width: 100px;
     margin-right: 10px;
-  }
-  
-  .ml-game-score-input button {
+    border: 2px solid #128CA1; /* Teal shade */
+    background-color: white;
+    color: #128CA1;
+    text-align: center;
+}
+
+.ml-game-score-input button {
     padding: 5px 10px;
-    font-size: 16px;
-    background-color: #555;
-    color: #fff;
-    border: none;
+    font-size: 12px;
+    background-color: #3c3c3c; /* Dark gray for input button */
+    color: white;
+    border: 2px solid white;
     cursor: pointer;
-  }
-  
-  .ml-game-score-input button:disabled {
-    background-color: #888;
+    transition: background-color 0.2s ease;
+}
+
+.ml-game-score-input button:disabled {
+    background-color: #555;
+    color: #888;
     cursor: not-allowed;
-  }
-  
-  .ml-game-score-management {
+}
+
+.ml-game-score-input button:hover {
+    background-color: #128CA1; /* Teal shade on hover */
+    color: white;
+}
+
+/* Score Management Button Styling */
+.ml-game-score-management {
     margin-top: 20px;
     display: flex;
     justify-content: center;
     gap: 10px;
-  }
-  
-  .ml-game-score-management button {
-    padding: 10px 15px;
-    font-size: 16px;
-    background-color: #555;
-    color: #fff;
-    border: none;
+}
+
+.ml-game-score-management button {
+    padding: 8px 12px;
+    font-size: 12px;
+    background-color: #3c3c3c; /* Dark gray for management buttons */
+    color: white;
+    border: 2px solid white;
     cursor: pointer;
     border-radius: 5px;
-  }
-  
-  .ml-game-score-management button:hover {
-    background-color: #777;
-  }
-  
-  .ml-game-high-scores {
-    margin-top: 20px;
-    color: #fff;
-    background-color: rgba(0, 0, 0, 0.5);
-    padding: 15px;
+}
+
+.ml-game-score-management button:hover {
+    background-color: #128CA1; /* Teal shade on hover */
+    color: white;
+}
+
+/* Updated High Scores Styling to Match Description Box */
+.ml-game-high-scores.arcade-style {
+    background-color: black;
+    color: white;
+    border: 3px solid white;
+    padding: 10px; /* Match padding with the description */
+    margin: 20px auto; /* Center it and give the same top-bottom margin */
+    width: 100%; /* Match the width of the description */
+    max-width: 90%; /* Match the max-width of the description */
+    text-align: center;
     border-radius: 5px;
-    width: 100%;
-    max-width: 400px;
-  }
-  
-  .ml-game-high-scores h3 {
+    box-sizing: border-box; /* Ensure padding doesn't affect the total width */
+}
+
+/* Retain existing child elements styles */
+.ml-game-high-scores.arcade-style ol {
+    list-style-type: none;
+    padding: 0;
+}
+
+.ml-game-high-scores.arcade-style li {
+    margin: 5px 0;
+    padding: 5px;
+    background-color: black;
+    border-bottom: 1px solid #128CA1; /* Teal shade */
+    font-size: 12px;
+    color: white;
+}
+
+.ml-game-high-scores.arcade-style button {
+    background-color: #128CA1; /* Teal shade for high scores button */
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin-left: 5px;
+    font-size: 10px;
+    transition: background-color 0.2s ease;
+}
+
+.ml-game-high-scores.arcade-style button:hover {
+    background-color: #109499; /* Darker teal on hover */
+}
+
+.ml-game-high-scores h3 {
     text-align: center;
     margin-bottom: 10px;
-  }
-  
-  .ml-game-high-scores ol {
+}
+
+.ml-game-high-scores ol {
     padding-left: 20px;
-  }
-  
-  .ml-game-high-scores li {
+}
+
+.ml-game-high-scores li {
     margin-bottom: 5px;
-  }
-  
-  .ml-game-high-scores p {
+}
+
+.ml-game-high-scores p {
     text-align: center;
     font-style: italic;
-  }
-  
-  @media screen and (max-width: 599px) {
+}
+
+.ml-game-button,
+.ml-game-score-management button,
+.ml-game-high-scores.arcade-style button {
+    font-family: 'Press Start 2P', cursive;
+}
+
+/* Responsive Styling for Smaller Screens */
+@media screen and (max-width: 599px) {
     .ml-game {
-      max-width: 100%;
-      padding: 15px;
+        max-width: 100%;
+        padding: 15px;
     }
-  
+
     .ml-game-grid {
-      grid-template-columns: repeat(5, 1fr);
+        grid-template-columns: repeat(5, 1fr);
     }
-  
+
     .ml-game-number {
-      height: 40px;
-      font-size: 14px;
+        height: 40px;
+        font-size: 25px;
     }
-  }
-  
-  @media screen and (min-width: 600px) and (max-width: 799px) {
+}
+
+@media screen and (min-width: 600px) and (max-width: 799px) {
     .ml-game-title {
-      font-size: clamp(18px, 4vw, 28px);
+        font-size: clamp(18px, 4vw, 28px);
     }
-  
+
     .ml-game-description p {
-      font-size: clamp(14px, 2.8vw, 20px);
+        font-size: clamp(12px, 2vw, 18px);
     }
-  }
-  
-  @media screen and (min-width: 800px) {
+}
+
+@media screen and (min-width: 800px) {
     .ml-game-title {
-      font-size: clamp(20px, 3.5vw, 30px);
+        font-size: clamp(20px, 3.5vw, 30px);
     }
-  
+
     .ml-game-description p {
-      font-size: clamp(16px, 2.5vw, 22px);
+        font-size: clamp(14px, 2vw, 20px);
     }
-  }
+}

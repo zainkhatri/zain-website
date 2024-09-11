@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import './MLGame.css';
-import { database, ref, set, push, onValue } from './firebase'; // Import Firebase utilities
+import { database, ref, set, push, onValue, remove } from './firebase';
 
 const MLGame = () => {
   const [numbers, setNumbers] = useState([]);
@@ -9,7 +9,6 @@ const MLGame = () => {
   const [timeLeft, setTimeLeft] = useState(60);
   const [isGameOver, setIsGameOver] = useState(true);
   const [message, setMessage] = useState('');
-  const [timerActive, setTimerActive] = useState(false);
   const [gameStarted, setGameStarted] = useState(false);
   const [highScores, setHighScores] = useState([]);
   const [nextNumber, setNextNumber] = useState(null);
@@ -17,41 +16,17 @@ const MLGame = () => {
   const [playerInitials, setPlayerInitials] = useState('');
   const [showHighScores, setShowHighScores] = useState(false);
 
+  const timerRef = useRef(null);
+
   useEffect(() => {
     initializeGame();
     fetchHighScores();
   }, []);
 
-  const fetchHighScores = () => {
-    const scoresRef = ref(database, 'scores/'); // Reference to 'scores' in Realtime Database
-    onValue(scoresRef, (snapshot) => {
-      const data = snapshot.val();
-      if (data) {
-        const scoresArray = Object.values(data);
-        scoresArray.sort((a, b) => b.score - a.score || a.time - b.time);
-        setHighScores(scoresArray.slice(0, 5));
-      }
-    });
-  };
-
-  const submitScore = (newScore) => {
-    const scoresRef = ref(database, 'scores/');
-    const newScoreRef = push(scoresRef); // Push a new score to the database
-    set(newScoreRef, newScore)
-      .then(() => {
-        setMessage('Score submitted successfully!');
-        fetchHighScores(); // Refresh high scores after submission
-      })
-      .catch((error) => {
-        console.error('Failed to submit score:', error); // Log the error
-        setMessage('Failed to submit score. Please try again.');
-      });
-  };
-
   const handleGameOver = useCallback((endMessage, finalScore, finalTime) => {
     setIsGameOver(true);
     setMessage(endMessage);
-    setTimerActive(false);
+    clearInterval(timerRef.current);
 
     const newScore = { initials: playerInitials.toUpperCase(), score: finalScore, time: 60 - finalTime };
     const wouldMakeTopFive = highScores.length < 5 || newScore.score > highScores[highScores.length - 1].score ||
@@ -75,19 +50,119 @@ const MLGame = () => {
     );
   }, [current, highScores, playerInitials]);
 
-  const bannedWords = ["ASS", "SEX", "FAG", "CUM", "DIE", "JEW", "FUC", "GAY", "PUS", "TIT", "DIC", "COC"]; // Add more as needed
+  useEffect(() => {
+    if (gameStarted && timeLeft > 0 && !isGameOver) {
+      timerRef.current = setInterval(() => {
+        setTimeLeft((prevTime) => {
+          if (prevTime <= 1) {
+            handleGameOver('Time\'s Up! Game Over.', current - 1, 0);
+            return 0;
+          }
+          return prevTime - 1;
+        });
+      }, 1000);
+    } else if (isGameOver) {
+      clearInterval(timerRef.current);
+    }
+
+    return () => clearInterval(timerRef.current);
+  }, [gameStarted, timeLeft, isGameOver, current, handleGameOver]);
+
+  const fetchHighScores = () => {
+    const scoresRef = ref(database, 'scores/');
+    onValue(scoresRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        const scoresArray = Object.entries(data).map(([id, score]) => ({ id, ...score }));
+        scoresArray.sort((a, b) => b.score - a.score || a.time - b.time);
+        setHighScores(scoresArray.slice(0, 10));
+      }
+    });
+  };
+
+  const submitScore = (newScore) => {
+    const scoresRef = ref(database, 'scores/');
+    
+    onValue(scoresRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        const existingScore = Object.entries(data).find(([_, score]) => score.initials === newScore.initials);
+        
+        if (existingScore) {
+          const [existingScoreId, existingScoreData] = existingScore;
+          
+          if (newScore.score > existingScoreData.score || 
+              (newScore.score === existingScoreData.score && newScore.time < existingScoreData.time)) {
+            set(ref(database, `scores/${existingScoreId}`), newScore)
+              .then(() => {
+                setMessage('New high score! Your previous record has been updated.');
+                fetchHighScores();
+              })
+              .catch((error) => {
+                console.error('Failed to update score:', error);
+                setMessage('Failed to update score. Please try again.');
+              });
+          } else {
+            setMessage('Your current high score is better. Keep trying!');
+          }
+        } else {
+          const newScoreRef = push(scoresRef);
+          set(newScoreRef, newScore)
+            .then(() => {
+              setMessage('New high score submitted successfully!');
+              fetchHighScores();
+              cleanupScores();
+            })
+            .catch((error) => {
+              console.error('Failed to submit score:', error);
+              setMessage('Failed to submit score. Please try again.');
+            });
+        }
+      } else {
+        const newScoreRef = push(scoresRef);
+        set(newScoreRef, newScore)
+          .then(() => {
+            setMessage('First high score submitted successfully!');
+            fetchHighScores();
+          })
+          .catch((error) => {
+            console.error('Failed to submit score:', error);
+            setMessage('Failed to submit score. Please try again.');
+          });
+      }
+    }, {
+      onlyOnce: true
+    });
+  };
+
+  const cleanupScores = () => {
+    const scoresRef = ref(database, 'scores/');
+    onValue(scoresRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        const scoresArray = Object.entries(data).map(([id, score]) => ({ id, ...score }));
+        scoresArray.sort((a, b) => b.score - a.score || a.time - b.time);
+
+        const scoresToDelete = scoresArray.slice(10);
+        scoresToDelete.forEach((score) => {
+          const scoreRef = ref(database, `scores/${score.id}`);
+          remove(scoreRef);
+        });
+      }
+    });
+  };
 
   const handleScoreSubmit = () => {
     if (playerInitials.length === 3) {
       const initials = playerInitials.toUpperCase();
 
-      // Check for banned words, numbers, and special characters
       const isAlpha = /^[A-Z]+$/.test(initials);
       if (!isAlpha) {
         setMessage('Initials can only contain letters. Please try again.');
         return;
       }
 
+      const bannedWords = ["ASS", "SEX", "FAG", "CUM", "DIE", "JEW", "FUC", "GAY", "PUS", "TIT", "DIC", "COC", "NIG","COK", "DIK"];
       if (bannedWords.includes(initials)) {
         setMessage('The initials you have entered are not allowed. Please try again.');
         return;
@@ -99,46 +174,34 @@ const MLGame = () => {
         time: 60 - timeLeft
       };
 
-      // Submit the new score to Firebase
       submitScore(newScore);
       setShowScoreInput(false);
     }
   };
 
-  const handleDeleteScore = (initials) => {
-    // Deleting scores might be handled differently if you want this feature
+  const toggleHighScores = () => {
+    setShowHighScores(!showHighScores);
   };
 
-  useEffect(() => {
-    let timer;
-    if (timerActive && timeLeft > 0) {
-      timer = setInterval(() => {
-        setTimeLeft((prevTime) => (prevTime > 0 ? prevTime - 1 : 0));
-      }, 1000);
-    } else if (timeLeft === 0 && !isGameOver) {
-      clearInterval(timer);
-      handleGameOver(`Time's up! Game Over.`, current - 1, 0);
-    }
-
-    return () => clearInterval(timer);
-  }, [timerActive, timeLeft, isGameOver, current, handleGameOver]);
-
-  const initializeGame = () => {
-    const shuffledNumbers = Array.from({ length: 50 }, (_, i) => i + 1).sort(() => Math.random() - 0.5);
-    const initialNumbers = shuffledNumbers.map((value) => ({
-      value,
-      status: 'default',
-    }));
-    setNumbers(initialNumbers);
-    setCurrent(1);
-    setTimeLeft(60);
-    setIsGameOver(true);
-    setMessage('');
-    setTimerActive(false);
-    setGameStarted(false);
-    setNextNumber(null);
-    setShowScoreInput(false);
-    setPlayerInitials('');
+  const handleDeleteScore = (initials) => {
+    const scoresRef = ref(database, 'scores/');
+    onValue(scoresRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        const scoresArray = Object.entries(data).map(([id, score]) => ({ id, ...score }));
+        const scoreToDelete = scoresArray.find(score => score.initials === initials);
+        if (scoreToDelete) {
+          const scoreRef = ref(database, `scores/${scoreToDelete.id}`);
+          remove(scoreRef).then(() => {
+            setMessage(`Score for ${initials} deleted successfully.`);
+            fetchHighScores();
+          }).catch((error) => {
+            console.error('Failed to delete score:', error);
+            setMessage('Failed to delete score. Please try again.');
+          });
+        }
+      }
+    });
   };
 
   const handleNumberClick = (number) => {
@@ -173,18 +236,33 @@ const MLGame = () => {
   const handleStartOrRestart = () => {
     if (isGameOver && !gameStarted) {
       setIsGameOver(false);
-      setTimerActive(true);
       setGameStarted(true);
+      setTimeLeft(60);
     } else {
       initializeGame();
     }
   };
-  const toggleHighScores = () => {
-    setShowHighScores(!showHighScores);
+
+  const initializeGame = () => {
+    const shuffledNumbers = Array.from({ length: 50 }, (_, i) => i + 1).sort(() => Math.random() - 0.5);
+    const initialNumbers = shuffledNumbers.map((value) => ({
+      value,
+      status: 'default',
+    }));
+    setNumbers(initialNumbers);
+    setCurrent(1);
+    setTimeLeft(60);
+    setIsGameOver(true);
+    setMessage('');
+    setGameStarted(false);
+    setNextNumber(null);
+    setShowScoreInput(false);
+    setPlayerInitials('');
+    clearInterval(timerRef.current);
   };
 
   return (
-    <div className={`ml-game`}>
+    <motion.div layout className="ml-game">
       <div className="ml-game-header">
         <div className={`ml-game-timer ${timeLeft <= 10 ? 'red-timer' : ''}`}>{timeLeft}s</div>
         <button className="ml-game-button" onClick={handleStartOrRestart}>
@@ -196,7 +274,7 @@ const MLGame = () => {
         <div className="ml-game-description">
           <h2 className="ml-game-title">1-50 in 60: The Vision Challenge</h2>
           <p>
-            Welcome to the "1-50 in 60" game, where we test your speed and precision. Your goal is to find 
+            Welcome to the "1-50 in 60" game, where we test your speed and precision. Your goal is to find
             and click all the numbers from 1 to 50 in ascending order within 60 seconds.
             Compete to make it to the top 5 scorers list! Click the "Start" button when you're ready to begin. Good luck!
           </p>
@@ -239,26 +317,35 @@ const MLGame = () => {
         </button>
       </div>
 
-      {showHighScores && (
-        <div className="ml-game-high-scores">
-          <h3>Top 5 Scorers</h3>
-          {highScores.length > 0 ? (
-            <ol>
-              {highScores.map((score, index) => (
-                <li key={index}>
-                  {score.initials} - Score: {score.score}, Time: {score.time}s
-                  {score.initials === playerInitials.toUpperCase() && (
-                    <button onClick={() => handleDeleteScore(score.initials)}>Delete</button>
-                  )}
-                </li>
-              ))}
-            </ol>
-          ) : (
-            <p>No high scores yet. Be the first to set a record!</p>
-          )}
-        </div>
-      )}
-    </div>
+      <AnimatePresence>
+        {showHighScores && (
+          <motion.div
+            className="ml-game-high-scores arcade-style"
+            initial={{ opacity: 0, y: -20, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -20, scale: 0.9 }}
+            transition={{ duration: 0.8, ease: 'easeInOut' }}
+            layout
+          >
+            <h3>Leaderboard</h3>
+            {highScores.length > 0 ? (
+              <ol>
+                {highScores.map((score, index) => (
+                  <li key={index}>
+                    {score.initials} - Score: {score.score}, Time: {score.time}s
+                    {score.initials === playerInitials.toUpperCase() && (
+                      <button onClick={() => handleDeleteScore(score.initials)}>Delete</button>
+                    )}
+                  </li>
+                ))}
+              </ol>
+            ) : (
+              <p>No high scores yet. Be the first to set a record!</p>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
   );
 };
 
