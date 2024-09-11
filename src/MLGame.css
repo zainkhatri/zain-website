@@ -52,7 +52,7 @@
   
   .ml-game-grid {
     display: grid;
-    grid-template-columns: repeat(10, 1.5fr);
+    grid-template-columns: repeat(10, 1fr);
     gap: 10px;
     width: 100%;
     overflow: hidden;
@@ -97,6 +97,11 @@
     color: #fff;
   }
   
+  .ml-game-number.grayed-out {
+    background-color: #888;
+    color: #ccc;
+  }
+  
   .ml-game-message {
     color: #fff;
     font-size: 18px;
@@ -125,6 +130,83 @@
     max-width: 90%;
   }
   
+  .ml-game-score-input {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .ml-game-score-input input {
+    padding: 5px;
+    font-size: 16px;
+    width: 100px;
+    margin-right: 10px;
+  }
+  
+  .ml-game-score-input button {
+    padding: 5px 10px;
+    font-size: 16px;
+    background-color: #555;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .ml-game-score-input button:disabled {
+    background-color: #888;
+    cursor: not-allowed;
+  }
+  
+  .ml-game-score-management {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+  }
+  
+  .ml-game-score-management button {
+    padding: 10px 15px;
+    font-size: 16px;
+    background-color: #555;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  .ml-game-score-management button:hover {
+    background-color: #777;
+  }
+  
+  .ml-game-high-scores {
+    margin-top: 20px;
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 15px;
+    border-radius: 5px;
+    width: 100%;
+    max-width: 400px;
+  }
+  
+  .ml-game-high-scores h3 {
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  
+  .ml-game-high-scores ol {
+    padding-left: 20px;
+  }
+  
+  .ml-game-high-scores li {
+    margin-bottom: 5px;
+  }
+  
+  .ml-game-high-scores p {
+    text-align: center;
+    font-style: italic;
+  }
+  
   @media screen and (max-width: 599px) {
     .ml-game {
       max-width: 100%;
@@ -137,7 +219,7 @@
   
     .ml-game-number {
       height: 40px;
-      font-size: 20px;
+      font-size: 14px;
     }
   }
   
@@ -160,4 +242,3 @@
       font-size: clamp(16px, 2.5vw, 22px);
     }
   }
-  

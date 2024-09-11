@@ -10,28 +10,76 @@ const MLGame = () => {
   const [message, setMessage] = useState('');
   const [timerActive, setTimerActive] = useState(false);
   const [gameStarted, setGameStarted] = useState(false);
-  const [highScore, setHighScore] = useState(0);
+  const [highScores, setHighScores] = useState([]);
   const [nextNumber, setNextNumber] = useState(null);
+  const [showScoreInput, setShowScoreInput] = useState(false);
+  const [playerInitials, setPlayerInitials] = useState('');
+  const [showHighScores, setShowHighScores] = useState(false);
 
-  // Memoize the handleGameOver function
-  const handleGameOver = useCallback((endMessage) => {
+  useEffect(() => {
+    initializeGame();
+    loadHighScores();
+  }, []);
+
+  const loadHighScores = () => {
+    const savedScores = JSON.parse(localStorage.getItem('highScores')) || [];
+    setHighScores(savedScores);
+  };
+
+  const saveHighScores = (newScores) => {
+    localStorage.setItem('highScores', JSON.stringify(newScores));
+    setHighScores(newScores);
+  };
+
+  const handleGameOver = useCallback((endMessage, finalScore, finalTime) => {
     setIsGameOver(true);
     setMessage(endMessage);
     setTimerActive(false);
 
-    if (current - 1 > highScore) {
-      setHighScore(current - 1);
-      setMessage(`${endMessage} New High Score: ${current - 1}`);
+    const newScore = { initials: playerInitials.toUpperCase(), score: finalScore, time: 60 - finalTime };
+    const wouldMakeTopFive = highScores.length < 5 || newScore.score > highScores[highScores.length - 1].score ||
+      (newScore.score === highScores[highScores.length - 1].score && newScore.time < highScores[highScores.length - 1].time);
+
+    if (wouldMakeTopFive) {
+      setShowScoreInput(true);
     } else {
-      setMessage(`${endMessage} High Score: ${highScore}`);
+      setMessage(`${endMessage} You didn't make the top 5. Try again!`);
     }
 
     setNextNumber(current);
-  }, [current, highScore]); // Add current and highScore as dependencies
 
-  useEffect(() => {
-    initializeGame();
-  }, []);
+    setNumbers((prevNumbers) =>
+      prevNumbers.map((n) => {
+        if (n.status === 'correct' || n.value === current || n.status === 'incorrect') {
+          return n;
+        }
+        return { ...n, status: 'grayed-out' };
+      })
+    );
+  }, [current, highScores, playerInitials]);
+
+  const handleScoreSubmit = () => {
+    if (playerInitials.length === 3) {
+      const newScore = {
+        initials: playerInitials.toUpperCase(),
+        score: current - 1,
+        time: 60 - timeLeft
+      };
+
+      const newHighScores = [...highScores, newScore]
+        .sort((a, b) => b.score - a.score || a.time - b.time)
+        .slice(0, 5);
+
+      saveHighScores(newHighScores);
+      setShowScoreInput(false);
+      setMessage(`Great job! You made the top 5!`);
+    }
+  };
+
+  const handleDeleteScore = (initials) => {
+    const newHighScores = highScores.filter((score) => score.initials !== initials);
+    saveHighScores(newHighScores);
+  };
 
   useEffect(() => {
     let timer;
@@ -41,11 +89,11 @@ const MLGame = () => {
       }, 1000);
     } else if (timeLeft === 0 && !isGameOver) {
       clearInterval(timer);
-      handleGameOver(`Time is up! Game Over. You reached ${current - 1}.`);
+      handleGameOver(`Time's up! Game Over.`, current - 1, 0);
     }
 
     return () => clearInterval(timer);
-  }, [timerActive, timeLeft, isGameOver, current, handleGameOver]); // handleGameOver dependency is memoized
+  }, [timerActive, timeLeft, isGameOver, current, handleGameOver]);
 
   const initializeGame = () => {
     const shuffledNumbers = Array.from({ length: 50 }, (_, i) => i + 1).sort(() => Math.random() - 0.5);
@@ -61,13 +109,15 @@ const MLGame = () => {
     setTimerActive(false);
     setGameStarted(false);
     setNextNumber(null);
+    setShowScoreInput(false);
+    setPlayerInitials('');
   };
 
   const handleNumberClick = (number) => {
     if (isGameOver) return;
 
     if (number.status === 'correct') {
-      handleGameOver(`You clicked the same number twice! Game Over. You reached ${current - 1}.`);
+      handleGameOver(`You clicked the same number twice! Game Over.`, current - 1, timeLeft);
       return;
     }
 
@@ -80,8 +130,7 @@ const MLGame = () => {
       setCurrent(current + 1);
 
       if (current === 50) {
-        setHighScore(50); // Fix: Set high score before calling handleGameOver
-        handleGameOver('Congratulations! You won!');
+        handleGameOver('Congratulations! You won!', 50, timeLeft);
       }
     } else {
       setNumbers((prevNumbers) =>
@@ -89,7 +138,7 @@ const MLGame = () => {
           n.value === number.value ? { ...n, status: 'incorrect' } : n
         )
       );
-      handleGameOver(`Wrong number clicked! Game Over. You reached ${current - 1}.`);
+      handleGameOver(`Wrong number clicked! Game Over.`, current - 1, timeLeft);
     }
   };
 
@@ -101,6 +150,10 @@ const MLGame = () => {
     } else {
       initializeGame();
     }
+  };
+
+  const toggleHighScores = () => {
+    setShowHighScores(!showHighScores);
   };
 
   return (
@@ -118,8 +171,7 @@ const MLGame = () => {
           <p>
             Welcome to the "1-50 in 60" game, where we test your speed and precision. Your goal is to find 
             and click all the numbers from 1 to 50 in ascending order within 60 seconds.
-            Compete against yourself to see who can achieve the highest score 
-            in the shortest time. Click the "Start" button when you're ready to begin. Good luck!
+            Compete to make it to the top 5 scorers list! Click the "Start" button when you're ready to begin. Good luck!
           </p>
         </div>
       )}
@@ -138,6 +190,47 @@ const MLGame = () => {
       </div>
       
       {message && <div className="ml-game-message">{message}</div>}
+
+      {showScoreInput && (
+        <div className="ml-game-score-input">
+          <input
+            type="text"
+            maxLength="3"
+            value={playerInitials}
+            onChange={(e) => setPlayerInitials(e.target.value.toUpperCase())}
+            placeholder="Enter 3 initials"
+          />
+          <button onClick={handleScoreSubmit} disabled={playerInitials.length !== 3}>
+            Submit Score
+          </button>
+        </div>
+      )}
+
+      <div className="ml-game-score-management">
+        <button onClick={toggleHighScores}>
+          {showHighScores ? 'Hide High Scores' : 'Show High Scores'}
+        </button>
+      </div>
+
+      {showHighScores && (
+        <div className="ml-game-high-scores">
+          <h3>Top 5 Scorers</h3>
+          {highScores.length > 0 ? (
+            <ol>
+              {highScores.map((score, index) => (
+                <li key={index}>
+                  {score.initials} - Score: {score.score}, Time: {score.time}s
+                  {score.initials === playerInitials.toUpperCase() && (
+                    <button onClick={() => handleDeleteScore(score.initials)}>Delete</button>
+                  )}
+                </li>
+              ))}
+            </ol>
+          ) : (
+            <p>No high scores yet. Be the first to set a record!</p>
+          )}
+        </div>
+      )}
     </div>
   );
 };
