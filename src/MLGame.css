@@ -2,9 +2,10 @@
     width: 100%;
     max-width: 1400px; /* Keep the larger size from the start */
     margin: 20px auto;
-    padding: 30px; /* Keep the larger padding from the start */
+    margin-bottom: 50px;
+    padding: 50px; /* Keep the larger padding from the start */
     background-color: #333;
-    border: 2px solid #fff;
+    border: 5px solid #fff;
     border-radius: 10px;
     display: flex;
     flex-direction: column;

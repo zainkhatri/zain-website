@@ -11,6 +11,19 @@ const MLGame = () => {
   const [gameStarted, setGameStarted] = useState(false);
   const [highScore, setHighScore] = useState(0); // New state for high score
 
+  const handleGameOver = (endMessage) => {
+    setIsGameOver(true);
+    setMessage(endMessage);
+    setTimerActive(false);
+
+    if (current - 1 > highScore) {
+      setHighScore(current - 1); // Update high score
+      setMessage(`${endMessage} New High Score: ${current - 1}`);
+    } else {
+      setMessage(`${endMessage} High Score: ${highScore}`);
+    }
+  };
+
   useEffect(() => {
     initializeGame();
   }, []);
@@ -27,7 +40,7 @@ const MLGame = () => {
     }
 
     return () => clearInterval(timer);
-  }, [timerActive, timeLeft, isGameOver]);
+  }, [timerActive, timeLeft, isGameOver, current]); // Removed `handleGameOver` from the dependency array
 
   const initializeGame = () => {
     const shuffledNumbers = Array.from({ length: 50 }, (_, i) => i + 1).sort(() => Math.random() - 0.5);
@@ -57,6 +70,7 @@ const MLGame = () => {
 
       if (current === 50) {
         handleGameOver('Congratulations! You won!');
+        setHighScore(50); // Set high score to 50 if the player wins
       }
     } else {
       setNumbers((prevNumbers) =>
@@ -78,19 +92,6 @@ const MLGame = () => {
     }
   };
 
-  const handleGameOver = (endMessage) => {
-    setIsGameOver(true);
-    setMessage(endMessage);
-    setTimerActive(false);
-
-    if (current - 1 > highScore) {
-      setHighScore(current - 1); // Update high score
-      setMessage(`${endMessage} New High Score: ${current - 1}`);
-    } else {
-      setMessage(`${endMessage} High Score: ${highScore}`);
-    }
-  };
-
   return (
     <div className={`ml-game`}>
       <div className="ml-game-header">
@@ -104,10 +105,9 @@ const MLGame = () => {
         <div className="ml-game-description">
           <h2 className="ml-game-title">1-50 in 60: The Vision Challenge</h2>
           <p>
-          Welcome to the "1-50 in 60" game, where speed and precision are key! Your goal is to find 
-            and click all the numbers from 1 to 50 in ascending order within 60 seconds. This game tests 
-            your quick-thinking abilities and sharp eyes. Pay attention, as each mistake will end the game. 
-            Compete against yourself or challenge your friends to see who can achieve the highest score 
+          Welcome to the "1-50 in 60" game, where we test your speed and precision. Your goal is to find 
+            and click all the numbers from 1 to 50 in ascending order within 60 seconds.
+            Compete against yourself to see who can achieve the highest score 
             in the shortest time. Click the "Start" button when you're ready to begin. Good luck!
           </p>
         </div>
