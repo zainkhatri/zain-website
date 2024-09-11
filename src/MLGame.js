@@ -29,13 +29,13 @@ const MLGame = () => {
     clearInterval(timerRef.current);
 
     const newScore = { initials: playerInitials.toUpperCase(), score: finalScore, time: 60 - finalTime };
-    const wouldMakeTopFive = highScores.length < 5 || newScore.score > highScores[highScores.length - 1].score ||
+    const wouldMakeTopTen = highScores.length < 10 || newScore.score > highScores[highScores.length - 1].score ||
       (newScore.score === highScores[highScores.length - 1].score && newScore.time < highScores[highScores.length - 1].time);
 
-    if (wouldMakeTopFive) {
+    if (wouldMakeTopTen) {
       setShowScoreInput(true);
     } else {
-      setMessage(`${endMessage} You didn't make the top 5. Try again!`);
+      setMessage(`${endMessage} You didn't make the top 10. Try again!`);
     }
 
     setNextNumber(current);
@@ -74,8 +74,19 @@ const MLGame = () => {
       const data = snapshot.val();
       if (data) {
         const scoresArray = Object.entries(data).map(([id, score]) => ({ id, ...score }));
-        scoresArray.sort((a, b) => b.score - a.score || a.time - b.time);
-        setHighScores(scoresArray.slice(0, 10));
+        // Remove duplicates, keeping only the best score for each set of initials
+        const uniqueScores = scoresArray.reduce((acc, current) => {
+          const x = acc.find(item => item.initials === current.initials);
+          if (!x) {
+            return acc.concat([current]);
+          } else {
+            return acc.map(item => item.initials === current.initials && 
+              (current.score > item.score || (current.score === item.score && current.time < item.time)) ? current : item);
+          }
+        }, []);
+        
+        uniqueScores.sort((a, b) => b.score - a.score || a.time - b.time);
+        setHighScores(uniqueScores.slice(0, 10));
       }
     });
   };
@@ -111,7 +122,6 @@ const MLGame = () => {
             .then(() => {
               setMessage('New high score submitted successfully!');
               fetchHighScores();
-              cleanupScores();
             })
             .catch((error) => {
               console.error('Failed to submit score:', error);
@@ -132,23 +142,6 @@ const MLGame = () => {
       }
     }, {
       onlyOnce: true
-    });
-  };
-
-  const cleanupScores = () => {
-    const scoresRef = ref(database, 'scores/');
-    onValue(scoresRef, (snapshot) => {
-      const data = snapshot.val();
-      if (data) {
-        const scoresArray = Object.entries(data).map(([id, score]) => ({ id, ...score }));
-        scoresArray.sort((a, b) => b.score - a.score || a.time - b.time);
-
-        const scoresToDelete = scoresArray.slice(10);
-        scoresToDelete.forEach((score) => {
-          const scoreRef = ref(database, `scores/${score.id}`);
-          remove(scoreRef);
-        });
-      }
     });
   };
 
@@ -207,11 +200,6 @@ const MLGame = () => {
   const handleNumberClick = (number) => {
     if (isGameOver) return;
 
-    if (number.status === 'correct') {
-      handleGameOver(`You clicked the same number twice! Game Over.`, current - 1, timeLeft);
-      return;
-    }
-
     if (number.value === current) {
       setNumbers((prevNumbers) =>
         prevNumbers.map((n) =>
@@ -223,6 +211,9 @@ const MLGame = () => {
       if (current === 50) {
         handleGameOver('Congratulations! You won!', 50, timeLeft);
       }
+    } else if (number.status === 'correct') {
+      // Do nothing if the number is already correctly clicked
+      return;
     } else {
       setNumbers((prevNumbers) =>
         prevNumbers.map((n) =>
@@ -276,7 +267,7 @@ const MLGame = () => {
           <p>
             Welcome to the "1-50 in 60" game, where we test your speed and precision. Your goal is to find
             and click all the numbers from 1 to 50 in ascending order within 60 seconds.
-            Compete to make it to the top 5 scorers list! Click the "Start" button when you're ready to begin. Good luck!
+            Compete to make it to the top 10 scorers list! Click the "Start" button when you're ready to begin. Good luck!
           </p>
         </div>
       )}
