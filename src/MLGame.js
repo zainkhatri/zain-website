@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import './MLGame.css';
 
@@ -13,7 +13,8 @@ const MLGame = () => {
   const [highScore, setHighScore] = useState(0);
   const [nextNumber, setNextNumber] = useState(null);
 
-  const handleGameOver = (endMessage) => {
+  // Memoize the handleGameOver function
+  const handleGameOver = useCallback((endMessage) => {
     setIsGameOver(true);
     setMessage(endMessage);
     setTimerActive(false);
@@ -26,7 +27,7 @@ const MLGame = () => {
     }
 
     setNextNumber(current);
-  };
+  }, [current, highScore]); // Add current and highScore as dependencies
 
   useEffect(() => {
     initializeGame();
@@ -44,7 +45,7 @@ const MLGame = () => {
     }
 
     return () => clearInterval(timer);
-  }, [timerActive, timeLeft, isGameOver, current]);
+  }, [timerActive, timeLeft, isGameOver, current, handleGameOver]); // handleGameOver dependency is memoized
 
   const initializeGame = () => {
     const shuffledNumbers = Array.from({ length: 50 }, (_, i) => i + 1).sort(() => Math.random() - 0.5);
@@ -79,8 +80,8 @@ const MLGame = () => {
       setCurrent(current + 1);
 
       if (current === 50) {
+        setHighScore(50); // Fix: Set high score before calling handleGameOver
         handleGameOver('Congratulations! You won!');
-        setHighScore(50);
       }
     } else {
       setNumbers((prevNumbers) =>
@@ -115,7 +116,7 @@ const MLGame = () => {
         <div className="ml-game-description">
           <h2 className="ml-game-title">1-50 in 60: The Vision Challenge</h2>
           <p>
-          Welcome to the "1-50 in 60" game, where we test your speed and precision. Your goal is to find 
+            Welcome to the "1-50 in 60" game, where we test your speed and precision. Your goal is to find 
             and click all the numbers from 1 to 50 in ascending order within 60 seconds.
             Compete against yourself to see who can achieve the highest score 
             in the shortest time. Click the "Start" button when you're ready to begin. Good luck!
