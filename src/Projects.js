@@ -4,6 +4,7 @@ import roverImage from './rover.jpeg';
 import eegImage from './eeg.jpeg';
 import nasaImage from './nasa3.jpeg';
 import './projects.css';
+import MLGame from './MLGame'; // Import the MLGame component
 
 function Projects() {
   const [areProjectsVisible, setAreProjectsVisible] = useState(false);
@@ -24,6 +25,12 @@ function Projects() {
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
           >
+            {/* ML Game Section */}
+            <div className="project-content">
+              <MLGame />
+            </div>
+
+            {/* Rest of the Projects */}
             <div className="project">
               <motion.img 
                 src={roverImage} 
@@ -44,6 +51,7 @@ function Projects() {
                 </p>
               </div>
             </div>
+
             <div className="project">
               <motion.img 
                 src={eegImage} 
@@ -64,6 +72,7 @@ function Projects() {
                 </p>
               </div>
             </div>
+
             <div className="project">
               <motion.img 
                 src={nasaImage} 

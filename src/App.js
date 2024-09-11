@@ -1,3 +1,4 @@
+// App.js
 import React, { useState, useEffect } from 'react';
 import './app.css';
 import './bio.css';
@@ -33,10 +34,10 @@ function App() {
           Resume +
         </h2>
       </section>
-      <Gallery />  {/* Ensure Gallery section has a margin-bottom for spacing */}
-      <Albums onToggle={handleToggle} />  {/* Ensure Albums section has a margin-top for spacing */}
+      <Gallery /> {/* Ensure Gallery section has a margin-bottom for spacing */}
+      <Albums onToggle={handleToggle} /> {/* Ensure Albums section has a margin-top for spacing */}
       
-      {/* Footer*/}
+      {/* Footer */}
       <footer className="footer">
         <p>©2024 Zain Khatri. All Rights Reserved.</p>
       </footer>
