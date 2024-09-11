@@ -1,19 +1,18 @@
 // src/firebase.js
 
-// Import the functions you need from the Firebase SDKs
 import { initializeApp } from 'firebase/app';
-import { getDatabase, ref, set, push, onValue } from 'firebase/database'; // Import Realtime Database functions
+import { getDatabase, ref, set, push, onValue } from 'firebase/database'; // Import necessary Firebase functions
 
-// Your web app's Firebase configuration (use your provided config)
+// Firebase configuration using environment variables
 const firebaseConfig = {
-  apiKey: "AIzaSyA4thvpea5ZRf5xfe4IWpxdZ8JWzafMSZ8",
-  authDomain: "arcade-scores.firebaseapp.com",
-  databaseURL: "https://arcade-scores-default-rtdb.firebaseio.com", // Add the Database URL here
-  projectId: "arcade-scores",
-  storageBucket: "arcade-scores.appspot.com",
-  messagingSenderId: "203630832909",
-  appId: "1:203630832909:web:0462986fd4c16f5a38d444",
-  measurementId: "G-WCC9RWEGC2"
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  databaseURL: process.env.REACT_APP_FIREBASE_DATABASE_URL,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_APP_ID,
+  measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID
 };
 
 // Initialize Firebase
