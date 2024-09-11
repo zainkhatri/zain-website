@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import './MLGame.css';
+import { database, ref, set, push, onValue } from './firebase'; // Import Firebase utilities
 
 const MLGame = () => {
   const [numbers, setNumbers] = useState([]);
@@ -18,17 +19,33 @@ const MLGame = () => {
 
   useEffect(() => {
     initializeGame();
-    loadHighScores();
+    fetchHighScores();
   }, []);
 
-  const loadHighScores = () => {
-    const savedScores = JSON.parse(localStorage.getItem('highScores')) || [];
-    setHighScores(savedScores);
+  const fetchHighScores = () => {
+    const scoresRef = ref(database, 'scores/'); // Reference to 'scores' in Realtime Database
+    onValue(scoresRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        const scoresArray = Object.values(data);
+        scoresArray.sort((a, b) => b.score - a.score || a.time - b.time);
+        setHighScores(scoresArray.slice(0, 5));
+      }
+    });
   };
 
-  const saveHighScores = (newScores) => {
-    localStorage.setItem('highScores', JSON.stringify(newScores));
-    setHighScores(newScores);
+  const submitScore = (newScore) => {
+    const scoresRef = ref(database, 'scores/');
+    const newScoreRef = push(scoresRef); // Push a new score to the database
+    set(newScoreRef, newScore)
+      .then(() => {
+        setMessage('Score submitted successfully!');
+        fetchHighScores(); // Refresh high scores after submission
+      })
+      .catch((error) => {
+        console.error('Failed to submit score:', error);
+        setMessage('Failed to submit score. Please try again.');
+      });
   };
 
   const handleGameOver = useCallback((endMessage, finalScore, finalTime) => {
@@ -58,27 +75,38 @@ const MLGame = () => {
     );
   }, [current, highScores, playerInitials]);
 
+  const bannedWords = ["ASS", "SEX", "FAG", "CUM", "DIE", "JEW", "FUC", "GAY", "PUS", "TIT", "DIC", "COC"]; // Add more as needed
+
   const handleScoreSubmit = () => {
     if (playerInitials.length === 3) {
+      const initials = playerInitials.toUpperCase();
+
+      // Check for banned words, numbers, and special characters
+      const isAlpha = /^[A-Z]+$/.test(initials);
+      if (!isAlpha) {
+        setMessage('Initials can only contain letters. Please try again.');
+        return;
+      }
+
+      if (bannedWords.includes(initials)) {
+        setMessage('The initials you have entered are not allowed. Please try again.');
+        return;
+      }
+
       const newScore = {
-        initials: playerInitials.toUpperCase(),
+        initials: initials,
         score: current - 1,
         time: 60 - timeLeft
       };
 
-      const newHighScores = [...highScores, newScore]
-        .sort((a, b) => b.score - a.score || a.time - b.time)
-        .slice(0, 5);
-
-      saveHighScores(newHighScores);
+      // Submit the new score to Firebase
+      submitScore(newScore);
       setShowScoreInput(false);
-      setMessage(`Great job! You made the top 5!`);
     }
   };
 
   const handleDeleteScore = (initials) => {
-    const newHighScores = highScores.filter((score) => score.initials !== initials);
-    saveHighScores(newHighScores);
+    // Deleting scores might be handled differently if you want this feature
   };
 
   useEffect(() => {
@@ -151,7 +179,6 @@ const MLGame = () => {
       initializeGame();
     }
   };
-
   const toggleHighScores = () => {
     setShowHighScores(!showHighScores);
   };
@@ -164,7 +191,7 @@ const MLGame = () => {
           {isGameOver && !gameStarted ? 'Start' : 'Restart'}
         </button>
       </div>
-      
+
       {!gameStarted && (
         <div className="ml-game-description">
           <h2 className="ml-game-title">1-50 in 60: The Vision Challenge</h2>
@@ -188,7 +215,7 @@ const MLGame = () => {
           </motion.button>
         ))}
       </div>
-      
+
       {message && <div className="ml-game-message">{message}</div>}
 
       {showScoreInput && (
