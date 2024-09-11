@@ -155,7 +155,7 @@ const MLGame = () => {
         return;
       }
 
-      const bannedWords = ["ASS", "SEX", "FAG", "CUM", "DIE", "JEW", "FUC", "GAY", "PUS", "TIT", "DIC", "COC", "NIG","COK", "DIK"];
+      const bannedWords = ["ASS", "SEX", "FAG", "CUM", "DIE", "JEW", "FUC", "GAY", "PUS", "TIT", "DIC", "COC", "NIG","COK", "DIK", "WTF", "FCK"];
       if (bannedWords.includes(initials)) {
         setMessage('The initials you have entered are not allowed. Please try again.');
         return;
