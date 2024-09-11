@@ -14,6 +14,7 @@
   border-radius: 10px;
   margin-right: 20px; /* Space between image and text */
   flex-shrink: 0; /* Prevent shrinking */
+  border: 5px solid white; /* Added white border */
 }
 
 .project-content {
