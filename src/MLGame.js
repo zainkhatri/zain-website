@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import './MLGame.css';
 
 const MLGame = () => {
@@ -9,7 +10,8 @@ const MLGame = () => {
   const [message, setMessage] = useState('');
   const [timerActive, setTimerActive] = useState(false);
   const [gameStarted, setGameStarted] = useState(false);
-  const [highScore, setHighScore] = useState(0); // New state for high score
+  const [highScore, setHighScore] = useState(0);
+  const [nextNumber, setNextNumber] = useState(null);
 
   const handleGameOver = (endMessage) => {
     setIsGameOver(true);
@@ -17,11 +19,13 @@ const MLGame = () => {
     setTimerActive(false);
 
     if (current - 1 > highScore) {
-      setHighScore(current - 1); // Update high score
+      setHighScore(current - 1);
       setMessage(`${endMessage} New High Score: ${current - 1}`);
     } else {
       setMessage(`${endMessage} High Score: ${highScore}`);
     }
+
+    setNextNumber(current);
   };
 
   useEffect(() => {
@@ -40,7 +44,7 @@ const MLGame = () => {
     }
 
     return () => clearInterval(timer);
-  }, [timerActive, timeLeft, isGameOver, current]); // Removed `handleGameOver` from the dependency array
+  }, [timerActive, timeLeft, isGameOver, current]);
 
   const initializeGame = () => {
     const shuffledNumbers = Array.from({ length: 50 }, (_, i) => i + 1).sort(() => Math.random() - 0.5);
@@ -55,10 +59,16 @@ const MLGame = () => {
     setMessage('');
     setTimerActive(false);
     setGameStarted(false);
+    setNextNumber(null);
   };
 
   const handleNumberClick = (number) => {
     if (isGameOver) return;
+
+    if (number.status === 'correct') {
+      handleGameOver(`You clicked the same number twice! Game Over. You reached ${current - 1}.`);
+      return;
+    }
 
     if (number.value === current) {
       setNumbers((prevNumbers) =>
@@ -70,7 +80,7 @@ const MLGame = () => {
 
       if (current === 50) {
         handleGameOver('Congratulations! You won!');
-        setHighScore(50); // Set high score to 50 if the player wins
+        setHighScore(50);
       }
     } else {
       setNumbers((prevNumbers) =>
@@ -115,14 +125,14 @@ const MLGame = () => {
 
       <div className={`ml-game-grid ${gameStarted ? 'visible' : 'hidden'}`}>
         {numbers.map((number) => (
-          <button
+          <motion.button
             key={number.value}
             onClick={() => handleNumberClick(number)}
-            className={`ml-game-number ${number.status}`}
+            className={`ml-game-number ${number.status} ${nextNumber === number.value ? 'highlight-next' : ''}`}
             disabled={isGameOver}
           >
             {number.value}
-          </button>
+          </motion.button>
         ))}
       </div>
       
