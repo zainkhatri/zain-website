@@ -43,7 +43,7 @@ const MLGame = () => {
         fetchHighScores(); // Refresh high scores after submission
       })
       .catch((error) => {
-        console.error('Failed to submit score:', error);
+        console.error('Failed to submit score:', error); // Log the error
         setMessage('Failed to submit score. Please try again.');
       });
   };
