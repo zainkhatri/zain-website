@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import './MLGame.css';
-import { database, ref, set, push, onValue, remove } from './firebase';
+import { database, ref, set, push, onValue } from './firebase';
 
 const MLGame = () => {
   const [numbers, setNumbers] = useState([]);
@@ -176,27 +176,6 @@ const MLGame = () => {
     setShowHighScores(!showHighScores);
   };
 
-  const handleDeleteScore = (initials) => {
-    const scoresRef = ref(database, 'scores/');
-    onValue(scoresRef, (snapshot) => {
-      const data = snapshot.val();
-      if (data) {
-        const scoresArray = Object.entries(data).map(([id, score]) => ({ id, ...score }));
-        const scoreToDelete = scoresArray.find(score => score.initials === initials);
-        if (scoreToDelete) {
-          const scoreRef = ref(database, `scores/${scoreToDelete.id}`);
-          remove(scoreRef).then(() => {
-            setMessage(`Score for ${initials} deleted successfully.`);
-            fetchHighScores();
-          }).catch((error) => {
-            console.error('Failed to delete score:', error);
-            setMessage('Failed to delete score. Please try again.');
-          });
-        }
-      }
-    });
-  };
-
   const handleNumberClick = (number) => {
     if (isGameOver) return;
 
@@ -324,9 +303,6 @@ const MLGame = () => {
                 {highScores.map((score, index) => (
                   <li key={index}>
                     {score.initials} - Score: {score.score}, Time: {score.time}s
-                    {score.initials === playerInitials.toUpperCase() && (
-                      <button onClick={() => handleDeleteScore(score.initials)}>Delete</button>
-                    )}
                   </li>
                 ))}
               </ol>
