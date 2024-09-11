@@ -128,8 +128,8 @@
     }
 
     .ml-game-number {
-        height: 60px; /* Smaller height for mobile */
-        font-size: 14px; /* Smaller font size */
+        height: 40px; /* Smaller height for mobile */
+        font-size: 20px; /* Smaller font size */
     }
 }
 
