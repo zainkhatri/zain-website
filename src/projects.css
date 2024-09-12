@@ -29,6 +29,7 @@
   color: #ffffff;
   margin-top: 0;
   margin-bottom: 15px;
+  font-style: italic; /* Add this line */
 }
 
 .project-description {
@@ -82,7 +83,7 @@
 
 @media screen and (max-width: 480px) {
   .project-title {
-    font-size: 31.25px;
+    font-size: 21.25px;
   }
 
   .project-description {
@@ -96,7 +97,7 @@
   }
 
   .project-title {
-    font-size: 1.875em;
+    font-size: 1.475em;
   }
 
   .project-description {
