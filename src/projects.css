@@ -1,37 +1,39 @@
 .project {
   display: flex;
-  flex-wrap: wrap; /* Allows wrapping of content */
-  align-items: center;
+  flex-wrap: wrap;
+  align-items: flex-start;
   justify-content: flex-start;
-  margin-bottom: 30px;
-  gap: 20px;
+  margin-bottom: 40px;
+  gap: 25px;
 }
 
 .project-image {
-  width: 150px; /* Initial width */
+  width: 312.5px;
   height: auto;
-  object-fit: contain; /* Ensure the image is fully visible */
+  object-fit: contain;
   border-radius: 10px;
-  margin-right: 20px; /* Space between image and text */
-  flex-shrink: 0; /* Prevent shrinking */
-  border: 5px solid white; /* Added white border */
+  margin-right: 25px;
+  flex-shrink: 0;
+  border: 5px solid white;
 }
 
 .project-content {
-  flex: 1; /* Allow content to take remaining space */
+  flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 .project-title {
-  font-size: 1.2em;
-  margin-bottom: 5px;
-  color: #ffffff; /* Keep the text color white */
+  font-size: 1.875em;
+  color: #ffffff;
+  margin-top: 0;
+  margin-bottom: 15px;
 }
 
 .project-description {
-  color: #ffffff; /* Keep the text color white */
+  font-size: 1.25em;
+  color: #ffffff;
 }
 
 .project p {
@@ -39,91 +41,65 @@
 }
 
 .project a {
-  color: #ffffff; /* Keep the text color white */
+  color: #ffffff;
   text-decoration: none;
   transition: color 0.2s ease;
 }
 
 .project a:hover {
-  color: #cccccc; /* Slightly lighter white on hover */
+  color: #cccccc;
 }
 
 /* Responsive Styles */
-
-/* Project section adjustments for screens up to 768px */
-@media screen and (max-width: 767px) {
+@media screen and (max-width: 768px) {
   .project {
-    flex-direction: column-reverse; /* Stack content above the image */
+    flex-direction: column;
     align-items: center;
-    text-align: center;
+    text-align: left;
+  }
+
+  .project-content {
+    order: -1; /* Move content above the image */
+    width: 100%;
     margin-bottom: 20px;
   }
 
   .project-image {
-    width: 100%; /* Full width on small screens */
-    max-width: 300px; /* Increase max width */
-    height: auto;
-    margin: 15px 0; /* Margin below the content */
-    object-fit: contain;
+    width: 100%;
+    max-width: 375px;
+    margin: 0;
   }
 
   .project-title {
-    font-size: 4.5vw;
-    margin-bottom: 10px;
-    color: #ffffff;
+    font-size: 5.625vw;
+    margin-bottom: 15px;
   }
 
   .project-description {
-    font-size: 3.5vw; /* Match About Me section */
-    color: #ffffff;
-  }
-
-  .project-content {
-    text-align: left;
-    margin-bottom: 15px;
+    font-size: 4.375vw;
   }
 }
 
-/* Project section adjustments for screens up to 480px */
 @media screen and (max-width: 480px) {
   .project-title {
-    font-size: 25px; /* Adjust title size */
+    font-size: 31.25px;
   }
 
   .project-description {
-    font-size: 5vw; /* Match About Me section */
-    color: #ffffff;
-  }
-
-  .project-content {
-    text-align: left;
-    margin-bottom: 15px;
+    font-size: 6.25vw;
   }
 }
 
-/* For larger screens (769px and above) */
 @media screen and (min-width: 769px) {
-  .project {
-    flex-direction: row; /* Side-by-side layout on larger screens */
-    align-items: flex-start;
-    justify-content: flex-start;
-    text-align: left;
-  }
-
   .project-image {
-    width: 250px; /* Larger images for full screen browsers */
-    height: auto;
-    margin-right: 20px;
-    object-fit: contain;
+    width: 312.5px;
   }
 
   .project-title {
-    font-size: 1.5em;
-    margin-bottom: 10px;
-    color: #ffffff;
+    font-size: 1.875em;
   }
 
   .project-description {
-    color: #ffffff;
+    font-size: 1.25em;
   }
 }

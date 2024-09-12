@@ -4,7 +4,7 @@ import roverImage from './rover.jpeg';
 import eegImage from './eeg.jpeg';
 import nasaImage from './nasa3.jpeg';
 import './projects.css';
-import MLGame from './MLGame'; // Import the MLGame component
+import MLGame from './MLGame';
 
 function Projects() {
   const [areProjectsVisible, setAreProjectsVisible] = useState(false);
@@ -32,14 +32,6 @@ function Projects() {
 
             {/* Rest of the Projects */}
             <div className="project">
-              <motion.img 
-                src={roverImage} 
-                alt="Autonomous Rover" 
-                className="project-image" 
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.8, delay: 0.2 }}
-              />
               <div className="project-content">
                 <h3 className="project-title">
                   <a href="https://github.com/zainkhatri/NASA-CASGC" target="_blank" rel="noopener noreferrer">
@@ -50,17 +42,17 @@ function Projects() {
                   Designed and implemented an autonomous rover equipped with GPS and magnetometer for navigation, achieving 95% accuracy in reaching targeted locations. This system proved highly effective in outdoor environments, demonstrating the rover's ability to navigate with minimal error.
                 </p>
               </div>
-            </div>
-
-            <div className="project">
               <motion.img 
-                src={eegImage} 
-                alt="Brainwave Measurement" 
+                src={roverImage} 
+                alt="Autonomous Rover" 
                 className="project-image" 
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ duration: 0.8, delay: 0.4 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
               />
+            </div>
+
+            <div className="project">
               <div className="project-content">
                 <h3 className="project-title">
                   <a href="https://github.com/zainkhatri/exoskeleton-brainwave-algorithm" target="_blank" rel="noopener noreferrer">
@@ -71,17 +63,17 @@ function Projects() {
                   Developed an algorithm that uses machine learning and signal processing techniques to improve mobility command differentiation by 25%. Integrated into an exoskeleton system, the algorithm allows for real-time classification of EEG data.
                 </p>
               </div>
-            </div>
-
-            <div className="project">
               <motion.img 
-                src={nasaImage} 
-                alt="File Decompressor" 
+                src={eegImage} 
+                alt="Brainwave Measurement" 
                 className="project-image" 
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ duration: 0.8, delay: 0.6 }}
+                transition={{ duration: 0.8, delay: 0.4 }}
               />
+            </div>
+
+            <div className="project">
               <div className="project-content">
                 <h3 className="project-title">
                   <a href="https://github.com/zainkhatri/decompress" target="_blank" rel="noopener noreferrer">
@@ -92,6 +84,14 @@ function Projects() {
                   Developed a Java-based file decompressor that achieved 100% accuracy in restoring text data to its original state. Implemented robust error handling mechanisms, reducing user errors by 50%.
                 </p>
               </div>
+              <motion.img 
+                src={nasaImage} 
+                alt="File Decompressor" 
+                className="project-image" 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.8, delay: 0.6 }}
+              />
             </div>
           </motion.div>
         )}
