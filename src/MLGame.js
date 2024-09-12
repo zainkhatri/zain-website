@@ -266,9 +266,9 @@ const MLGame = () => {
         <div className="ml-game-description">
           <h2 className="ml-game-title">Eagle Eye: 1-50 in 60</h2>
           <p>
-            Welcome to the Eagle Eye, where we test your speed and precision. Your goal is to find
+            Welcome to the Eagle Eye, a game where I test your speed and precision. Your goal is to find
             and click all the numbers from 1 to 50 in ascending order within 60 seconds.
-            Compete to make it to the top 10 scorers list! Click the "Start" button when you're ready to begin. Good luck!
+            Compete to make it to the top 6 scorers list! Click the "Start" button when you're ready to begin. Good luck!
           </p>
         </div>
       )}
