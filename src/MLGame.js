@@ -86,7 +86,7 @@ const MLGame = () => {
         }, []);
         
         uniqueScores.sort((a, b) => b.score - a.score || a.time - b.time);
-        setHighScores(uniqueScores.slice(0, 10));
+        setHighScores(uniqueScores.slice(0, 6));
       }
     });
   };
