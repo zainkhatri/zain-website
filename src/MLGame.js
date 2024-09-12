@@ -86,28 +86,30 @@ const MLGame = () => {
         }, []);
         
         uniqueScores.sort((a, b) => b.score - a.score || a.time - b.time);
-        setHighScores(uniqueScores.slice(0, 6));
+        setHighScores(uniqueScores.slice(0, 10)); // Store up to 10 scores
       }
     });
   };
 
   const submitScore = (newScore) => {
     const scoresRef = ref(database, 'scores/');
-    
+
     onValue(scoresRef, (snapshot) => {
       const data = snapshot.val();
       if (data) {
-        const existingScore = Object.entries(data).find(([_, score]) => score.initials === newScore.initials);
-        
+        const scoresArray = Object.entries(data).map(([id, score]) => ({ id, ...score }));
+        const existingScore = scoresArray.find((score) => score.initials === newScore.initials);
+
         if (existingScore) {
+          // Update existing score if the new one is better
           const [existingScoreId, existingScoreData] = existingScore;
-          
           if (newScore.score > existingScoreData.score || 
               (newScore.score === existingScoreData.score && newScore.time < existingScoreData.time)) {
             set(ref(database, `scores/${existingScoreId}`), newScore)
               .then(() => {
                 setMessage('New high score! Your previous record has been updated.');
                 fetchHighScores();
+                cleanupScores(scoresArray, scoresRef); // Cleanup after updating
               })
               .catch((error) => {
                 console.error('Failed to update score:', error);
@@ -117,11 +119,13 @@ const MLGame = () => {
             setMessage('Your current high score is better. Keep trying!');
           }
         } else {
+          // Add new high score
           const newScoreRef = push(scoresRef);
           set(newScoreRef, newScore)
             .then(() => {
               setMessage('New high score submitted successfully!');
               fetchHighScores();
+              cleanupScores(scoresArray, scoresRef); // Cleanup after adding new score
             })
             .catch((error) => {
               console.error('Failed to submit score:', error);
@@ -129,6 +133,7 @@ const MLGame = () => {
             });
         }
       } else {
+        // No scores exist, create the first score
         const newScoreRef = push(scoresRef);
         set(newScoreRef, newScore)
           .then(() => {
@@ -143,6 +148,23 @@ const MLGame = () => {
     }, {
       onlyOnce: true
     });
+  };
+
+  // Cleanup function to keep only the top 10 scores in Firebase
+  const cleanupScores = (scoresArray, scoresRef) => {
+    // Sort scores array to identify which ones need to be removed
+    scoresArray.sort((a, b) => b.score - a.score || a.time - b.time);
+
+    // If more than 10 scores, remove the excess ones
+    if (scoresArray.length > 10) {
+      const scoresToRemove = scoresArray.slice(10); // Get scores beyond the top 10
+      scoresToRemove.forEach(score => {
+        const scoreRef = ref(database, `scores/${score.id}`);
+        set(scoreRef, null)
+          .then(() => console.log(`Removed score with ID: ${score.id}`))
+          .catch((error) => console.error('Failed to remove score:', error));
+      });
+    }
   };
 
   const handleScoreSubmit = () => {
@@ -242,7 +264,7 @@ const MLGame = () => {
 
       {!gameStarted && (
         <div className="ml-game-description">
-          <h2 className="ml-game-title">Eagle Eye: 1-50 in 60 </h2>
+          <h2 className="ml-game-title">Eagle Eye: 1-50 in 60</h2>
           <p>
             Welcome to the Eagle Eye, where we test your speed and precision. Your goal is to find
             and click all the numbers from 1 to 50 in ascending order within 60 seconds.
@@ -300,7 +322,7 @@ const MLGame = () => {
             <h3>Leaderboard</h3>
             {highScores.length > 0 ? (
               <ol>
-                {highScores.map((score, index) => (
+                {highScores.slice(0, 6).map((score, index) => ( // Display only the top 6 scores
                   <li key={index}>
                     {score.initials} - {score.score} in {score.time}s
                   </li>
@@ -317,3 +339,4 @@ const MLGame = () => {
 };
 
 export default MLGame;
+
