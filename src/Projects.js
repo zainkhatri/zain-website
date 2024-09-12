@@ -27,7 +27,11 @@ function Projects() {
           >
             {/* ML Game Section */}
             <div className="project-content">
-              <h3 className="project-title">Eagle Eye Algorithm Game</h3>
+              <h3 className="project-title">
+                <a href="https://github.com/zainkhatri/eagle-eye-game" target="_blank" rel="noopener noreferrer">
+                  Eagle Eye Algorithm Game
+                </a>
+              </h3>
               <MLGame />
             </div>
 

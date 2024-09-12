@@ -41,14 +41,16 @@
   margin-top: 0;
 }
 
-.project a {
-  color: #ffffff;
-  text-decoration: none;
+/* Ensures all project titles are white, including links */
+.project-title a {
+  color: #ffffff; /* Sets link color to white */
+  text-decoration: underline; /* Keeps the underline for the link */
   transition: color 0.2s ease;
 }
 
-.project a:hover {
-  color: #cccccc;
+/* Optional: Change the hover effect */
+.project-title a:hover {
+  color: #cccccc; /* Slightly lighter color on hover */
 }
 
 /* Responsive Styles */
