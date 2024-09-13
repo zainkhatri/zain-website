@@ -1,5 +1,5 @@
 /* Existing Global Styles */
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&family=Work+Sans:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fahkwang:wght@300;400;500;600;700&display=swap');
 
 /* Global styles */
 html, body {
@@ -13,7 +13,7 @@ html, body {
   background-repeat: no-repeat;
   background-attachment: fixed;
   color: #ffffff;
-  font-family: 'Work Sans', sans-serif; /* Reverting to Open Sans for all text */
+  font-family: 'Fahkwang', sans-serif; /* Updated to use Fahkwang for all text */
 }
 
 .App {
@@ -24,7 +24,7 @@ html, body {
 }
 
 b, strong {
-  font-family: 'Work Sans', sans-serif; /* Using Work Sans for bold text */
+  font-family: 'Fahkwang', sans-serif; /* Updated to use Fahkwang for bold text */
   font-weight: bold;
 }
 
@@ -51,7 +51,6 @@ button, a {
   margin: 0;
   font-size: 12px;
 }
-
 
 /* Responsive Styles */
 
@@ -92,4 +91,3 @@ button, a {
 .Albums {
   margin-top: 40px; /* Adjust this value as needed */
 }
-
