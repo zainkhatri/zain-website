@@ -2,54 +2,60 @@
     display: grid;
     gap: 20px; /* Default gap for the grid */
     padding: 10px 0;
-}
-
-.albums-item {
+  }
+  
+  .albums-item {
     aspect-ratio: 1 / 1;
     overflow: hidden;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     border: 3px solid white; /* Added border */
-}
-
-.albums-item img {
+    box-sizing: border-box; /* Include border in width and height */
+  }
+  
+  .albums-item img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-}
-
-.albums.expanded-margin {
+    display: block; /* Prevents any unexpected margins */
+  }
+  
+  .albums.expanded-margin {
     margin-top: 40px; /* Adjust this value as needed */
   }  
-
-/* Large screens: 4x3 layout */
-@media screen and (min-width: 1024px) {
+  
+  /* Large screens: 4x3 layout */
+  @media screen and (min-width: 1024px) {
     .albums-grid {
-        grid-template-columns: repeat(4, 1fr);
-        grid-template-rows: repeat(3, 1fr);
-        gap: 20px;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: repeat(3, 1fr);
+      gap: 20px;
     }
-}
-
-/* Medium screens: 3x4 layout */
-@media screen and (min-width: 768px) and (max-width: 1024px) {
+  }
+  
+  /* Medium screens: 3x4 layout */
+  @media screen and (min-width: 768px) and (max-width: 1024px) {
     .albums-grid {
-        grid-template-columns: repeat(3, 1fr);
-        grid-template-rows: repeat(4, 1fr);
-        gap: 15px;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(4, 1fr);
+      gap: 15px;
     }
-}
-
-/* Small screens: 2x6 layout with smaller images */
-@media screen and (max-width: 767.98px) {
+  }
+  
+  /* Small screens: 2x6 layout with smaller images */
+  @media screen and (max-width: 767.98px) {
     .albums-grid {
-        grid-template-columns: repeat(2, 1fr);
-        grid-template-rows: repeat(6, 1fr);
-        gap: 10px;
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: repeat(6, 1fr);
+      gap: 10px;
+      padding: 0 3px; /* Add padding to prevent overflow */
+      overflow: hidden; /* Prevent overflow from the grid */
     }
-
+  
     .albums-item {
-        width: 100%;
-        margin: 0 auto;
+      width: 100%;
+      margin: 0;
+      box-sizing: border-box; /* Include borders in width calculation */
     }
-}
+  }
+  
