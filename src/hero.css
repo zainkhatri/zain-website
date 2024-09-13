@@ -92,7 +92,7 @@
       flex-direction: column;
       align-items: flex-start;
       text-align: left;
-      padding: 10px 20px;
+      padding: 50px 20px;
     }
   
     .hero-image {
@@ -123,7 +123,7 @@
 /* For screens up to 480px */
 @media screen and (max-width: 480px) {
     .hero-content h1 {
-      font-size: 46px !important;
+      font-size: 44px !important;
     }
   
     .hero-content h2 {
