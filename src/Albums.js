@@ -38,7 +38,7 @@ function Albums() {
   return (
     <section id="albums" className={`content-section albums ${isAlbumsVisible ? 'expanded-margin' : ''}`}>
       <h2 onClick={toggleAlbums} className="expandable-title">
-        Essential Albums {isAlbumsVisible ? '-' : '+'}
+        Music Library {isAlbumsVisible ? '-' : '+'}
       </h2>
       <AnimatePresence>
         {isAlbumsVisible && (
