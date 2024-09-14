@@ -50,6 +50,7 @@
 /* For screens up to 480px */
 @media screen and (max-width: 480px) {
   .expandable-title {
+    margin-left: 10px;
     font-size: 8vw;
     cursor: pointer;
     transition: none;
@@ -63,6 +64,8 @@
   .content {
     font-size: 5vw;
     transition: max-height 0.3s ease, opacity 0.3s ease;
+    margin-left: 10px;
+    margin-right: 10px;
   }
 }
 
