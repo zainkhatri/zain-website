@@ -1,10 +1,11 @@
-import React, { useState, useCallback } from 'react';
+// Hero.js
+import React, { useState, useCallback, useEffect } from 'react';
 import Typewriter from 'typewriter-effect';
 import { motion } from 'framer-motion';
 import zainImage from './zain.jpeg';
 import './hero.css';
 
-function Hero({ onBackgroundChange }) {
+function Hero() {
   const [clickCount, setClickCount] = useState(0);
   const [typewriterText, setTypewriterText] = useState('Zain Khatri');
   const [isSpinning, setIsSpinning] = useState(false);
@@ -17,13 +18,21 @@ function Hero({ onBackgroundChange }) {
     if (newClickCount % 10 === 5) {
       setIsSpinning(true); // Start spinning
       setTypewriterText('Egomaniac');
-      onBackgroundChange('egogradient.jpeg');
     } else if (newClickCount % 10 === 0) {
       setIsSpinning(false); // Stop spinning after a complete spin
       setTypewriterText('Zain Khatri');
-      onBackgroundChange('gradient.jpeg');
     }
-  }, [clickCount, onBackgroundChange]);
+  }, [clickCount]);
+
+  // Add useEffect to monitor clickCount and change background
+  useEffect(() => {
+    const isEgoPhase = clickCount % 10 >= 5 && clickCount % 10 < 10;
+    if (isEgoPhase) {
+      document.body.classList.add('ego-mode');
+    } else {
+      document.body.classList.remove('ego-mode');
+    }
+  }, [clickCount]);
 
   return (
     <header className="hero-section">

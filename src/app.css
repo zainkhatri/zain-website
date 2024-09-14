@@ -91,3 +91,7 @@ button, a {
 .Albums {
   margin-top: 40px; /* Adjust this value as needed */
 }
+
+body.ego-mode {
+  background-image: url('/egogradient.jpeg');
+}
