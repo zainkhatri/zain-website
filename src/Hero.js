@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import Typewriter from 'typewriter-effect';
 import { motion } from 'framer-motion';
 import zainImage from './zain.jpeg';
 import './hero.css';
 
-function Hero() {
+function Hero({ onBackgroundChange }) {
   const [clickCount, setClickCount] = useState(0);
   const [typewriterText, setTypewriterText] = useState('Zain Khatri');
   const [isSpinning, setIsSpinning] = useState(false);
 
-  const handleImageClick = () => {
+  const handleImageClick = useCallback(() => {
     const newClickCount = clickCount + 1;
     setClickCount(newClickCount);
 
@@ -17,11 +17,13 @@ function Hero() {
     if (newClickCount % 10 === 5) {
       setIsSpinning(true); // Start spinning
       setTypewriterText('Egomaniac');
+      onBackgroundChange('egogradient.jpeg');
     } else if (newClickCount % 10 === 0) {
       setIsSpinning(false); // Stop spinning after a complete spin
       setTypewriterText('Zain Khatri');
+      onBackgroundChange('gradient.jpeg');
     }
-  };
+  }, [clickCount, onBackgroundChange]);
 
   return (
     <header className="hero-section">
