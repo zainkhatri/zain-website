@@ -31,6 +31,7 @@
 @media screen and (max-width: 768px) {
   .expandable-title {
     font-size: 4vw;
+    margin-left: 20px;
     cursor: pointer;
     transition: none;
   }
