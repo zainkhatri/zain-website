@@ -22,10 +22,10 @@ function Bio() {
             transition={{ duration: 0.3 }}
           >
             <p>
-              Hello! I'm Zain, I'm a Senior at the University of California, San Diego, pursuing a degree in CS/COGSCI & ML. My passion lies in developing innovative solutions that blend technology and human cognition. 
+              Hi, I'm Zain! I'm a Senior at the University of California, San Diego, pursuing a degree in CS/COGSCI & ML. My passion lies in developing solutions that blend technology and human cognition. 
             </p>
             <p>
-              Aside from my technical work, I love to play basketball, learn new songs on the guitar, journal, ride my skateboard through the city, play chess, and meet new people when I have the pleasure.
+              Aside from technical work, I love to play basketball, learn new songs on the guitar, ride my skateboard through the city, play chess, and meet new people when I have the pleasure.
             </p>
           </motion.div>
         )}
