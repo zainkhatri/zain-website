@@ -64,3 +64,9 @@
     transition: max-height 0.3s ease, opacity 0.3s ease;
   }
 }
+
+@media (max-width: 768px) {
+  #resume {
+    display: none;
+  }
+}
