@@ -92,6 +92,7 @@
     box-sizing: border-box;
     transition: all 0.1s ease;
     font-family: 'Press Start 2P', cursive;
+    touch-action: manipulation; /* Added this line */
 }
 
 .ml-game-number.correct {
