@@ -75,6 +75,7 @@
     width: 100%;
     max-width: 375px;
     margin: 0;
+    margin-right: 20px;
     box-sizing: border-box; /* Include borders in width calculation */
   }
 
@@ -85,7 +86,7 @@
 
   .project-description {
     font-size: 3.2vw;
-    margin-left: 0px;
+    margin-left: 20px;
   }
 }
 
@@ -98,7 +99,7 @@
   .project-description {
     font-size: 5.25vw;
     margin-left: -20px;
-    margin-right: 10px;
+    margin-right: 20px;
   }
 }
 
