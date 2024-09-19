@@ -1,0 +1,45 @@
+.sketch-container {
+  margin: 0 auto;
+  border: 1px solid #ccc;
+  width: 100%;         /* Keep the width at 100% of the container */
+  max-width: 100px;    /* Increase max-width for a larger stretch */
+  height: 30vh;         /* Maintain height ratio or adjust as needed */
+  position: relative;
+}
+
+.controls button {
+  font-family: 'Fahkwang', sans-serif; /* Ensure buttons use Fahkwang font */
+  padding: 8px 12px;
+  font-size: 16px;
+}
+
+
+.sketch-container {
+  margin: 0 auto;
+  border: 1px solid #ccc;
+  width: 100%;
+  max-width: 1200px; /* Increase the width as needed */
+  height: 30vh;      /* Reduce the height to make it about half the size */
+  position: relative;
+}
+
+.controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.controls button {
+  padding: 8px 12px;
+  font-size: 16px;
+}
+
+/* Ensure the canvas fits the container */
+canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+}

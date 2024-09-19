@@ -5,6 +5,7 @@ import eegImage from './eeg.jpeg';
 import nasaImage from './nasa3.jpeg';
 import './projects.css';
 import MLGame from './MLGame';
+import RoverSimulation from './RoverSimulation';
 
 function Projects() {
   const [areProjectsVisible, setAreProjectsVisible] = useState(false);
@@ -25,17 +26,7 @@ function Projects() {
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
           >
-            {/* ML Game Section */}
-            <div className="project-content">
-              <h3 className="project-title">
-                <a href="https://github.com/zainkhatri/eagle-eye-game" target="_blank" rel="noopener noreferrer">
-                  Eagle Eye Algorithm Game
-                </a>
-              </h3>
-              <MLGame />
-            </div>
-
-            {/* Rest of the Projects */}
+            {/* NASA Rover Project */}
             <div className="project">
               <div className="project-content">
                 <h3 className="project-title">
@@ -46,6 +37,9 @@ function Projects() {
                 <p className="project-description">
                   Designed and implemented an autonomous rover equipped with GPS and magnetometer for navigation, achieving 95% accuracy in reaching targeted locations. This system proved highly effective in outdoor environments, demonstrating the rover's ability to navigate with minimal error.
                 </p>
+                
+                {/* Rover Simulation */}
+                <RoverSimulation />
               </div>
               <motion.img 
                 src={roverImage} 
@@ -57,6 +51,17 @@ function Projects() {
               />
             </div>
 
+            {/* ML Game Section */}
+            <div className="project-content">
+              <h3 className="project-title">
+                <a href="https://github.com/zainkhatri/eagle-eye-game" target="_blank" rel="noopener noreferrer">
+                  Eagle Eye Algorithm Game
+                </a>
+              </h3>
+              <MLGame />
+            </div>
+
+            {/* Exoskeleton Project */}
             <div className="project">
               <div className="project-content">
                 <h3 className="project-title">
@@ -78,6 +83,7 @@ function Projects() {
               />
             </div>
 
+            {/* Huffman Code Project */}
             <div className="project">
               <div className="project-content">
                 <h3 className="project-title">
