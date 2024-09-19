@@ -31,7 +31,7 @@ function Projects() {
               <div className="project-content">
                 <h3 className="project-title">
                   <a href="https://github.com/zainkhatri/NASA-CASGC" target="_blank" rel="noopener noreferrer">
-                    NASA Autonomous Rover and Obstacle Avoidance
+                    NASA Autonomous Rover
                   </a>
                 </h3>
                 <p className="project-description">
@@ -66,7 +66,7 @@ function Projects() {
               <div className="project-content">
                 <h3 className="project-title">
                   <a href="https://github.com/zainkhatri/exoskeleton-brainwave-algorithm" target="_blank" rel="noopener noreferrer">
-                    UC Berkeley Brainwave Measurement Algorithm for Exoskeleton Systems
+                    UC Berkeley Exoskeleton Brainwave Algorithm 
                   </a>
                 </h3>
                 <p className="project-description">

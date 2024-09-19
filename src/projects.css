@@ -48,7 +48,8 @@
   color: #ffffff; /* Sets link color to white */
   text-decoration: underline; /* Keeps the underline for the link */
   transition: color 0.2s ease;
-  font-size: 30px;
+  font-size: 25px;
+  margin-left: 20px;
 }
 
 /* Optional: Change the hover effect */
@@ -84,6 +85,7 @@
 
   .project-description {
     font-size: 3.2vw;
+    margin-left: 20px;
   }
 }
 
@@ -109,7 +111,13 @@
   .project-description {
     font-size: 1em;
   }
+  
+  .project-title a {
+    margin-left: 0px;
+  }
 }
+
+
 @media screen and (max-width: 768px) {
   /* Hide NASA Rover project image for screen sizes 768px or less */
   .nasa-rover-image {
