@@ -110,3 +110,9 @@
     font-size: 1em;
   }
 }
+@media screen and (max-width: 768px) {
+  /* Hide NASA Rover project image for screen sizes 768px or less */
+  .nasa-rover-image {
+    display: none;
+  }
+}

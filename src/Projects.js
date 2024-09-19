@@ -44,7 +44,7 @@ function Projects() {
               <motion.img 
                 src={roverImage} 
                 alt="Autonomous Rover" 
-                className="project-image" 
+                className="project-image nasa-rover-image"  // Add a unique class here
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.8, delay: 0.2 }}
