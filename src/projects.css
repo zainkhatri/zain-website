@@ -92,10 +92,12 @@
 @media screen and (max-width: 480px) {
   .project-title {
     font-size: 21.25px;
+    margin-left: -20px;
   }
 
   .project-description {
     font-size: 5.25vw;
+    margin-left: 0px;
   }
 }
 
