@@ -24,6 +24,7 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  padding-left: 20px; /* Ensures alignment between image and content */
 }
 
 .project-title {
@@ -49,7 +50,6 @@
   text-decoration: underline; /* Keeps the underline for the link */
   transition: color 0.2s ease;
   font-size: 25px;
-  margin-left: 20px;
 }
 
 /* Optional: Change the hover effect */
@@ -97,7 +97,7 @@
 
   .project-description {
     font-size: 5.25vw;
-    margin-left: 0px;
+    margin-left: -20px;
   }
 }
 
