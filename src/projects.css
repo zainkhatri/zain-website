@@ -24,7 +24,7 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  padding-left: 20px; /* Ensures alignment between image and content */
+  padding-left: 20px; 
 }
 
 .project-title {
@@ -85,7 +85,7 @@
 
   .project-description {
     font-size: 3.2vw;
-    margin-left: 20px;
+    margin-left: 0px;
   }
 }
 
@@ -98,6 +98,7 @@
   .project-description {
     font-size: 5.25vw;
     margin-left: -20px;
+    margin-right: 10px;
   }
 }
 
