@@ -6,25 +6,45 @@
   margin-bottom: 40px;
   gap: 25px;
   width: 100%;
+  box-sizing: border-box;
+  padding: 0 20px; /* Add padding to prevent right-side cutoff */
 }
 
 .project-image {
-  width: 66.67%; /* Set the image width to 2/3 of its original size */
-  height: auto;  /* Maintain aspect ratio */
+  width: calc(66.67% - 25px); /* Adjust for gap */
+  height: auto;
   object-fit: contain;
   border-radius: 10px;
   border: 5px solid white;
-  box-sizing: border-box; /* Include border in width and height */
-  margin-right: 25px; /* Adjust margin as needed */
+  box-sizing: border-box;
+  max-width: 100%; /* Ensure image doesn't overflow */
 }
 
+/* Responsive Styles */
+@media screen and (max-width: 768px) {
+  .project {
+    padding: 0 15px; /* Reduce padding for smaller screens */
+  }
+
+  .project-image {
+    width: 100%;
+    max-width: 375px;
+    margin: 0 auto;
+  }
+}
+
+@media screen and (max-width: 599px) {
+  .project {
+    padding: 0 10px; /* Further reduce padding for very small screens */
+  }
+}
 
 .project-content {
   flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  padding-left: 20px; 
+  min-width: 200px; /* Ensure content has minimum width */
 }
 
 .project-title {
