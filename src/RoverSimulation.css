@@ -1,26 +1,15 @@
-.sketch-container {
-  margin: 0 auto;
-  border: 1px solid #ccc;
-  width: 100%;         /* Keep the width at 100% of the container */
-  max-width: 100px;    /* Increase max-width for a larger stretch */
-  height: 30vh;         /* Maintain height ratio or adjust as needed */
-  position: relative;
+.simulation-container {
+  width: 100%;
 }
-
-.controls button {
-  font-family: 'Fahkwang', sans-serif; /* Ensure buttons use Fahkwang font */
-  padding: 8px 12px;
-  font-size: 16px;
-}
-
 
 .sketch-container {
   margin: 0 auto;
   border: 1px solid #ccc;
   width: 100%;
-  max-width: 1200px; /* Increase the width as needed */
-  height: 30vh;      /* Reduce the height to make it about half the size */
+  max-width: 1200px; /* Adjust as needed */
+  height: 50vh;      /* Adjust height as needed */
   position: relative;
+  touch-action: none; /* Prevent default touch actions */
 }
 
 .controls {
@@ -35,6 +24,7 @@
 .controls button {
   padding: 8px 12px;
   font-size: 16px;
+  font-family: 'Fahkwang', sans-serif; /* Ensure buttons use Fahkwang font */
 }
 
 /* Ensure the canvas fits the container */
@@ -42,4 +32,5 @@ canvas {
   position: absolute;
   top: 0;
   left: 0;
+  touch-action: none; /* Prevent default touch actions */
 }

@@ -44,7 +44,7 @@ function Projects() {
               <motion.img 
                 src={roverImage} 
                 alt="Autonomous Rover" 
-                className="project-image nasa-rover-image"  // Add a unique class here
+                className="project-image nasa-rover-image"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.8, delay: 0.2 }}
@@ -52,13 +52,15 @@ function Projects() {
             </div>
 
             {/* ML Game Section */}
-            <div className="project-content">
-              <h3 className="project-title">
-                <a href="https://github.com/zainkhatri/eagle-eye-game" target="_blank" rel="noopener noreferrer">
-                  Eagle Eye Algorithm
-                </a>
-              </h3>
-              <MLGame />
+            <div className="project">
+              <div className="project-content">
+                <h3 className="project-title">
+                  <a href="https://github.com/zainkhatri/eagle-eye-game" target="_blank" rel="noopener noreferrer">
+                    Eagle Eye Algorithm
+                  </a>
+                </h3>
+                <MLGame />
+              </div>
             </div>
 
             {/* Exoskeleton Project */}

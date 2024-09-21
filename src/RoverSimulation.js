@@ -6,9 +6,8 @@ const RoverSimulation = () => {
   const sketchRef = useRef();
   const p5InstanceRef = useRef();
   const [editMode, setEditMode] = useState(false);
-  const [selectedObstacle, setSelectedObstacle] = useState(null);
 
-  // This is where you update the initial width and height
+  // State to keep track of container size
   const [containerSize, setContainerSize] = useState({ width: 1600, height: 600 });
 
   // Effect to handle window resize and update container size
@@ -29,7 +28,6 @@ const RoverSimulation = () => {
       window.removeEventListener('resize', handleResize);
     };
   }, []);
-
 
   // Effect to initialize the p5 sketch
   useEffect(() => {
@@ -74,11 +72,11 @@ const RoverSimulation = () => {
 
         // Draw waypoints
         for (let wp of waypoints) {
-          p.fill(255, 255, 0);  // Yellow color
-          p.ellipse(wp.x * p.width, wp.y * p.height, 30, 30);  // Increase the size of the ellipses
+          p.fill(255, 255, 0); // Yellow color
+          p.ellipse(wp.x * p.width, wp.y * p.height, 30, 30);
           p.fill(0);
-          p.textFont('Fahkwang');  // Update to use Fahkwang for all text
-          p.textSize(24);  // Increase the text size
+          p.textFont('Fahkwang');
+          p.textSize(24);
           p.textAlign(p.CENTER, p.CENTER);
           p.text(wp.label, wp.x * p.width, wp.y * p.height);
         }
@@ -151,8 +149,10 @@ const RoverSimulation = () => {
         }
       };
 
-      p.mousePressed = () => {
+      p.mousePressed = (event) => {
         if (editModeActive) {
+          event.preventDefault(); // Prevent default touch behavior
+
           let obstacleClicked = false;
           for (let i = 0; i < obstacles.length; i++) {
             let d = p.dist(
@@ -163,7 +163,6 @@ const RoverSimulation = () => {
             );
             if (d < obstacles[i].size / 2) {
               selectedObstacleIndex = i;
-              setSelectedObstacle({ ...obstacles[i], index: i });
               obstacleClicked = true;
               break;
             }
@@ -172,20 +171,26 @@ const RoverSimulation = () => {
           if (!obstacleClicked) {
             // Deselect obstacle if clicked outside any obstacle
             selectedObstacleIndex = -1;
-            setSelectedObstacle(null);
           }
         }
       };
 
-      p.mouseDragged = () => {
+      p.mouseDragged = (event) => {
         if (editModeActive && selectedObstacleIndex !== -1) {
+          event.preventDefault(); // Prevent default touch behavior
+
           obstacles[selectedObstacleIndex].x = p.mouseX / p.width;
           obstacles[selectedObstacleIndex].y = p.mouseY / p.height;
-          setSelectedObstacle({
-            ...obstacles[selectedObstacleIndex],
-            index: selectedObstacleIndex,
-          });
         }
+      };
+
+      // For touch devices
+      p.touchStarted = (event) => {
+        p.mousePressed(event);
+      };
+
+      p.touchMoved = (event) => {
+        p.mouseDragged(event);
       };
 
       // Control functions accessible from outside the sketch
@@ -211,7 +216,6 @@ const RoverSimulation = () => {
         editModeActive = mode;
         if (!mode) {
           selectedObstacleIndex = -1;
-          setSelectedObstacle(null);
         }
       };
 
@@ -224,9 +228,9 @@ const RoverSimulation = () => {
           this.size = 20;
           this.sensorRange = 100;
           this.numSensors = 3; // Left, Center, Right
-          this.sensorAngles = [-p.radians(45), 0, p.radians(45)]; // Left, Center, Right
-          this.maxAngularVelocity = p.radians(3); // Limit the turning speed
-          this.dangerZone = 30; // Approximately 1/2 inch (assuming 1 inch = 30 pixels)
+          this.sensorAngles = [-p.radians(45), 0, p.radians(45)];
+          this.maxAngularVelocity = p.radians(3);
+          this.dangerZone = 30;
         }
 
         show() {
@@ -289,7 +293,7 @@ const RoverSimulation = () => {
           goalVector.normalize();
 
           // Combine avoidance and goal vectors
-          let combinedVector = p5.Vector.add(goalVector.mult(1), avoidanceVector.mult(2)); // Increased avoidance weight
+          let combinedVector = p5.Vector.add(goalVector.mult(1), avoidanceVector.mult(2));
           combinedVector.normalize();
 
           // Smoothly adjust the angle
@@ -355,7 +359,6 @@ const RoverSimulation = () => {
         }
 
         checkCollision(obstacles) {
-          // Check if the rover has collided with any obstacles
           for (let obstacle of obstacles) {
             let d = p.dist(this.x, this.y, obstacle.x, obstacle.y);
             if (d < this.size / 2 + obstacle.size / 2) {
