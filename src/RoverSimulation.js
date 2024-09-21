@@ -151,7 +151,9 @@ const RoverSimulation = () => {
 
       p.mousePressed = (event) => {
         if (editModeActive) {
-          event.preventDefault(); // Prevent default touch behavior
+          if (event.target === p.canvas) {
+            event.preventDefault(); // Prevent default touch behavior
+          }
 
           let obstacleClicked = false;
           for (let i = 0; i < obstacles.length; i++) {
@@ -177,7 +179,9 @@ const RoverSimulation = () => {
 
       p.mouseDragged = (event) => {
         if (editModeActive && selectedObstacleIndex !== -1) {
-          event.preventDefault(); // Prevent default touch behavior
+          if (event.target === p.canvas) {
+            event.preventDefault(); // Prevent default touch behavior
+          }
 
           obstacles[selectedObstacleIndex].x = p.mouseX / p.width;
           obstacles[selectedObstacleIndex].y = p.mouseY / p.height;
@@ -397,13 +401,16 @@ const RoverSimulation = () => {
 
   return (
     <div className="simulation-container">
-      <div ref={sketchRef} className="sketch-container"></div>
+      <div
+        ref={sketchRef}
+        className={`sketch-container ${editMode ? 'edit-mode' : ''}`}
+      ></div>
       <div className="controls">
         <button onClick={() => p5InstanceRef.current.start()}>Start</button>
         <button onClick={() => p5InstanceRef.current.pause()}>Pause</button>
         <button onClick={() => p5InstanceRef.current.stop()}>Restart</button>
         <button onClick={handleEditMode}>
-          {editMode ? 'Exit Edit Mode' : 'Enter Edit Mode'}
+          {editMode ? 'Exit Edit Mode' : 'Edit Obstacles'}
         </button>
       </div>
     </div>
