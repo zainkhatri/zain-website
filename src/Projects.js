@@ -82,28 +82,6 @@ function Projects() {
                 transition={{ duration: 0.8, delay: 0.4 }}
               />
             </div>
-
-            {/* Huffman Code Project */}
-            <div className="project">
-              <div className="project-content">
-                <h3 className="project-title">
-                  <a href="https://github.com/zainkhatri/decompress" target="_blank" rel="noopener noreferrer">
-                    Decompressing Huffman Code Algorithm
-                  </a>
-                </h3>
-                <p className="project-description">
-                  Developed a Java-based file decompressor that achieved 100% accuracy in restoring text data to its original state. Implemented robust error handling mechanisms, reducing user errors by 50%.
-                </p>
-              </div>
-              <motion.img 
-                src={nasaImage} 
-                alt="File Decompressor" 
-                className="project-image" 
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.8, delay: 0.6 }}
-              />
-            </div>
           </motion.div>
         )}
       </AnimatePresence>
