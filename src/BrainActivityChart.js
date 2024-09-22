@@ -30,10 +30,10 @@ export default function BrainActivityChart() {
         setAxisFontSize(12);
       }
     };
-  
+
     window.addEventListener('resize', handleResize);
     handleResize(); // Call once to set initial size
-  
+
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
@@ -46,7 +46,7 @@ export default function BrainActivityChart() {
   }, [chartData]);
 
   const handleActivityChange = (action) => {
-    switch(action) {
+    switch (action) {
       case 'left':
         setChartData([
           { region: 'Left Visual Cortex', activity: 80 },
@@ -94,6 +94,11 @@ export default function BrainActivityChart() {
         break;
       default:
         break;
+    }
+
+    // Trigger simple haptic feedback when the buttons are clicked
+    if (window.navigator && window.navigator.vibrate) {
+      window.navigator.vibrate(200); // Vibrate for 200ms after button click
     }
   };
 
