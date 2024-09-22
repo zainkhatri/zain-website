@@ -44,19 +44,23 @@ function Hero() {
       >
         <div className="text-content">
           <h1 className="typewriter-text">
-            <Typewriter
-              key={typewriterText}
-              options={{
-                loop: true,
-              }}
-              onInit={(typewriter) => {
-                typewriter
-                  .typeString(typewriterText)
-                  .pauseFor(2500)
-                  .deleteAll()
-                  .start();
-              }}
-            />
+          <Typewriter
+            key={typewriterText}
+            options={{
+              loop: false, // Disable looping
+              cursor: '|', // Customize the cursor
+            }}
+            onInit={(typewriter) => {
+              typewriter
+                .typeString(typewriterText)
+                .pauseFor(2500) // Pause for a bit after typing
+                .callFunction(() => {
+                  // Stop the typewriter, making sure to keep the cursor
+                  typewriter.stop();
+                })
+                .start();
+            }}
+          />
           </h1>
           <h2>Computer Science & Cognitive Science with specialization in Machine Learning</h2>
           <p>Creating solutions that merge technology and human cognition. Peace be upon you.</p>

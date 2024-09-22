@@ -1,0 +1,55 @@
+/* BrainActivityChart.css */
+
+.brain-activity-chart {
+    display: flex;
+    flex-direction: column;
+    color: #fff;
+    background-color: #222;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 30px;
+  }
+  
+  .header {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .title {
+    font-size: 1.5em;
+    margin: 0;
+  }
+  
+  .content-row {
+    display: flex;
+    justify-content: space-between; /* Chart on left, buttons on right */
+    align-items: center; /* Vertically centers the chart and buttons */
+  }
+  
+  .chart-content {
+    flex: 1;
+    max-width: 500px;
+    margin-right: 20px; /* Adds space between the chart and buttons */
+  }
+  
+  .button-group {
+    display: flex;
+    flex-direction: column; /* Stack buttons vertically */
+    align-items: center; /* Center the buttons horizontally */
+    gap: 25px; /* Increase space between buttons */
+    margin-top: 50px; /* Add more space from the content above */
+    justify-content: center; /* Vertically centers the buttons relative to the chart */
+    height: 400px; /* Ensures button group height matches chart height */
+  }
+  
+  .button {
+    padding: 10px 20px;
+    background-color: #fff;
+    color: #222;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+    cursor: pointer;
+    font-family: 'Fahkwang', sans-serif;
+  }
+  
