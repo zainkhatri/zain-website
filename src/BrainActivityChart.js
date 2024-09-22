@@ -37,14 +37,6 @@ export default function BrainActivityChart() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Trigger complex vibration pattern when chartData changes
-  useEffect(() => {
-    if (window.navigator && window.navigator.vibrate) {
-      // Custom vibration pattern
-      window.navigator.vibrate([100, 30, 100, 30, 100, 30, 200, 30, 200, 30, 200, 30, 100, 30, 100, 30, 100]);
-    }
-  }, [chartData]);
-
   const handleActivityChange = (action) => {
     switch (action) {
       case 'left':
@@ -156,12 +148,12 @@ export default function BrainActivityChart() {
           </ResponsiveContainer>
         </div>
 
-        <div className="button-group">
-          <button className="button" onClick={() => handleActivityChange('thinking')}>Thinking</button>
-          <button className="button" onClick={() => handleActivityChange('visualProcessing')}>Visual Processing</button>
-          <button className="button" onClick={() => handleActivityChange('left')}>Look Left</button>
-          <button className="button" onClick={() => handleActivityChange('right')}>Look Right</button>
-          <button className="button" onClick={() => handleActivityChange('straight')}>Look Straight</button>
+        <div className="button-group" style={{ zIndex: 10 }}>
+          <button className="button" onClick={() => handleActivityChange('thinking')} onTouchStart={() => handleActivityChange('thinking')}>Thinking</button>
+          <button className="button" onClick={() => handleActivityChange('visualProcessing')} onTouchStart={() => handleActivityChange('visualProcessing')}>Visual Processing</button>
+          <button className="button" onClick={() => handleActivityChange('left')} onTouchStart={() => handleActivityChange('left')}>Look Left</button>
+          <button className="button" onClick={() => handleActivityChange('right')} onTouchStart={() => handleActivityChange('right')}>Look Right</button>
+          <button className="button" onClick={() => handleActivityChange('straight')} onTouchStart={() => handleActivityChange('straight')}>Look Straight</button>
         </div>
       </div>
     </div>
