@@ -37,10 +37,11 @@ export default function BrainActivityChart() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Add this useEffect to trigger haptic feedback when chartData changes
+  // Trigger complex vibration pattern when chartData changes
   useEffect(() => {
     if (window.navigator && window.navigator.vibrate) {
-      window.navigator.vibrate(100); // 100ms vibration after chartData changes
+      // Custom vibration pattern
+      window.navigator.vibrate([100, 30, 100, 30, 100, 30, 200, 30, 200, 30, 200, 30, 100, 30, 100, 30, 100]);
     }
   }, [chartData]);
 
