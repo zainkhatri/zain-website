@@ -153,4 +153,8 @@
   .nasa-rover-image {
     display: none;
   }
+
+  .exoskeleton-image {
+    display: none; /* Hide the Exoskeleton image on mobile */
+  }
 }

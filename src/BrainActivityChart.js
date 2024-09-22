@@ -67,6 +67,40 @@ export default function BrainActivityChart() {
     ]);
   };
 
+  const handleActivityChange = (action) => {
+    switch(action) {
+      case 'left':
+        setChartData([
+          { region: 'Left Visual Cortex', activity: 80 },
+          { region: 'Right Visual Cortex', activity: 20 },
+          { region: 'Frontal Lobe', activity: 40 },
+          { region: 'Temporal Lobe', activity: 30 },
+          { region: 'Occipital Lobe', activity: 50 },
+        ]);
+        break;
+      case 'right':
+        setChartData([
+          { region: 'Left Visual Cortex', activity: 20 },
+          { region: 'Right Visual Cortex', activity: 80 },
+          { region: 'Frontal Lobe', activity: 40 },
+          { region: 'Temporal Lobe', activity: 30 },
+          { region: 'Occipital Lobe', activity: 50 },
+        ]);
+        break;
+      case 'straight':
+        setChartData([
+          { region: 'Left Visual Cortex', activity: 50 },
+          { region: 'Right Visual Cortex', activity: 50 },
+          { region: 'Frontal Lobe', activity: 60 },
+          { region: 'Temporal Lobe', activity: 50 },
+          { region: 'Occipital Lobe', activity: 70 },
+        ]);
+        break;
+      default:
+        break;
+    }
+  };
+
   return (
     <div className="brain-activity-chart">
       <header className="header">
@@ -79,7 +113,7 @@ export default function BrainActivityChart() {
             <RadarChart
               data={chartData}
               margin={{ top: 20, right: 30, bottom: 10, left: 30 }}
-              style={{ overflow: 'visible' }} /* Prevent clipping of the text */
+              style={{ overflow: 'visible' }}
             >
               <PolarGrid stroke="#ccc" />
               <PolarAngleAxis 
@@ -102,13 +136,13 @@ export default function BrainActivityChart() {
         </div>
 
         <div className="button-group">
-          <button className="button" onClick={handleLookLeft}>
+          <button className="button" onClick={() => handleActivityChange('left')} onTouchStart={() => handleActivityChange('left')}>
             Look Left
           </button>
-          <button className="button" onClick={handleLookRight}>
+          <button className="button" onClick={() => handleActivityChange('right')} onTouchStart={() => handleActivityChange('right')}>
             Look Right
           </button>
-          <button className="button" onClick={handleLookStraight}>
+          <button className="button" onClick={() => handleActivityChange('straight')} onTouchStart={() => handleActivityChange('straight')}>
             Look Straight
           </button>
         </div>

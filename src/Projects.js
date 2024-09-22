@@ -1,5 +1,3 @@
-// Projects.js
-
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import roverImage from './rover.jpeg';
@@ -8,7 +6,7 @@ import nasaImage from './nasa3.jpeg';
 import './projects.css';
 import MLGame from './MLGame';
 import RoverSimulation from './RoverSimulation';
-import BrainActivityChart from './BrainActivityChart'; // Import the BrainActivityChart component
+import BrainActivityChart from './BrainActivityChart';
 
 function Projects() {
   const [areProjectsVisible, setAreProjectsVisible] = useState(false);
@@ -86,7 +84,7 @@ function Projects() {
               <motion.img 
                 src={eegImage} 
                 alt="Brainwave Measurement" 
-                className="project-image" 
+                className="project-image exoskeleton-image" 
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.8, delay: 0.4 }}
