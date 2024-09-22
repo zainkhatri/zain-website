@@ -4,13 +4,15 @@
     color: #fff;
     background-color: #222;
     padding-top: 20px;
+    padding-bottom: 20px;
     padding-left: 130px;
     padding-right: 130px;
     border-radius: 10px;
-    width: 100%; /* Allow the chart to stretch across the full width */
-    max-width: 1000px; /* Same max width as other sections */
+    width: calc(100% + 250px); /* Subtracting left and right padding */
+    max-width: none; /* Remove max-width constraint */
     margin-top: 30px;
-
+    margin-left: 0;
+    box-sizing: border-box;
 }
 
 .header {
@@ -25,7 +27,7 @@
 
 .content-row {
     display: flex;
-    justify-content: space-between; /* Chart on left, buttons on right */
+    justify-content: space-between;
     align-items: center;
     flex-grow: 1;
     width: 100%;
@@ -33,16 +35,16 @@
 
 .chart-content {
     flex: 3;
-    width: 100%; /* Stretch the chart content to the full width */
+    width: 100%;
     margin-right: 20px;
 }
 
 .button-group {
     display: flex;
-    flex-direction: column; /* Stack buttons vertically */
-    align-items: center; /* Center the buttons horizontally */
+    flex-direction: column;
+    align-items: center;
     gap: 25px;
-    justify-content: center; /* Vertically centers the buttons relative to the chart */
+    justify-content: center;
     flex: 1;
     height: 400px;
 }
@@ -56,4 +58,106 @@
     font-size: 1em;
     cursor: pointer;
     font-family: 'Fahkwang', sans-serif;
+}
+
+@media (max-width: 1080px) {
+    .brain-activity-chart {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+}
+
+@media (max-width: 1035px){
+    .brain-activity-chart {
+        width: calc(100% + 250px);
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+}
+
+@media (max-width: 844px) {
+    .brain-activity-chart {
+        padding: 15px;
+    }
+
+    .title {
+        font-size: 1.2em;
+    }
+
+    .content-row {
+        flex-direction: column;
+    }
+
+    .chart-content {
+        margin-right: 0;
+        margin-bottom: 20px;
+    }
+
+    .button-group {
+        flex-direction: row;
+        height: auto;
+        width: 100%;
+        justify-content: space-around;
+    }
+
+    .button {
+        padding: 10px 20px;
+        font-size: 0.9em;
+    }
+}
+
+@media (max-width: 768px) {
+    .brain-activity-chart {
+        padding: 20px;
+        margin-left: -90px
+    }
+
+    .title {
+        font-size: 1em;
+    }
+
+    .button-group {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .button {
+        width: 100%;
+        max-width: 200px;
+    }
+
+    @media (max-width: 480px) {
+        .brain-activity-chart {
+            padding: 5px;
+        }
+    
+        .title {
+            font-size: 0.9em;
+            margin-right: 80px;
+        }
+    
+        .content-row {
+            gap: 10px;
+        }
+    
+        .chart-content {
+            margin-top: -90px;
+            margin-bottom: 10px;
+            max-width: 250px;
+            margin-right: 80px;
+        }
+    
+        .button-group {
+            gap: 10px;
+            margin-right: 80px;
+            margin-bottom: 20px;
+            margin-top: -90px;
+        }
+    
+        .button {
+            padding: 8px 16px;
+            font-size: 0.6em;
+            max-width: 150px;
+        }
+    }
 }

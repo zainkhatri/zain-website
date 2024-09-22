@@ -1,6 +1,5 @@
-// BrainActivityChart.js
-import './BrainActivityChart.css';  // Import the CSS file
-import React, { useState } from 'react';
+import './BrainActivityChart.css';
+import React, { useState, useEffect } from 'react';
 import {
   PolarAngleAxis,
   PolarGrid,
@@ -18,6 +17,25 @@ export default function BrainActivityChart() {
     { region: 'Temporal Lobe', activity: 0 },
     { region: 'Occipital Lobe', activity: 0 },
   ]);
+
+  const [axisFontSize, setAxisFontSize] = useState(12);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth <= 480) {
+        setAxisFontSize(5);
+      } else if (window.innerWidth <= 768) {
+        setAxisFontSize(10);
+      } else {
+        setAxisFontSize(12);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    handleResize(); // Call once to set initial size
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const handleLookLeft = () => {
     setChartData([
@@ -56,15 +74,18 @@ export default function BrainActivityChart() {
       </header>
 
       <div className="content-row">
-        {/* Radar chart content */}
         <div className="chart-content">
           <ResponsiveContainer width="100%" height={400}>
             <RadarChart
               data={chartData}
-              margin={{ top: 20, right: 40, bottom: 0, left: 40 }}
+              margin={{ top: 20, right: 30, bottom: 10, left: 30 }}
+              style={{ overflow: 'visible' }} /* Prevent clipping of the text */
             >
               <PolarGrid stroke="#ccc" />
-              <PolarAngleAxis dataKey="region" tick={{ fill: '#fff', fontSize: 16 }} />
+              <PolarAngleAxis 
+                dataKey="region" 
+                tick={{ fill: '#fff', fontSize: axisFontSize }} 
+              />
               <Radar
                 name="Activity"
                 dataKey="activity"
@@ -80,7 +101,6 @@ export default function BrainActivityChart() {
           </ResponsiveContainer>
         </div>
 
-        {/* Buttons aligned to the right */}
         <div className="button-group">
           <button className="button" onClick={handleLookLeft}>
             Look Left
