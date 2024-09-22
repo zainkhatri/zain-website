@@ -8,11 +8,12 @@
     padding-left: 130px;
     padding-right: 130px;
     border-radius: 10px;
-    width: calc(100% + 250px); /* Subtracting left and right padding */
-    max-width: none; /* Remove max-width constraint */
-    margin-top: 30px;
+    width: calc(100% + 250px);
+    max-width: none;
+    margin-top: 25px;
     margin-left: 0;
     box-sizing: border-box;
+    border: 10px solid white; 
 }
 
 .header {
@@ -67,7 +68,7 @@
     }
 }
 
-@media (max-width: 1035px){
+@media (max-width: 1035px) {
     .brain-activity-chart {
         width: calc(100% + 250px);
         padding-left: 20px;
@@ -77,7 +78,10 @@
 
 @media (max-width: 844px) {
     .brain-activity-chart {
-        padding: 15px;
+        width: 100%;
+        padding: 10px;
+        border-width: 5px;
+        margin-left: 0;
     }
 
     .title {
@@ -109,7 +113,7 @@
 @media (max-width: 768px) {
     .brain-activity-chart {
         padding: 20px;
-        margin-left: -90px
+        margin-left: 0;
     }
 
     .title {
@@ -125,39 +129,37 @@
         width: 100%;
         max-width: 200px;
     }
+}
 
-    @media (max-width: 480px) {
-        .brain-activity-chart {
-            padding: 5px;
-        }
-    
-        .title {
-            font-size: 0.9em;
-            margin-right: 80px;
-        }
-    
-        .content-row {
-            gap: 10px;
-        }
-    
-        .chart-content {
-            margin-top: -90px;
-            margin-bottom: 10px;
-            max-width: 250px;
-            margin-right: 80px;
-        }
-    
-        .button-group {
-            gap: 10px;
-            margin-right: 80px;
-            margin-bottom: 20px;
-            margin-top: -90px;
-        }
-    
-        .button {
-            padding: 8px 16px;
-            font-size: 0.6em;
-            max-width: 150px;
-        }
+@media (max-width: 480px) {
+    .brain-activity-chart {
+        padding: 5px;
+        border-width: 5px;
+    }
+
+    .title {
+        font-size: 0.9em;
+        margin-right: 0;
+    }
+
+    .content-row {
+        gap: 10px;
+    }
+
+    .chart-content {
+        margin-bottom: 10px;
+        margin-right: 0;
+    }
+
+    .button-group {
+        gap: 10px;
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+
+    .button {
+        padding: 8px 16px;
+        font-size: 0.8em;
+        max-width: 150px;
     }
 }

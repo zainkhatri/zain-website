@@ -1,15 +1,19 @@
 .simulation-container {
   width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
 }
 
 .sketch-container {
   margin: 0 auto;
-  border: 1px solid #ccc;
   width: 100%;
   max-width: 1200px; /* Adjust as needed */
   height: 50vh;      /* Adjust height as needed */
   position: relative;
   touch-action: none; /* Prevent default touch actions */
+  border: 10px solid white; /* White border for classic arcade look */
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 .controls {
@@ -33,4 +37,17 @@ canvas {
   top: 0;
   left: 0;
   touch-action: none; /* Prevent default touch actions */
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* Media query for mobile devices */
+@media (max-width: 768px) {
+  .simulation-container {
+    padding: 5px;
+  }
+  
+  .sketch-container {
+    border-width: 5px;
+  }
 }
