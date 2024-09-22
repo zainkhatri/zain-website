@@ -1,6 +1,5 @@
 // BrainActivityChart.js
 import './BrainActivityChart.css';  // Import the CSS file
-
 import React, { useState } from 'react';
 import {
   PolarAngleAxis,
@@ -11,18 +10,14 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 
-export const description = 'Brain Activity Radar Chart';
-
-const initialChartData = [
-  { region: 'Left Visual Cortex', activity: 0 },
-  { region: 'Right Visual Cortex', activity: 0 },
-  { region: 'Frontal Lobe', activity: 0 },
-  { region: 'Temporal Lobe', activity: 0 },
-  { region: 'Occipital Lobe', activity: 0 },
-];
-
 export default function BrainActivityChart() {
-  const [chartData, setChartData] = useState(initialChartData);
+  const [chartData, setChartData] = useState([
+    { region: 'Left Visual Cortex', activity: 0 },
+    { region: 'Right Visual Cortex', activity: 0 },
+    { region: 'Frontal Lobe', activity: 0 },
+    { region: 'Temporal Lobe', activity: 0 },
+    { region: 'Occipital Lobe', activity: 0 },
+  ]);
 
   const handleLookLeft = () => {
     setChartData([
@@ -60,37 +55,33 @@ export default function BrainActivityChart() {
         <h2 className="title">Brain Activity Radar Chart</h2>
       </header>
 
-      <div className="contentRow">
+      <div className="content-row">
         {/* Radar chart content */}
-        <div className="chartContent">
+        <div className="chart-content">
           <ResponsiveContainer width="100%" height={400}>
             <RadarChart
               data={chartData}
               margin={{ top: 20, right: 40, bottom: 0, left: 40 }}
             >
-              <defs>
-                <linearGradient id="colorActivity" x1="0" y1="0" x2="1" y2="1">
-                  <stop offset="0%" stopColor="#ff7f50" />
-                  <stop offset="100%" stopColor="#1e90ff" />
-                </linearGradient>
-              </defs>
               <PolarGrid stroke="#ccc" />
-              <PolarAngleAxis dataKey="region" tick={{ fill: '#fff', fontSize: 12 }} />
+              <PolarAngleAxis dataKey="region" tick={{ fill: '#fff', fontSize: 16 }} />
               <Radar
                 name="Activity"
                 dataKey="activity"
-                stroke="url(#colorActivity)"
-                fill="url(#colorActivity)"
+                stroke="#8884d8"
+                fill="#8884d8"
                 fillOpacity={0.7}
-                isAnimationActive={true}
               />
-              <Tooltip />
+              <Tooltip 
+                formatter={(value) => [`${value}%`]} 
+                labelFormatter={(label) => `Region: ${label}`} 
+              />
             </RadarChart>
           </ResponsiveContainer>
         </div>
 
         {/* Buttons aligned to the right */}
-        <div className="buttonGroup">
+        <div className="button-group">
           <button className="button" onClick={handleLookLeft}>
             Look Left
           </button>

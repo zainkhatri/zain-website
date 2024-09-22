@@ -1,7 +1,6 @@
 // App.js
 import React, { useState, useEffect } from 'react';
 import './app.css';
-import './bio.css';
 import Hero from './Hero';
 import Bio from './Bio';
 import Projects from './Projects';

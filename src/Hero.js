@@ -47,15 +47,14 @@ function Hero() {
           <Typewriter
             key={typewriterText}
             options={{
-              loop: false, // Disable looping
-              cursor: '|', // Customize the cursor
+              loop: false, 
+              cursor: '|', 
             }}
             onInit={(typewriter) => {
               typewriter
                 .typeString(typewriterText)
                 .pauseFor(2500) // Pause for a bit after typing
                 .callFunction(() => {
-                  // Stop the typewriter, making sure to keep the cursor
                   typewriter.stop();
                 })
                 .start();

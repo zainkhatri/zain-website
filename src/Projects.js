@@ -8,7 +8,7 @@ import nasaImage from './nasa3.jpeg';
 import './projects.css';
 import MLGame from './MLGame';
 import RoverSimulation from './RoverSimulation';
-import BrainActivityChart from './BrainActivityChart'; // Correct import
+import BrainActivityChart from './BrainActivityChart'; // Import the BrainActivityChart component
 
 function Projects() {
   const [areProjectsVisible, setAreProjectsVisible] = useState(false);
@@ -33,26 +33,22 @@ function Projects() {
             <div className="project">
               <div className="project-content">
                 <h3 className="project-title">
-                  <a
-                    href="https://github.com/zainkhatri/NASA-CASGC"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
+                  <a href="https://github.com/zainkhatri/NASA-CASGC" target="_blank" rel="noopener noreferrer">
                     NASA Autonomous Rover
                   </a>
                 </h3>
                 <p className="project-description">
                   Designed and implemented an autonomous rover equipped with GPS and magnetometer for navigation, achieving 95% accuracy in reaching targeted locations. This system proved highly effective in outdoor environments, demonstrating the rover's ability to navigate with minimal error.
                 </p>
-
+                
                 {/* Rover Simulation */}
                 <div className="rover-simulation">
                   <RoverSimulation />
                 </div>
               </div>
-              <motion.img
-                src={roverImage}
-                alt="Autonomous Rover"
+              <motion.img 
+                src={roverImage} 
+                alt="Autonomous Rover" 
                 className="project-image nasa-rover-image"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -64,11 +60,7 @@ function Projects() {
             <div className="project">
               <div className="project-content">
                 <h3 className="project-title">
-                  <a
-                    href="https://github.com/zainkhatri/eagle-eye-game"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
+                  <a href="https://github.com/zainkhatri/eagle-eye-game" target="_blank" rel="noopener noreferrer">
                     Eagle Eye Algorithm
                   </a>
                 </h3>
@@ -80,12 +72,8 @@ function Projects() {
             <div className="project">
               <div className="project-content">
                 <h3 className="project-title">
-                  <a
-                    href="https://github.com/zainkhatri/exoskeleton-brainwave-algorithm"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    UC Berkeley Exoskeleton Brainwave Algorithm
+                  <a href="https://github.com/zainkhatri/exoskeleton-brainwave-algorithm" target="_blank" rel="noopener noreferrer">
+                    UC Berkeley Exoskeleton Brainwave Algorithm 
                   </a>
                 </h3>
                 <p className="project-description">
@@ -93,14 +81,12 @@ function Projects() {
                 </p>
 
                 {/* Brain Activity Radar Chart */}
-                <div className="brain-activity-chart">
-                  <BrainActivityChart />
-                </div>
+                <BrainActivityChart />
               </div>
-              <motion.img
-                src={eegImage}
-                alt="Brainwave Measurement"
-                className="project-image"
+              <motion.img 
+                src={eegImage} 
+                alt="Brainwave Measurement" 
+                className="project-image" 
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.8, delay: 0.4 }}

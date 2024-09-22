@@ -212,22 +212,25 @@ const RoverSimulation = () => {
 
       // Control functions accessible from outside the sketch
       p.start = () => {
+        if (!isMoving && isStopped) { // Only reset if the rover has stopped at a waypoint or collision
+          rover.reset(waypoints[0].x * p.width, waypoints[0].y * p.height);
+          currentWaypointIndex = 0;
+        }
         isMoving = true;
         isStopped = false;
-        rover.reset(waypoints[0].x * p.width, waypoints[0].y * p.height);
-        currentWaypointIndex = 0;
       };
 
       p.pause = () => {
-        isMoving = false;
+        isMoving = false; // Pause without resetting any state
       };
 
       p.stop = () => {
         isMoving = false;
         isStopped = true;
-        rover.reset(waypoints[0].x * p.width, waypoints[0].y * p.height);
+        rover.reset(waypoints[0].x * p.width, waypoints[0].y * p.height); // Reset only when stop is called
         currentWaypointIndex = 0;
       };
+
 
       p.setEditMode = (mode) => {
         editModeActive = mode;
