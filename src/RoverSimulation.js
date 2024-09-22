@@ -34,9 +34,9 @@ const RoverSimulation = () => {
     const sketch = (p) => {
       let rover;
       let obstacles = [
-        { x: 0.375, y: 0.4167, size: 80 },
-        { x: 0.625, y: 0.5, size: 100 },
-        { x: 0.25, y: 0.8333, size: 70 },
+        { x: 0.375, y: 0.4167, size: 90 },
+        { x: 0.625, y: 0.5, size: 90 },
+        { x: 0.25, y: 0.8333, size: 90 },
         { x: 0.85, y: 0.17, size: 120 },
       ];
       let waypoints = [
