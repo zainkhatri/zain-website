@@ -37,6 +37,7 @@ const RoverSimulation = () => {
         { x: 0.375, y: 0.4167, size: 80 },
         { x: 0.625, y: 0.5, size: 100 },
         { x: 0.25, y: 0.8333, size: 70 },
+        { x: 0.85, y: 0.17, size: 120 },
       ];
       let waypoints = [
         { x: 0.0625, y: 0.9167, label: 'A' },
@@ -51,11 +52,23 @@ const RoverSimulation = () => {
       p.setup = () => {
         p.createCanvas(containerSize.width, containerSize.height).parent(sketchRef.current);
         rover = new Rover(waypoints[0].x * p.width, waypoints[0].y * p.height);
+        updateObstacles();
       };
 
       p.windowResized = () => {
         p.resizeCanvas(containerSize.width, containerSize.height);
         rover.reset(waypoints[0].x * p.width, waypoints[0].y * p.height);
+        updateObstacles();
+      };
+
+      const updateObstacles = () => {
+        if (p.width < 512) {
+          obstacles = obstacles.filter(obs => !(obs.x === 0.85 && obs.y === 0.17));
+        } else {
+          if (!obstacles.some(obs => obs.x === 0.85 && obs.y === 0.17)) {
+            obstacles.push({ x: 0.85, y: 0.17, size: 120 });
+          }
+        }
       };
 
       p.draw = () => {
@@ -227,7 +240,7 @@ const RoverSimulation = () => {
         constructor(x, y) {
           this.x = x;
           this.y = y;
-          this.speed = 1.5;
+          this.speed = 3;
           this.angle = 0;
           this.size = 20;
           this.sensorRange = 100;

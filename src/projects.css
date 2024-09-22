@@ -140,8 +140,13 @@
   .project-title a {
     margin-left: 0px;
   }
-}
 
+  /* New styles for the rover simulation */
+  .rover-simulation {
+    width: calc(100% + 222.5px + 25px); /* Full width of content + image width + gap */
+    margin-right: -247.5px; /* Negative margin to extend beyond the content area */
+  }
+}
 
 @media screen and (max-width: 768px) {
   /* Hide NASA Rover project image for screen sizes 768px or less */

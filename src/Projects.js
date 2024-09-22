@@ -38,8 +38,10 @@ function Projects() {
                   Designed and implemented an autonomous rover equipped with GPS and magnetometer for navigation, achieving 95% accuracy in reaching targeted locations. This system proved highly effective in outdoor environments, demonstrating the rover's ability to navigate with minimal error.
                 </p>
                 
-                {/* Rover Simulation */}
-                <RoverSimulation />
+                {/* Rover Simulation with new class */}
+                <div className="rover-simulation">
+                  <RoverSimulation />
+                </div>
               </div>
               <motion.img 
                 src={roverImage} 
