@@ -31,46 +31,18 @@ export default function BrainActivityChart() {
       }
     };
   
-    // Trigger haptic feedback when the chart opens
-    if (window.navigator && window.navigator.vibrate) {
-      window.navigator.vibrate(200); // 200ms vibration
-    }
-  
     window.addEventListener('resize', handleResize);
     handleResize(); // Call once to set initial size
   
     return () => window.removeEventListener('resize', handleResize);
   }, []);
-  
-  const handleLookLeft = () => {
-    setChartData([
-      { region: 'Left Visual Cortex', activity: 80 },
-      { region: 'Right Visual Cortex', activity: 20 },
-      { region: 'Frontal Lobe', activity: 40 },
-      { region: 'Temporal Lobe', activity: 30 },
-      { region: 'Occipital Lobe', activity: 50 },
-    ]);
-  };
 
-  const handleLookRight = () => {
-    setChartData([
-      { region: 'Left Visual Cortex', activity: 20 },
-      { region: 'Right Visual Cortex', activity: 80 },
-      { region: 'Frontal Lobe', activity: 40 },
-      { region: 'Temporal Lobe', activity: 30 },
-      { region: 'Occipital Lobe', activity: 50 },
-    ]);
-  };
-
-  const handleLookStraight = () => {
-    setChartData([
-      { region: 'Left Visual Cortex', activity: 50 },
-      { region: 'Right Visual Cortex', activity: 50 },
-      { region: 'Frontal Lobe', activity: 60 },
-      { region: 'Temporal Lobe', activity: 50 },
-      { region: 'Occipital Lobe', activity: 70 },
-    ]);
-  };
+  // Add this useEffect to trigger haptic feedback when chartData changes
+  useEffect(() => {
+    if (window.navigator && window.navigator.vibrate) {
+      window.navigator.vibrate(100); // 100ms vibration after chartData changes
+    }
+  }, [chartData]);
 
   const handleActivityChange = (action) => {
     switch(action) {
@@ -99,6 +71,24 @@ export default function BrainActivityChart() {
           { region: 'Frontal Lobe', activity: 60 },
           { region: 'Temporal Lobe', activity: 50 },
           { region: 'Occipital Lobe', activity: 70 },
+        ]);
+        break;
+      case 'thinking':
+        setChartData([
+          { region: 'Left Visual Cortex', activity: 20 },
+          { region: 'Right Visual Cortex', activity: 20 },
+          { region: 'Frontal Lobe', activity: 70 },
+          { region: 'Temporal Lobe', activity: 60 },
+          { region: 'Occipital Lobe', activity: 30 },
+        ]);
+        break;
+      case 'visualProcessing':
+        setChartData([
+          { region: 'Left Visual Cortex', activity: 70 },
+          { region: 'Right Visual Cortex', activity: 70 },
+          { region: 'Frontal Lobe', activity: 30 },
+          { region: 'Temporal Lobe', activity: 20 },
+          { region: 'Occipital Lobe', activity: 80 },
         ]);
         break;
       default:
@@ -132,24 +122,40 @@ export default function BrainActivityChart() {
                 fill="#8884d8"
                 fillOpacity={0.7}
               />
-              <Tooltip 
-                formatter={(value) => [`${value}%`]} 
-                labelFormatter={(label) => `Region: ${label}`} 
+              <Tooltip
+                formatter={(value, name, props) => {
+                  let regionDescription = '';
+                  switch (props.payload.region) {
+                    case 'Left Visual Cortex':
+                    case 'Right Visual Cortex':
+                      regionDescription = 'Visual Processing';
+                      break;
+                    case 'Frontal Lobe':
+                      regionDescription = 'Higher Cognitive Functions';
+                      break;
+                    case 'Temporal Lobe':
+                      regionDescription = 'Auditory Processing';
+                      break;
+                    case 'Occipital Lobe':
+                      regionDescription = 'Visual Interpretation';
+                      break;
+                    default:
+                      regionDescription = '';
+                  }
+                  return [`${value}%`, `${regionDescription}`];
+                }}
+                labelFormatter={(label) => `Region: ${label}`}
               />
             </RadarChart>
           </ResponsiveContainer>
         </div>
 
         <div className="button-group">
-          <button className="button" onClick={() => handleActivityChange('left')} onTouchStart={() => handleActivityChange('left')}>
-            Look Left
-          </button>
-          <button className="button" onClick={() => handleActivityChange('right')} onTouchStart={() => handleActivityChange('right')}>
-            Look Right
-          </button>
-          <button className="button" onClick={() => handleActivityChange('straight')} onTouchStart={() => handleActivityChange('straight')}>
-            Look Straight
-          </button>
+          <button className="button" onClick={() => handleActivityChange('thinking')}>Thinking</button>
+          <button className="button" onClick={() => handleActivityChange('visualProcessing')}>Visual Processing</button>
+          <button className="button" onClick={() => handleActivityChange('left')}>Look Left</button>
+          <button className="button" onClick={() => handleActivityChange('right')}>Look Right</button>
+          <button className="button" onClick={() => handleActivityChange('straight')}>Look Straight</button>
         </div>
       </div>
     </div>
