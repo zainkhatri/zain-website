@@ -255,7 +255,7 @@ const MLGame = () => {
     setShowHighScores(!showHighScores);
   };
 
-  const handleNumberClick = (number) => {
+  const handleNumberClick = useCallback((number) => {
     if (isGameOver) return;
 
     if (number.value === current) {
@@ -264,7 +264,7 @@ const MLGame = () => {
           n.value === number.value ? { ...n, status: 'correct' } : n
         )
       );
-      setCurrent(current + 1);
+      setCurrent((prev) => prev + 1);
 
       if (current === 50) {
         handleGameOver('Congratulations! You won!', 50, timeLeft);
@@ -280,7 +280,7 @@ const MLGame = () => {
       );
       handleGameOver(`Wrong number clicked! Game Over.`, current - 1, timeLeft);
     }
-  };
+  }, [current, isGameOver, handleGameOver, timeLeft]);
 
   const handleStartOrRestart = () => {
     if (isGameOver && !gameStarted) {
@@ -340,6 +340,10 @@ const MLGame = () => {
         {numbers.map((number) => (
           <button
             key={number.value}
+            onTouchStart={(e) => {
+              e.preventDefault();
+              handleNumberClick(number);
+            }}
             onClick={() => handleNumberClick(number)}
             className={`ml-game-number ${number.status} ${
               nextNumber === number.value ? 'highlight-next' : ''
