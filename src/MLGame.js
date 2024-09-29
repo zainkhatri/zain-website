@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import './MLGame.css';
 import { database, ref, set, push, onValue } from './firebase';
 
@@ -314,11 +313,9 @@ const MLGame = () => {
   };
 
   return (
-    <motion.div layout className="ml-game">
+    <div className="ml-game">
       <div className="ml-game-header">
-        <div
-          className={`ml-game-timer ${timeLeft <= 10 ? 'red-timer' : ''}`}
-        >
+        <div className={`ml-game-timer ${timeLeft <= 10 ? 'red-timer' : ''}`}>
           {timeLeft}s
         </div>
         <button className="ml-game-button" onClick={handleStartOrRestart}>
@@ -330,11 +327,11 @@ const MLGame = () => {
         <div className="ml-game-description">
           <h2 className="ml-game-title">Eagle Eye: 1-50 in 60</h2>
           <p>
-            Welcome to the Eagle Eye, a game where I test your speed and
-            precision. Your goal is to find and click all the numbers from 1 to
-            50 in ascending order within 60 seconds. Compete to make it to the
-            top 6 scorers list! Click the "Start" button when you're ready to
-            begin. Good luck!
+            Welcome to Eagle Eye, a game where we test your speed and precision.
+            Your goal is to find and click all the numbers from 1 to 50 in
+            ascending order within 60 seconds. Compete to make it to the top 6
+            scorers list! Click the "Start" button when you're ready to begin. Good
+            luck!
           </p>
         </div>
       )}
@@ -384,33 +381,24 @@ const MLGame = () => {
         </button>
       </div>
 
-      <AnimatePresence>
-        {showHighScores && (
-          <motion.div
-            className="ml-game-high-scores arcade-style"
-            initial={{ opacity: 0, y: -20, scale: 0.9 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -20, scale: 0.9 }}
-            transition={{ duration: 0.8, ease: 'easeInOut' }}
-            layout
-          >
-            <h3>Leaderboard</h3>
-            {highScores.length > 0 ? (
-              <ol>
-                {highScores.slice(0, 6).map((score, index) => (
-                  // Display only the top 6 scores
-                  <li key={index}>
-                    {score.initials} - {score.score} in {score.time}s
-                  </li>
-                ))}
-              </ol>
-            ) : (
-              <p>No high scores yet. Be the first to set a record!</p>
-            )}
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </motion.div>
+      {showHighScores && (
+        <div className="ml-game-high-scores arcade-style">
+          <h3>Leaderboard</h3>
+          {highScores.length > 0 ? (
+            <ol>
+              {highScores.slice(0, 6).map((score, index) => (
+                // Display only the top 6 scores
+                <li key={index}>
+                  {score.initials} - {score.score} in {score.time}s
+                </li>
+              ))}
+            </ol>
+          ) : (
+            <p>No high scores yet. Be the first to set a record!</p>
+          )}
+        </div>
+      )}
+    </div>
   );
 };
 
