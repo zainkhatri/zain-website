@@ -258,8 +258,6 @@ const MLGame = () => {
   const handleNumberClick = (number) => {
     if (isGameOver) return;
 
-    console.log('Number clicked:', number.value);
-
     if (number.value === current) {
       setNumbers((prevNumbers) =>
         prevNumbers.map((n) =>
@@ -342,8 +340,7 @@ const MLGame = () => {
         {numbers.map((number) => (
           <button
             key={number.value}
-            onTouchStart={() => handleNumberClick(number)}
-            onMouseDown={() => handleNumberClick(number)}
+            onClick={() => handleNumberClick(number)}
             className={`ml-game-number ${number.status} ${
               nextNumber === number.value ? 'highlight-next' : ''
             }`}
