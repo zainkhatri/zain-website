@@ -78,23 +78,22 @@
 }
 
 .ml-game-number {
-  background-color: #3c3c3c; /* Dark gray for number boxes */
-  color: white;
-  border: 2px solid white;
-  width: 100%;
-  height: 80px;
-  font-size: 20px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  box-sizing: border-box;
-  /* Removed transition to prevent delays */
-  /* transition: all 0.1s ease; */
-  font-family: 'Press Start 2P', cursive;
-  touch-action: manipulation;
-  cursor: pointer; /* Added to improve mobile responsiveness */
+    background-color: #3c3c3c;
+    color: white;
+    border: 2px solid white;
+    width: 100%;
+    height: 80px;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Press Start 2P', cursive;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
 }
 
 .ml-game-number.correct {
