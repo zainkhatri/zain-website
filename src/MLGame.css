@@ -293,6 +293,7 @@
     .ml-game-number {
         height: 40px;
         font-size: 15px;
+        touch-action: manipulation;
     }
 }
 
