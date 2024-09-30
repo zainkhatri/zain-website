@@ -7,36 +7,17 @@
   gap: 25px;
   width: 100%;
   box-sizing: border-box;
-  padding: 0 20px; /* Add padding to prevent right-side cutoff */
+  padding: 0 20px;
 }
 
 .project-image {
-  width: calc(66.67% - 25px); /* Adjust for gap */
+  width: calc(66.67% - 25px);
   height: auto;
   object-fit: contain;
   border-radius: 10px;
   border: 5px solid white;
   box-sizing: border-box;
-  max-width: 100%; /* Ensure image doesn't overflow */
-}
-
-/* Responsive Styles */
-@media screen and (max-width: 768px) {
-  .project {
-    padding: 0 15px; /* Reduce padding for smaller screens */
-  }
-
-  .project-image {
-    width: 100%;
-    max-width: 375px;
-    margin: 0 auto;
-  }
-}
-
-@media screen and (max-width: 599px) {
-  .project {
-    padding: 0 10px; /* Further reduce padding for very small screens */
-  }
+  max-width: 100%;
 }
 
 .project-content {
@@ -44,19 +25,19 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  min-width: 200px; /* Ensure content has minimum width */
+  min-width: 200px;
 }
 
 .project-title {
-  font-size: 1em;  /* Reduce the title size */
+  font-size: 1em;
   color: #ffffff;
   margin-top: 0;
   margin-bottom: 15px;
-  font-style: italic; /* Add this line */
+  font-style: italic;
 }
 
 .project-description {
-  font-size: 0.85em;  /* Reduce the description size */
+  font-size: 0.85em;
   color: #ffffff;
 }
 
@@ -64,29 +45,27 @@
   margin-top: 0;
 }
 
-/* Ensures all project titles are white, including links */
 .project-title a {
-  color: #ffffff; /* Sets link color to white */
-  text-decoration: underline; /* Keeps the underline for the link */
+  color: #ffffff;
+  text-decoration: underline;
   transition: color 0.2s ease;
   font-size: 25px;
 }
 
-/* Optional: Change the hover effect */
 .project-title a:hover {
-  color: #cccccc; /* Slightly lighter color on hover */
+  color: #cccccc;
 }
 
-/* Responsive Styles */
 @media screen and (max-width: 768px) {
   .project {
     flex-direction: column;
     align-items: center;
     text-align: left;
+    padding: 0 15px;
   }
 
   .project-content {
-    order: -1; /* Move content above the image */
+    order: -1;
     width: 100%;
     margin-bottom: 20px;
   }
@@ -96,7 +75,7 @@
     max-width: 375px;
     margin: 0;
     margin-right: 20px;
-    box-sizing: border-box; /* Include borders in width calculation */
+    box-sizing: border-box;
   }
 
   .project-title {
@@ -107,6 +86,11 @@
   .project-description {
     font-size: 3.2vw;
     margin-left: 20px;
+  }
+
+  .nasa-rover-image,
+  .exoskeleton-image {
+    display: none;
   }
 }
 
@@ -136,25 +120,13 @@
   .project-description {
     font-size: 1em;
   }
-  
+
   .project-title a {
     margin-left: 0px;
   }
 
-  /* New styles for the rover simulation */
   .rover-simulation {
-    width: calc(100% + 222.5px + 25px); /* Full width of content + image width + gap */
-    margin-right: -247.5px; /* Negative margin to extend beyond the content area */
-  }
-}
-
-@media screen and (max-width: 768px) {
-  /* Hide NASA Rover project image for screen sizes 768px or less */
-  .nasa-rover-image {
-    display: none;
-  }
-
-  .exoskeleton-image {
-    display: none; /* Hide the Exoskeleton image on mobile */
+    width: calc(100% + 222.5px + 25px);
+    margin-right: -247.5px;
   }
 }
