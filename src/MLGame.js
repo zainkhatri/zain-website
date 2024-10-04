@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react'; 
 import './MLGame.css';
 import { database, ref, set, push, onValue } from './firebase';
 
@@ -90,7 +90,6 @@ const MLGame = () => {
           id,
           ...score,
         }));
-        // Remove duplicates, keeping only the best score for each set of initials
         const uniqueScores = scoresArray.reduce((acc, current) => {
           const x = acc.find((item) => item.initials === current.initials);
           if (!x) {
@@ -185,12 +184,9 @@ const MLGame = () => {
     );
   };
 
-  // Cleanup function to keep only the top 10 scores in Firebase
   const cleanupScores = (scoresArray, scoresRef) => {
-    // Sort scores array to identify which ones need to be removed
     scoresArray.sort((a, b) => b.score - a.score || a.time - b.time);
 
-    // If more than 10 scores, remove the excess ones
     if (scoresArray.length > 10) {
       const scoresToRemove = scoresArray.slice(10); // Get scores beyond the top 10
       scoresToRemove.forEach((score) => {
@@ -337,22 +333,22 @@ const MLGame = () => {
       )}
 
       <div className={`ml-game-grid ${gameStarted ? 'visible' : 'hidden'}`}>
-              {numbers.map((number) => (
-                <button
-                  key={number.value}
-                  onTouchStart={(e) => {
-                    e.preventDefault();
-                    handleNumberClick(number);
-                  }}
-                  onClick={() => handleNumberClick(number)}
-                  className={`ml-game-number ${number.status} ${
-                    nextNumber === number.value ? 'highlight-next' : ''
-                  }`}
-                  disabled={isGameOver}
-                >
-                  {number.value}
-                </button>
-              ))}
+        {numbers.map((number) => (
+          <button
+            key={number.value}
+            onTouchStart={(e) => {
+              e.preventDefault(); // Prevent default touch behavior
+              handleNumberClick(number);
+            }}
+            onClick={() => handleNumberClick(number)} // Keep onClick for non-touch devices
+            className={`ml-game-number ${number.status} ${
+              nextNumber === number.value ? 'highlight-next' : ''
+            }`}
+            disabled={isGameOver}
+          >
+            {number.value}
+          </button>
+        ))}
       </div>
 
       {message && <div className="ml-game-message">{message}</div>}
@@ -387,7 +383,6 @@ const MLGame = () => {
           {highScores.length > 0 ? (
             <ol>
               {highScores.slice(0, 6).map((score, index) => (
-                // Display only the top 6 scores
                 <li key={index}>
                   {score.initials} - {score.score} in {score.time}s
                 </li>
