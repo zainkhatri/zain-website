@@ -35,9 +35,9 @@ const RoverSimulation = () => {
       let rover;
       let obstacles = [
         { x: 0.375, y: 0.4167, size: 90 },
-        { x: 0.625, y: 0.5, size: 90 },
+        { x: 0.625, y: 0.5, size: 120 },
         { x: 0.35, y: 0.86, size: 90 },
-        { x: 0.85, y: 0.17, size: 120 },
+        { x: 0.85, y: 0.7, size: 120 },
       ];
       let waypoints = [
         { x: 0.0625, y: 0.9167, label: 'A' },
@@ -66,7 +66,7 @@ const RoverSimulation = () => {
           obstacles = obstacles.filter(obs => !(obs.x === 0.85 && obs.y === 0.17));
         } else {
           if (!obstacles.some(obs => obs.x === 0.85 && obs.y === 0.17)) {
-            obstacles.push({ x: 0.85, y: 0.17, size: 120 });
+            obstacles.push({ x: 0.85, y: 0.14, size: 130 });
           }
         }
       };
