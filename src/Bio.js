@@ -1,22 +1,11 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import './bio.css';
-import { FaSun, FaMoon } from 'react-icons/fa';
 
 function Bio() {
   const [isBioVisible, setIsBioVisible] = useState(false);
-  const [isEgoModeActive, setIsEgoModeActive] = useState(false);
 
   const toggleBio = () => setIsBioVisible(!isBioVisible);
-
-  const toggleEgoMode = () => {
-    if (isEgoModeActive) {
-      document.body.classList.remove('ego-mode');
-    } else {
-      document.body.classList.add('ego-mode');
-    }
-    setIsEgoModeActive(!isEgoModeActive);
-  };
 
   return (
     <section id="bio" className="content-section bio">

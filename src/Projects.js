@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion} from 'framer-motion';
 import roverImage from './rover.jpeg';
 import eegImage from './eeg.jpeg';
 import './projects.css';
