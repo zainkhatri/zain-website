@@ -42,11 +42,9 @@ function Projects() {
                 </a>
               </h3>
               <p className="project-description">
-                Designed and implemented an autonomous rover equipped with GPS and
-                magnetometer for navigation, achieving 95% accuracy in reaching
-                targeted locations. This system proved highly effective in outdoor
-                environments, demonstrating the rover's ability to navigate with minimal
-                error. Below is a simulation to show how the rover works in tight environments:
+              This project involves building an autonomous rover for navigation using GPS and magnetometer data. The rover was developed using Arduino, 
+              programmed in C, with extensive work on wiring, soldering, and 3D printing custom parts. The rover autonomously follows waypoints while 
+              avoiding obstacles, demonstrating its capabilities in a real-time simulation.
               </p>
               {/* Rover Simulation */}
               <div className="rover-simulation">
@@ -93,10 +91,9 @@ function Projects() {
                 </a>
               </h3>
               <p className="project-description">
-                Developed an algorithm that uses machine learning and signal processing
-                techniques to improve mobility command differentiation by 25%. Integrated
-                into an exoskeleton system, the algorithm allows for real-time
-                classification of EEG data.
+              This algorithm controls an exoskeleton to help individuals with disabilities regain limb mobility. By using EEG data 
+              and supervised machine learning, the system interprets brainwaves to control the exoskeleton in real time, allowing 
+              users to walk and move. The algorithm significantly improves movement accuracy and responsiveness.
               </p>
               {/* Brain Activity Radar Chart */}
               <BrainActivityChart />
