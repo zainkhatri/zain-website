@@ -38,57 +38,59 @@ export default function BrainActivityChart() {
   }, []);
 
   const handleActivityChange = (action) => {
+    let newData = [];
     switch (action) {
       case 'left':
-        setChartData([
+        newData = [
           { region: 'Left Visual Cortex', activity: 80 },
           { region: 'Right Visual Cortex', activity: 20 },
           { region: 'Frontal Lobe', activity: 40 },
           { region: 'Temporal Lobe', activity: 30 },
           { region: 'Occipital Lobe', activity: 50 },
-        ]);
+        ];
         break;
       case 'right':
-        setChartData([
+        newData = [
           { region: 'Left Visual Cortex', activity: 20 },
           { region: 'Right Visual Cortex', activity: 80 },
           { region: 'Frontal Lobe', activity: 40 },
           { region: 'Temporal Lobe', activity: 30 },
           { region: 'Occipital Lobe', activity: 50 },
-        ]);
+        ];
         break;
       case 'straight':
-        setChartData([
+        newData = [
           { region: 'Left Visual Cortex', activity: 50 },
           { region: 'Right Visual Cortex', activity: 50 },
           { region: 'Frontal Lobe', activity: 60 },
           { region: 'Temporal Lobe', activity: 50 },
           { region: 'Occipital Lobe', activity: 70 },
-        ]);
+        ];
         break;
       case 'thinking':
-        setChartData([
+        newData = [
           { region: 'Left Visual Cortex', activity: 20 },
           { region: 'Right Visual Cortex', activity: 20 },
           { region: 'Frontal Lobe', activity: 70 },
           { region: 'Temporal Lobe', activity: 60 },
           { region: 'Occipital Lobe', activity: 30 },
-        ]);
+        ];
         break;
       case 'visualProcessing':
-        setChartData([
+        newData = [
           { region: 'Left Visual Cortex', activity: 70 },
           { region: 'Right Visual Cortex', activity: 70 },
           { region: 'Frontal Lobe', activity: 30 },
           { region: 'Temporal Lobe', activity: 20 },
           { region: 'Occipital Lobe', activity: 80 },
-        ]);
+        ];
         break;
       default:
         break;
     }
 
-    // Trigger simple haptic feedback when the buttons are clicked
+    setChartData(newData);
+
     if (window.navigator && window.navigator.vibrate) {
       window.navigator.vibrate(200); // Vibrate for 200ms after button click
     }
@@ -102,7 +104,7 @@ export default function BrainActivityChart() {
 
       <div className="content-row">
         <div className="chart-content">
-          <ResponsiveContainer width="100%" height={400}>
+          <ResponsiveContainer width="100%" height={450}>
             <RadarChart
               data={chartData}
               margin={{ top: 20, right: 30, bottom: 10, left: 30 }}
@@ -116,9 +118,10 @@ export default function BrainActivityChart() {
               <Radar
                 name="Activity"
                 dataKey="activity"
-                stroke="#8884d8"
-                fill="#8884d8"
-                fillOpacity={0.7}
+                stroke="#ff6ec4"
+                fill="#7873f5"
+                fillOpacity={0.8}
+                animationDuration={800}
               />
               <Tooltip
                 formatter={(value, name, props) => {
@@ -143,6 +146,7 @@ export default function BrainActivityChart() {
                   return [`${value}%`, `${regionDescription}`];
                 }}
                 labelFormatter={(label) => `Region: ${label}`}
+                contentStyle={{ backgroundColor: "#222", color: "#fff", borderRadius: '8px' }}
               />
             </RadarChart>
           </ResponsiveContainer>

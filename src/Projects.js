@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { motion} from 'framer-motion';
+import { motion } from 'framer-motion';
 import roverImage from './rover.jpeg';
 import eegImage from './eeg.jpeg';
 import './projects.css';
@@ -46,7 +46,7 @@ function Projects() {
                 magnetometer for navigation, achieving 95% accuracy in reaching
                 targeted locations. This system proved highly effective in outdoor
                 environments, demonstrating the rover's ability to navigate with minimal
-                error.
+                error. Below is a simulation to show how the rover works in tight environments:
               </p>
               {/* Rover Simulation */}
               <div className="rover-simulation">
@@ -99,6 +99,7 @@ function Projects() {
                 classification of EEG data.
               </p>
               {/* Brain Activity Radar Chart */}
+              <BrainActivityChart />
             </div>
             <motion.img
               src={eegImage}

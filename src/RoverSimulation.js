@@ -231,7 +231,6 @@ const RoverSimulation = () => {
         currentWaypointIndex = 0;
       };
 
-
       p.setEditMode = (mode) => {
         editModeActive = mode;
         if (!mode) {
@@ -251,6 +250,8 @@ const RoverSimulation = () => {
           this.sensorAngles = [-p.radians(45), 0, p.radians(45)];
           this.maxAngularVelocity = p.radians(3);
           this.dangerZone = 30;
+          this.obstacleStuckCounter = 0; // Track how long the rover is stuck
+          this.maxStuckThreshold = 50; // Threshold for being stuck
         }
 
         show() {
@@ -322,15 +323,35 @@ const RoverSimulation = () => {
           angleDifference = p.constrain(angleDifference, -this.maxAngularVelocity, this.maxAngularVelocity);
           this.angle += angleDifference;
 
-          // Move forward only if not in immediate danger
-          if (Math.min(...Object.values(sensorReadings)) > this.dangerZone / 2) {
-            this.x += p.cos(this.angle) * this.speed;
-            this.y += p.sin(this.angle) * this.speed;
+          // Check if the rover is stuck in one place
+          if (Math.min(...Object.values(sensorReadings)) < this.dangerZone) {
+            this.obstacleStuckCounter++;
+          } else {
+            this.obstacleStuckCounter = 0;
+          }
+
+          // Reverse and choose an alternate path if stuck for too long
+          if (this.obstacleStuckCounter > this.maxStuckThreshold) {
+            this.reverse();
+            this.obstacleStuckCounter = 0; // Reset the counter after reversing
+          } else {
+            // Move forward only if not in immediate danger
+            if (Math.min(...Object.values(sensorReadings)) > this.dangerZone / 2) {
+              this.x += p.cos(this.angle) * this.speed;
+              this.y += p.sin(this.angle) * this.speed;
+            }
           }
 
           // Keep the rover within canvas boundaries
           this.x = p.constrain(this.x, this.size / 2, p.width - this.size / 2);
           this.y = p.constrain(this.y, this.size / 2, p.height - this.size / 2);
+        }
+
+        reverse() {
+          // Reverse a small distance and change direction slightly to get unstuck
+          this.x -= p.cos(this.angle) * this.speed * 2;
+          this.y -= p.sin(this.angle) * this.speed * 2;
+          this.angle += p.radians(90); // Change direction
         }
 
         normalizeAngle(angle) {
