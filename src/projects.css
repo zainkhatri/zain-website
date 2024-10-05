@@ -103,7 +103,7 @@
   .project-description {
     font-size: 5.25vw;
     margin-left: -20px;
-    margin-right: 20px;
+    margin-right: 0px;
     padding: 10px;
   }
 }
