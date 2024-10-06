@@ -90,10 +90,6 @@ export default function BrainActivityChart() {
     }
 
     setChartData(newData);
-
-    if (window.navigator && window.navigator.vibrate) {
-      window.navigator.vibrate(200); // Vibrate for 200ms after button click
-    }
   };
 
   return (

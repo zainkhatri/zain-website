@@ -1,0 +1,130 @@
+[33meb833c3[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m 10/7/24 New Resume
+[33m554f92a[m New Resume Update
+[33m8570725[m Added animation to albums hover
+[33m3feed93[m Projects margins changed to fit on mobile
+[33mfd65c30[m Added brain activity chart, mobile optimized, new project descriptions
+[33mc8d0e63[m Advanced NASA Rover Simulation
+[33m795aa96[m Deleted useless libraries
+[33m1b5309f[m Adjusted rover simulation on full screen 1080px
+[33m6dc28ea[m Easter egg tweaked for media sizes
+[33m7aacf4a[m Changed chrome responsiveness on mobile
+[33md4769b4[m Removed Brainwave Analysis (until further notice
+[33maf53d18[m ML Game dimensions optimized for all media
+[33m6bd2550[m Lag for ML game on mobile devices addressed
+[33mc579a27[m Updated a small css change to the game
+[33m8ebe3ba[m Merge branch 'main' of https://github.com/zainkhatri/zain-website
+[33m168b39b[m Changed ML Game Touch Responsiveness
+[33m29033ed[m Edited game-grid
+[33m5ffa174[m Bug for clicking numbers handled
+[33mdfcd17f[m Added better response time for ML Game
+[33mf23cf97[m Edited button font size to fit
+[33m25da3bc[m Added haptic feedback tweaks
+[33m9771e6e[m Addded columns to fit on mobile
+[33m29b07d1[m Tweaking haptic feedback
+[33mb6ba5b7[m Trying out haptic feedback
+[33m378f32f[m Made buttons into rows for Radar Chart
+[33me4cd1d5[m Mobile Optimized white border for all projects
+[33mac910aa[m Functionality for mobile devices for Brain Activity Radar Chart fixed
+[33mcfa93d0[m Fixed simulation for EEG on mobile devices
+[33mea9a2e8[m Fixed Brain Activity Radar Chart
+[33mea15176[m Removed deleting typewriter
+[33m8b2a77d[m Rover Obstacles larger
+[33m77f1c75[m Rover Simulation width adjusted for bigger media
+[33m03a8309[m Added edit feature to rover simulation
+[33m131651b[m Fixed margin errors with projects on mobile
+[33m8588051[m Slight typo for hero image bug fixed
+[33md4274b0[m Fixed hero image bug
+[33meadb71d[m Adjusted the image cut off on mobile
+[33m859979d[m Mobile CSS change for image cut off bug
+[33mae7c57d[m Fixed padding with project descriptions
+[33m5e7e81b[m Changed title of Eagle Eye Project
+[33mf98f8b3[m Added padding to project-titles
+[33mb2896ce[m Edited margins for mobile devices
+[33mfa06a93[m Merge branch 'main' of https://github.com/zainkhatri/zain-website
+[33mbe9651d[m Changed project titles
+[33m8968013[m Update README.md
+[33m4d1305c[m Update README.md
+[33mfb0d94e[m NASA Project Updated
+[33m2163622[m ??? from here until ???END lines may have been inserted/deleted Merge branch 'main' of https://github.com/zainkhatri/zain-website
+[33m88108b8[m Added NASA Simulation
+[33m2a2c523[m first commit
+[33m543d4ac[m corrupted files fix
+[33m25f11cc[m Update README.md
+[33m3895785[m centered hero image
+[33m055858e[m Game delay on mobile devices solved
+[33mb40c5e6[m Edits to bio.js
+[33m4f2ec84[m Added a easter egg!
+[33mda8eab7[m Added more albums
+[33m6babd1a[m Added some new albums
+[33me00a937[m Essential music changed to Music Library
+[33ma738cc7[m bio and hero margins for mobile optimized
+[33m4df6e3f[m Margin styles debug
+[33m9f1290a[m New bio
+[33m6d78061[m Removed resume from mobile devices
+[33me647ac5[m Updated Margins on smaller medias
+[33m191f4dd[m Font too large on mobile: changed
+[33md5fc06f[m Photos borders bug handled
+[33mb9eabe5[m Changed margin from top for mobile
+[33m1839dd8[m New styles optimized for mobile
+[33m3826d69[m New font styles
+[33m65ed111[m Font for projects content changed
+[33m33cab94[m Project titles changed
+[33m969de83[m Edited title sizes on different medias
+[33m426abf9[m Added a new description for the game
+[33m6ac34d3[m Added a firebase security line to prevent too much data being stored (just in case)
+[33m2aaa384[m Changed correct choice game color
+[33m2d4929b[m Changed leaderboard to top 6 rather than top 10
+[33m6704c78[m Projects css font made smaller
+[33mb326405[m Added more security to the game
+[33ma0b49db[m Projects layout changed
+[33m013072a[m Tweaked the photogallery gap on mobile media
+[33m0ae12d6[m seconds changed to s
+[33mcd9735c[m Added some security for leaderboard names
+[33m4d3e5a7[m Small leaderboard font fix
+[33m7569d09[m Added borders around project, gallery, and albums photos
+[33m6025dd3[m Added description and borders for project images
+[33m3cda68f[m Removed delete scores on the game
+[33m9b5c114[m Mobile game bugs handled
+[33m002faaf[m Font-size changed on mobile
+[33m42be587[m Arcade theme added to game
+[33m766ffd6[m Debugging the highscores database
+[33m12fc96b[m Added security measures for firebase
+[33me23f718[m Added firebase servers for highscores
+[33m5d0d078[m Added highscores!
+[33m3f95b48[m Minor high score bug fixed
+[33mbc33567[m Added new colors for game and new error message
+[33m6a91042[m Mobile optimization for error
+[33mad64b77[m Mobile Game bug fixed
+[33maf16de5[m Updated game for mobile devices
+[33m9fe7402[m Added ML game to projects
+[33m0d74005[m added innerspeaker
+[33m0995df9[m Clean up albums
+[33me14cc26[m Small change, album spotify link was wrong
+[33m2c90242[m Debugged photo gallery and albums images at 767 pixels
+[33mf3ad4cc[m debug for photos grid on minimized media
+[33m0f7987a[m Additional easter egg
+[33m3ec01a1[m Easte egg added
+[33m37fc2b1[m Clickable spotify links
+[33mb63231f[m Margin added between photos and albums
+[33m1503493[m Footer added
+[33me03adca[m Fixed font issue
+[33mdf0fe4a[m css for mobile devices/titles fixed
+[33ma30588d[m Merge branch 'main' of https://github.com/zainkhatri/zain-website
+[33m147821a[m CSS fixed/titles for mobile devices
+[33ma8fd2f2[m media put into css files instead of media-responsive
+[33m1023a48[m Adjusted css typewriter
+[33m5b58dfa[m New Essential Music Drop
+[33m829dc23[m Annimation added for opening/collapsing
+[33md0515ed[m updated css for mobile devices
+[33m79fc6dd[m Pushed contact icons to the right side
+[33mae84fe9[m tweaked about me
+[33m7db54a6[m testing
+[33mbdb73ee[m new styles
+[33m4b4a59f[m Photo gallery 2x4 rather than 1x8
+[33m3a03b9d[m Bugs for photo gallery handled
+[33m64506b4[m CSS updated for mobile devices
+[33m2c307f5[m Modular code added in
+[33m5bcbb4c[m Resume update
+[33mad3c986[m Zain Khatri webpage
+[33m63aad5b[m Added in favicon and resume change
+[33m8c947e6[m Initial commit

@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react'; 
 import './MLGame.css';
-import { database, ref, set, push, onValue } from './firebase';
+import { database, ref, set, push, onValue, get } from './firebase';
 
 const MLGame = () => {
   const [numbers, setNumbers] = useState([]);
   const [current, setCurrent] = useState(1);
-  const [timeLeft, setTimeLeft] = useState(60);
+  const [timeElapsed, setTimeElapsed] = useState(0);
   const [isGameOver, setIsGameOver] = useState(true);
   const [message, setMessage] = useState('');
   const [gameStarted, setGameStarted] = useState(false);
@@ -23,7 +23,7 @@ const MLGame = () => {
   }, []);
 
   const handleGameOver = useCallback(
-    (endMessage, finalScore, finalTime) => {
+    (endMessage, finalScore) => {
       setIsGameOver(true);
       setMessage(endMessage);
       clearInterval(timerRef.current);
@@ -31,7 +31,7 @@ const MLGame = () => {
       const newScore = {
         initials: playerInitials.toUpperCase(),
         score: finalScore,
-        time: 60 - finalTime,
+        time: timeElapsed,
       };
       const wouldMakeTopTen =
         highScores.length < 10 ||
@@ -60,26 +60,20 @@ const MLGame = () => {
         })
       );
     },
-    [current, highScores, playerInitials]
+    [current, highScores, playerInitials, timeElapsed]
   );
 
   useEffect(() => {
-    if (gameStarted && timeLeft > 0 && !isGameOver) {
+    if (gameStarted && !isGameOver) {
       timerRef.current = setInterval(() => {
-        setTimeLeft((prevTime) => {
-          if (prevTime <= 1) {
-            handleGameOver("Time's Up! Game Over.", current - 1, 0);
-            return 0;
-          }
-          return prevTime - 1;
-        });
+        setTimeElapsed((prevTime) => prevTime + 1);
       }, 1000);
     } else if (isGameOver) {
       clearInterval(timerRef.current);
     }
 
     return () => clearInterval(timerRef.current);
-  }, [gameStarted, timeLeft, isGameOver, current, handleGameOver]);
+  }, [gameStarted, isGameOver]);
 
   const fetchHighScores = () => {
     const scoresRef = ref(database, 'scores/');
@@ -90,21 +84,24 @@ const MLGame = () => {
           id,
           ...score,
         }));
-        const uniqueScores = scoresArray.reduce((acc, current) => {
-          const x = acc.find((item) => item.initials === current.initials);
-          if (!x) {
-            return acc.concat([current]);
-          } else {
-            return acc.map((item) =>
-              item.initials === current.initials &&
-              (current.score > item.score ||
-                (current.score === item.score && current.time < item.time))
-                ? current
-                : item
-            );
-          }
-        }, []);
 
+        const scoresByInitials = {};
+
+        scoresArray.forEach((score) => {
+          const existingScore = scoresByInitials[score.initials];
+          if (!existingScore) {
+            scoresByInitials[score.initials] = score;
+          } else {
+            if (
+              score.score > existingScore.score ||
+              (score.score === existingScore.score && score.time < existingScore.time)
+            ) {
+              scoresByInitials[score.initials] = score;
+            }
+          }
+        });
+
+        const uniqueScores = Object.values(scoresByInitials);
         uniqueScores.sort((a, b) => b.score - a.score || a.time - b.time);
         setHighScores(uniqueScores.slice(0, 10)); // Store up to 10 scores
       }
@@ -114,9 +111,8 @@ const MLGame = () => {
   const submitScore = (newScore) => {
     const scoresRef = ref(database, 'scores/');
 
-    onValue(
-      scoresRef,
-      (snapshot) => {
+    get(scoresRef)
+      .then((snapshot) => {
         const data = snapshot.val();
         if (data) {
           const scoresArray = Object.entries(data).map(([id, score]) => ({
@@ -129,11 +125,11 @@ const MLGame = () => {
 
           if (existingScore) {
             // Update existing score if the new one is better
-            const [existingScoreId, existingScoreData] = existingScore;
+            const existingScoreId = existingScore.id;
             if (
-              newScore.score > existingScoreData.score ||
-              (newScore.score === existingScoreData.score &&
-                newScore.time < existingScoreData.time)
+              newScore.score > existingScore.score ||
+              (newScore.score === existingScore.score &&
+                newScore.time < existingScore.time)
             ) {
               set(ref(database, `scores/${existingScoreId}`), newScore)
                 .then(() => {
@@ -177,18 +173,35 @@ const MLGame = () => {
               setMessage('Failed to submit score. Please try again.');
             });
         }
-      },
-      {
-        onlyOnce: true,
-      }
-    );
+      })
+      .catch((error) => {
+        console.error('Failed to read scores:', error);
+        setMessage('Failed to submit score. Please try again.');
+      });
   };
 
   const cleanupScores = (scoresArray, scoresRef) => {
-    scoresArray.sort((a, b) => b.score - a.score || a.time - b.time);
+    const scoresByInitials = {};
 
-    if (scoresArray.length > 10) {
-      const scoresToRemove = scoresArray.slice(10); // Get scores beyond the top 10
+    scoresArray.forEach((score) => {
+      const existingScore = scoresByInitials[score.initials];
+      if (!existingScore) {
+        scoresByInitials[score.initials] = score;
+      } else {
+        if (
+          score.score > existingScore.score ||
+          (score.score === existingScore.score && score.time < existingScore.time)
+        ) {
+          scoresByInitials[score.initials] = score;
+        }
+      }
+    });
+
+    const uniqueScores = Object.values(scoresByInitials);
+    uniqueScores.sort((a, b) => b.score - a.score || a.time - b.time);
+
+    if (uniqueScores.length > 10) {
+      const scoresToRemove = uniqueScores.slice(10); // Get scores beyond the top 10
       scoresToRemove.forEach((score) => {
         const scoreRef = ref(database, `scores/${score.id}`);
         set(scoreRef, null)
@@ -239,7 +252,7 @@ const MLGame = () => {
       const newScore = {
         initials: initials,
         score: current - 1,
-        time: 60 - timeLeft,
+        time: timeElapsed,
       };
 
       submitScore(newScore);
@@ -251,54 +264,77 @@ const MLGame = () => {
     setShowHighScores(!showHighScores);
   };
 
-  const handleNumberClick = useCallback((number) => {
-    if (isGameOver) return;
+  const handleNumberClick = useCallback(
+    (number) => {
+      if (isGameOver) return;
 
-    if (number.value === current) {
-      setNumbers((prevNumbers) =>
-        prevNumbers.map((n) =>
-          n.value === number.value ? { ...n, status: 'correct' } : n
-        )
-      );
-      setCurrent((prev) => prev + 1);
+      if (number.value === current) {
+        setNumbers((prevNumbers) =>
+          prevNumbers.map((n) =>
+            n.value === number.value ? { ...n, status: 'correct' } : n
+          )
+        );
+        setCurrent((prev) => prev + 1);
 
-      if (current === 50) {
-        handleGameOver('Congratulations! You won!', 50, timeLeft);
+        if (current === 50) {
+          handleGameOver('Congratulations! You won!', 50);
+        }
+      } else if (number.status === 'correct') {
+        // Do nothing if the number is already correctly clicked
+        return;
+      } else {
+        setNumbers((prevNumbers) =>
+          prevNumbers.map((n) =>
+            n.value === number.value ? { ...n, status: 'incorrect' } : n
+          )
+        );
+        handleGameOver(`Wrong number clicked! Game Over.`, current - 1);
       }
-    } else if (number.status === 'correct') {
-      // Do nothing if the number is already correctly clicked
-      return;
-    } else {
-      setNumbers((prevNumbers) =>
-        prevNumbers.map((n) =>
-          n.value === number.value ? { ...n, status: 'incorrect' } : n
-        )
-      );
-      handleGameOver(`Wrong number clicked! Game Over.`, current - 1, timeLeft);
-    }
-  }, [current, isGameOver, handleGameOver, timeLeft]);
+    },
+    [current, isGameOver, handleGameOver]
+  );
 
   const handleStartOrRestart = () => {
     if (isGameOver && !gameStarted) {
       setIsGameOver(false);
       setGameStarted(true);
-      setTimeLeft(60);
+      setTimeElapsed(0);
     } else {
       initializeGame();
     }
   };
 
+  // Fisher-Yates shuffle algorithm
+  const shuffle = (array) => {
+    let currentIndex = array.length,
+      randomIndex;
+
+    // While there remain elements to shuffle.
+    while (currentIndex !== 0) {
+      // Pick a remaining element.
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+
+      // Swap it with the current element.
+      [array[currentIndex], array[randomIndex]] = [
+        array[randomIndex],
+        array[currentIndex],
+      ];
+    }
+
+    return array;
+  };
+
   const initializeGame = () => {
-    const shuffledNumbers = Array.from({ length: 50 }, (_, i) => i + 1).sort(
-      () => Math.random() - 0.5
-    );
+    const numbersArray = Array.from({ length: 50 }, (_, i) => i + 1);
+    const shuffledNumbers = shuffle(numbersArray);
     const initialNumbers = shuffledNumbers.map((value) => ({
       value,
       status: 'default',
     }));
     setNumbers(initialNumbers);
     setCurrent(1);
-    setTimeLeft(60);
+    setTimeElapsed(0);
     setIsGameOver(true);
     setMessage('');
     setGameStarted(false);
@@ -311,9 +347,7 @@ const MLGame = () => {
   return (
     <div className="ml-game">
       <div className="ml-game-header">
-        <div className={`ml-game-timer ${timeLeft <= 10 ? 'red-timer' : ''}`}>
-          {timeLeft}s
-        </div>
+        <div className="ml-game-timer">{timeElapsed}s</div>
         <button className="ml-game-button" onClick={handleStartOrRestart}>
           {isGameOver && !gameStarted ? 'Start' : 'Restart'}
         </button>
@@ -321,13 +355,13 @@ const MLGame = () => {
 
       {!gameStarted && (
         <div className="ml-game-description">
-          <h2 className="ml-game-title">Eagle Eye: 1-50 in 60</h2>
+          <h2 className="ml-game-title">Eagle Eye: 1-50 Challenge</h2>
           <p>
             Welcome to Eagle Eye, a game where we test your speed and precision.
             Your goal is to find and click all the numbers from 1 to 50 in
-            ascending order within 60 seconds. Compete to make it to the top 6
-            scorers list! Click the "Start" button when you're ready to begin. Good
-            luck!
+            ascending order as fast as you can. Compete to make it to the top 6
+            scorers list! Click the "Start" button when you're ready to begin.
+            Good luck!
           </p>
         </div>
       )}

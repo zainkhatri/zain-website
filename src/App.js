@@ -1,12 +1,12 @@
-// App.js
 import React, { useState, useEffect } from 'react';
 import './app.css';
 import Hero from './Hero';
 import Bio from './Bio';
 import Projects from './Projects';
 import Gallery from './Gallery';
-import resumePDF from './Zain Khatri Resume 2024.pdf';
+import resumePDF from './zain resume 2024.pdf';
 import Albums from './Albums.js';
+import { Analytics } from "@vercel/analytics/react"; // Import Analytics
 
 function App() {
   const [isContentExpanded, setIsContentExpanded] = useState(false);
@@ -33,13 +33,16 @@ function App() {
           Resume +
         </h2>
       </section>
-      <Gallery /> {/* Ensure Gallery section has a margin-bottom for spacing */}
-      <Albums onToggle={handleToggle} /> {/* Ensure Albums section has a margin-top for spacing */}
-      
+      <Gallery />
+      <Albums onToggle={handleToggle} />
+
       {/* Footer */}
       <footer className="footer">
         <p>©2024 Zain Khatri. All Rights Reserved.</p>
       </footer>
+
+      {/* Vercel Analytics */}
+      <Analytics />
     </div>
   );
 }

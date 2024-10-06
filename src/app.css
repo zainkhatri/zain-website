@@ -13,7 +13,7 @@ html, body {
   background-repeat: no-repeat;
   background-attachment: fixed;
   color: #ffffff;
-  font-family: 'Fahkwang', sans-serif; /* Updated to use Fahkwang for all text */
+  font-family: 'Fahkwang', sans-serif;
 }
 
 .App {
@@ -24,7 +24,7 @@ html, body {
 }
 
 b, strong {
-  font-family: 'Fahkwang', sans-serif; /* Updated to use Fahkwang for bold text */
+  font-family: 'Fahkwang', sans-serif; 
   font-weight: bold;
 }
 
@@ -42,7 +42,7 @@ button, a {
   color: #ffffff;
   text-align: center;
   padding: 10px 0;
-  position: relative; /* Adjust if you want it fixed or relative */
+  position: relative; 
   width: 100%;
   bottom: 0;
 }
