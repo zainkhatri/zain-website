@@ -5,7 +5,7 @@ import Hero from './Hero';
 import Bio from './Bio';
 import Projects from './Projects';
 import Gallery from './Gallery';
-import resumePDF from './Zain Khatri Resume 2024.pdf';
+import resumePDF from './zain resume 2024.pdf';
 import Albums from './Albums.js';
 
 function App() {

@@ -7,8 +7,8 @@
 .sketch-container {
   margin: 0 auto;
   width: 100%;
-  max-width: 1200px; /* Adjust as needed */
-  height: 50vh;      /* Adjust height as needed */
+  max-width: 1200px; 
+  height: 50vh;      
   position: relative;
   touch-action: none; /* Prevent default touch actions */
   border: 10px solid white; /* White border for classic arcade look */
