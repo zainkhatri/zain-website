@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react'; 
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import './MLGame.css';
 import { database, ref, set, push, onValue, get } from './firebase';
 
@@ -17,10 +17,29 @@ const MLGame = () => {
 
   const timerRef = useRef(null);
 
+  const initializeGame = useCallback(() => {
+    const numbersArray = Array.from({ length: 50 }, (_, i) => i + 1);
+    const shuffledNumbers = shuffle(numbersArray);
+    const initialNumbers = shuffledNumbers.map((value) => ({
+      value,
+      status: 'default',
+    }));
+    setNumbers(initialNumbers);
+    setCurrent(1);
+    setTimeElapsed(0);
+    setIsGameOver(true);
+    setMessage('');
+    setGameStarted(false);
+    setNextNumber(null);
+    setShowScoreInput(false);
+    setPlayerInitials('');
+    clearInterval(timerRef.current);
+  }, []);
+
   useEffect(() => {
     initializeGame();
     fetchHighScores();
-  }, []);
+  }, [initializeGame]);
 
   const handleGameOver = useCallback(
     (endMessage, finalScore) => {
@@ -136,8 +155,7 @@ const MLGame = () => {
                   setMessage(
                     'New high score! Your previous record has been updated.'
                   );
-                  fetchHighScores();
-                  cleanupScores(scoresArray, scoresRef); // Cleanup after updating
+                  fetchHighScores(); // Refresh leaderboard
                 })
                 .catch((error) => {
                   console.error('Failed to update score:', error);
@@ -152,8 +170,7 @@ const MLGame = () => {
             set(newScoreRef, newScore)
               .then(() => {
                 setMessage('New high score submitted successfully!');
-                fetchHighScores();
-                cleanupScores(scoresArray, scoresRef); // Cleanup after adding new score
+                fetchHighScores(); // Refresh leaderboard
               })
               .catch((error) => {
                 console.error('Failed to submit score:', error);
@@ -166,7 +183,7 @@ const MLGame = () => {
           set(newScoreRef, newScore)
             .then(() => {
               setMessage('First high score submitted successfully!');
-              fetchHighScores();
+              fetchHighScores(); // Refresh leaderboard
             })
             .catch((error) => {
               console.error('Failed to submit score:', error);
@@ -178,37 +195,6 @@ const MLGame = () => {
         console.error('Failed to read scores:', error);
         setMessage('Failed to submit score. Please try again.');
       });
-  };
-
-  const cleanupScores = (scoresArray, scoresRef) => {
-    const scoresByInitials = {};
-
-    scoresArray.forEach((score) => {
-      const existingScore = scoresByInitials[score.initials];
-      if (!existingScore) {
-        scoresByInitials[score.initials] = score;
-      } else {
-        if (
-          score.score > existingScore.score ||
-          (score.score === existingScore.score && score.time < existingScore.time)
-        ) {
-          scoresByInitials[score.initials] = score;
-        }
-      }
-    });
-
-    const uniqueScores = Object.values(scoresByInitials);
-    uniqueScores.sort((a, b) => b.score - a.score || a.time - b.time);
-
-    if (uniqueScores.length > 10) {
-      const scoresToRemove = uniqueScores.slice(10); // Get scores beyond the top 10
-      scoresToRemove.forEach((score) => {
-        const scoreRef = ref(database, `scores/${score.id}`);
-        set(scoreRef, null)
-          .then(() => console.log(`Removed score with ID: ${score.id}`))
-          .catch((error) => console.error('Failed to remove score:', error));
-      });
-    }
   };
 
   const handleScoreSubmit = () => {
@@ -323,25 +309,6 @@ const MLGame = () => {
     }
 
     return array;
-  };
-
-  const initializeGame = () => {
-    const numbersArray = Array.from({ length: 50 }, (_, i) => i + 1);
-    const shuffledNumbers = shuffle(numbersArray);
-    const initialNumbers = shuffledNumbers.map((value) => ({
-      value,
-      status: 'default',
-    }));
-    setNumbers(initialNumbers);
-    setCurrent(1);
-    setTimeElapsed(0);
-    setIsGameOver(true);
-    setMessage('');
-    setGameStarted(false);
-    setNextNumber(null);
-    setShowScoreInput(false);
-    setPlayerInitials('');
-    clearInterval(timerRef.current);
   };
 
   return (
