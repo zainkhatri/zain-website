@@ -91,9 +91,9 @@ function Projects() {
                 </a>
               </h3>
               <p className="project-description">
-              This algorithm controls an exoskeleton to help individuals with disabilities regain limb mobility. By using EEG data 
-              and supervised machine learning, the system interprets brainwaves to control the exoskeleton in real time, allowing 
-              users to walk and move. The algorithm significantly improves movement accuracy and responsiveness.
+              This algorithm uses EEG data and machine learning to control an exoskeleton, helping individuals with stroke or Parkinson’s improve mobility
+              and stability. By detecting left or right leaning in under 30 milliseconds with 90% accuracy, it provides real-time feedback to correct posture, 
+              prevent falls, and enable six distinct movement commands.
               </p>
               {/* Brain Activity Radar Chart */}
               <BrainActivityChart />
