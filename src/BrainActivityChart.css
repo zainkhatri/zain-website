@@ -20,7 +20,6 @@
     overflow: hidden;
 }
 
-/* Keep existing hover effects and background animations */
 .brain-activity-chart::before {
     content: '';
     position: absolute;
@@ -53,7 +52,6 @@
     padding: 20px 0;
 }
 
-/* Rest of your styles remain the same */
 .content-row {
     position: relative;
     z-index: 1;
@@ -78,7 +76,7 @@
     align-items: center;
     gap: 15px;
     width: 100%;
-    margin-top: -30px;
+    margin-top: -15px;
     z-index: 10;
 }
 
