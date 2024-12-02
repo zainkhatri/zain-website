@@ -98,14 +98,6 @@ function Projects() {
               {/* Brain Activity Radar Chart */}
               <BrainActivityChart />
             </div>
-            <motion.img
-              src={eegImage}
-              alt="Brainwave Measurement"
-              className="project-image exoskeleton-image"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-            />
           </div>
         </motion.div>
       )}

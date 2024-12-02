@@ -1,4 +1,3 @@
-import './BrainActivityChart.css';
 import React, { useState, useEffect } from 'react';
 import {
   PolarAngleAxis,
@@ -8,6 +7,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from 'recharts';
+import './BrainActivityChart.css';
 
 export default function BrainActivityChart() {
   const [chartData, setChartData] = useState([
@@ -23,7 +23,7 @@ export default function BrainActivityChart() {
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth <= 480) {
-        setAxisFontSize(5);
+        setAxisFontSize(8);
       } else if (window.innerWidth <= 768) {
         setAxisFontSize(10);
       } else {
@@ -32,8 +32,7 @@ export default function BrainActivityChart() {
     };
 
     window.addEventListener('resize', handleResize);
-    handleResize(); // Call once to set initial size
-
+    handleResize();
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
@@ -88,7 +87,6 @@ export default function BrainActivityChart() {
       default:
         break;
     }
-
     setChartData(newData);
   };
 
@@ -100,11 +98,10 @@ export default function BrainActivityChart() {
 
       <div className="content-row">
         <div className="chart-content">
-          <ResponsiveContainer width="100%" height={450}>
+          <ResponsiveContainer width="100%" height="100%">
             <RadarChart
               data={chartData}
               margin={{ top: 20, right: 30, bottom: 10, left: 30 }}
-              style={{ overflow: 'visible' }}
             >
               <PolarGrid stroke="#ccc" />
               <PolarAngleAxis 
@@ -148,12 +145,12 @@ export default function BrainActivityChart() {
           </ResponsiveContainer>
         </div>
 
-        <div className="button-group" style={{ zIndex: 10 }}>
-          <button className="button" onClick={() => handleActivityChange('thinking')} onTouchStart={() => handleActivityChange('thinking')}>Thinking</button>
-          <button className="button" onClick={() => handleActivityChange('visualProcessing')} onTouchStart={() => handleActivityChange('visualProcessing')}>Visual Processing</button>
-          <button className="button" onClick={() => handleActivityChange('left')} onTouchStart={() => handleActivityChange('left')}>Look Left</button>
-          <button className="button" onClick={() => handleActivityChange('right')} onTouchStart={() => handleActivityChange('right')}>Look Right</button>
-          <button className="button" onClick={() => handleActivityChange('straight')} onTouchStart={() => handleActivityChange('straight')}>Look Straight</button>
+        <div className="button-group">
+          <button className="button" onClick={() => handleActivityChange('thinking')}>Thinking</button>
+          <button className="button" onClick={() => handleActivityChange('visualProcessing')}>Visual Processing</button>
+          <button className="button" onClick={() => handleActivityChange('left')}>Look Left</button>
+          <button className="button" onClick={() => handleActivityChange('right')}>Look Right</button>
+          <button className="button" onClick={() => handleActivityChange('straight')}>Look Straight</button>
         </div>
       </div>
     </div>
