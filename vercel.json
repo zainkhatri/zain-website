@@ -1,0 +1,6 @@
+{
+  "version": 2,
+  "rewrites": [
+    { "source": "/api/get-meal", "destination": "/api/get-meal" }
+  ]
+}

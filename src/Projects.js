@@ -6,6 +6,7 @@ import './projects.css';
 import MLGame from './MLGame';
 import RoverSimulation from './RoverSimulation';
 import BrainActivityChart from './BrainActivityChart';
+import MunchMate from './MunchMate';
 
 function Projects() {
   const [areProjectsVisible, setAreProjectsVisible] = useState(false);
@@ -64,19 +65,24 @@ function Projects() {
               />
             </div>
 
-            {/* ML Game Section */}
+         {/* MunchMate Project */}
             <div className="project">
               <div className="project-content">
                 <h3 className="project-title">
                   <a
-                    href="https://github.com/zainkhatri/eagle-eye-game"
+                    href="https://github.com/zainkhatri/munchmate"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    Eagle Eye Algorithm
+                    MunchMate - AI Recipe Generator
                   </a>
                 </h3>
-                <MLGame />
+                <p className="project-description">
+                  An AI-powered recipe generator that transforms available ingredients into 
+                  healthy, delicious meals. Built with React and OpenAI's GPT-3.5, it provides 
+                  personalized recipes with nutritional information and workout plans.
+                </p>
+                <MunchMate />
               </div>
             </div>
 
@@ -99,6 +105,23 @@ function Projects() {
                 </p>
                 <BrainActivityChart />
               </div>
+
+            {/* ML Game Section */}
+            <div className="project">
+              <div className="project-content">
+                <h3 className="project-title">
+                  <a
+                    href="https://github.com/zainkhatri/eagle-eye-game"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Eagle Eye Algorithm
+                  </a>
+                </h3>
+                <MLGame />
+              </div>
+            </div>
+
             </div>
           </motion.div>
         )}
