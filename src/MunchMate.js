@@ -6,6 +6,7 @@ const MunchMate = () => {
   const [recipe, setRecipe] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [selectedGoals, setSelectedGoals] = useState(new Set());
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -29,7 +30,10 @@ const MunchMate = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ ingredients: ingredientList })
+        body: JSON.stringify({ 
+          ingredients: ingredientList,
+          fitnessGoals: Array.from(selectedGoals)
+        })
       });
 
       if (!response.ok) {
@@ -45,20 +49,29 @@ const MunchMate = () => {
     }
   };
 
+  const toggleGoal = (goal) => {
+    const newSelectedGoals = new Set(selectedGoals);
+    if (selectedGoals.has(goal)) {
+      newSelectedGoals.delete(goal);
+    } else {
+      newSelectedGoals.add(goal);
+    }
+    setSelectedGoals(newSelectedGoals);
+  };
+
   return (
     <div className="munchmate-container">
       <header className="munchmate-header">
         <h2 className="munchmate-title">MunchMate</h2>
-        <p className="munchmate-tagline">Transform ingredients into healthy, delicious meals!</p>
+        <p className="munchmate-tagline">Transform your ingredients into healthy, delicious meals!</p>
       </header>
 
-      <form onSubmit={handleSubmit} className="input-container">
+      <div className="input-container">
         <div className="input-group">
-          <label className="input-label" htmlFor="ingredients-input">
+          <label className="input-label">
             What ingredients do you have?
           </label>
           <input
-            id="ingredients-input"
             type="text"
             value={ingredients}
             onChange={(e) => setIngredients(e.target.value)}
@@ -68,21 +81,35 @@ const MunchMate = () => {
           />
         </div>
 
+        <div className="input-group">
+          <label className="input-label">Select your fitness goals:</label>
+          <div className="fitness-goals-grid">
+            {['Weight Loss', 'Muscle Gain', 'General Fitness'].map((goal) => (
+              <button
+                key={goal}
+                onClick={() => toggleGoal(goal)}
+                className={`fitness-goal-button ${selectedGoals.has(goal) ? 'selected' : ''}`}
+              >
+                <input
+                  type="checkbox"
+                  checked={selectedGoals.has(goal)}
+                  onChange={() => toggleGoal(goal)}
+                  className="fitness-checkbox"
+                />
+                <span>{goal}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+
         <button
-          type="submit"
+          onClick={handleSubmit}
           disabled={loading}
           className="generate-button"
         >
-          {loading ? (
-            <div className="loading-state">
-              <div className="loading-spinner"></div>
-              <span>Creating your recipe...</span>
-            </div>
-          ) : (
-            'Create Magic Meal'
-          )}
+          {loading ? 'Generating...' : 'Generate Recipe'}
         </button>
-      </form>
+      </div>
 
       {error && (
         <div className="error-message" role="alert">

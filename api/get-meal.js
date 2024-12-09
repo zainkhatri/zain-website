@@ -30,7 +30,7 @@ module.exports = async (req, res) => {
       apiKey: process.env.OPENAI_API_KEY,
     });
 
-    const { ingredients } = req.body;
+    const { ingredients, fitnessGoals } = req.body;
 
     if (!ingredients || !Array.isArray(ingredients) || ingredients.length === 0) {
       return res.status(400).json({ 
@@ -39,12 +39,16 @@ module.exports = async (req, res) => {
       });
     }
 
+    const fitnessInstructions = fitnessGoals && fitnessGoals.length > 0
+      ? `Create a recipe that supports these fitness goals: ${fitnessGoals.join(', ')}. `
+      : '';
+
     const completion = await openai.chat.completions.create({
       model: 'gpt-3.5-turbo',
       messages: [
         {
           role: "system",
-          content: `You are a professional chef. Create recipes that are practical and easy to follow. Format your response in plain text exactly as shown below, with double newlines between sections and no additional formatting:
+          content: `You are a professional chef and nutritionist. Create recipes that are practical and easy to follow. Format your response in plain text exactly as shown below, with double newlines between sections and no additional formatting:
 
 [Recipe Name]
 
@@ -57,34 +61,52 @@ Ingredients
 Steps
 [Number each step, one per line]
 
+Nutrition Facts
+[Calories, protein, carbs, and fats]
+
+Health Benefits
+[List 2-3 health benefits relevant to the fitness goals]
+
 A good recipe response example:
 
-Garlic Shrimp Pasta
+High-Protein Chicken Stir-Fry
 
 Cooking Time
-20 minutes
+25 minutes
 
 Ingredients
-8 oz pasta
-1 lb shrimp
-4 cloves garlic
-2 tbsp olive oil
+1 lb chicken breast, diced
+2 cups mixed vegetables
+3 cloves garlic
+2 tbsp soy sauce
+1 tbsp olive oil
 Salt and pepper to taste
 
 Steps
-1. Boil pasta according to package instructions
-2. Heat olive oil in a large pan
-3. Add minced garlic and cook until fragrant
-4. Add shrimp and cook until pink
-5. Combine with pasta and serve`
-          },
+1. Heat oil in a large pan over medium-high heat
+2. Add diced chicken and cook until golden
+3. Add vegetables and garlic
+4. Stir in soy sauce and seasonings
+5. Cook until vegetables are tender-crisp
+
+Nutrition Facts
+Calories: 350
+Protein: 42g
+Carbs: 15g
+Fat: 12g
+
+Health Benefits
+- High in lean protein for muscle building
+- Rich in vitamins and minerals for recovery
+- Low in calories to support weight management`
+        },
         {
           role: "user",
-          content: `Create a recipe using these ingredients: ${ingredients.join(', ')}`
+          content: `${fitnessInstructions}Create a recipe using these ingredients: ${ingredients.join(', ')}`
         }
       ],
       temperature: 0.7,
-      max_tokens: 500,
+      max_tokens: 600,
     });
 
     console.log('OpenAI request successful');

@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Fahkwang:wght@300;400;500;600;700&display=swap');
+
 :root {
     --primary-color: #3b82f6;
     --primary-dark: #2563eb;
@@ -246,6 +248,83 @@
     max-width: 800px;
     text-align: center;
   }
+
+.fitness-goals-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    font-family: 'Fahkwang', sans-serif;
+}
+
+.fitness-goal-button {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 0.5rem;
+    color: var(--text-color);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: 'Fahkwang', sans-serif;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+}
+
+.fitness-goal-button:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.fitness-goal-button.selected {
+    background: rgba(59, 130, 246, 0.2);
+    border-color: var(--primary-color);
+}
+
+.fitness-checkbox {
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 0.25rem;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    appearance: none;
+    -webkit-appearance: none;
+    cursor: pointer;
+    position: relative;
+}
+
+.fitness-checkbox:checked {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.fitness-checkbox:checked::after {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 2px;
+    width: 6px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+/* Update these existing classes */
+.input-field {
+    background: rgba(255, 255, 255, 0.05);
+    font-family: 'Fahkwang', sans-serif;
+    font-weight: 400;
+    letter-spacing: 0.01em;
+}
+
+.generate-button {
+    background: var(--primary-color);
+    margin-top: 1rem;
+    font-family: 'Fahkwang', sans-serif;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+}
 
   /* Enhanced Responsive Design */
 @media screen and (max-width: 1024px) {
