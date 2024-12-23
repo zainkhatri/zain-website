@@ -104,9 +104,13 @@ export default function BrainActivityChart() {
               margin={{ top: 20, right: 30, bottom: 10, left: 30 }}
             >
               <PolarGrid stroke="#ccc" />
-              <PolarAngleAxis 
-                dataKey="region" 
-                tick={{ fill: '#fff', fontSize: axisFontSize }} 
+              <PolarAngleAxis
+                dataKey="region"
+                tick={{
+                  fill: '#fff',
+                  fontSize: axisFontSize,
+                  fontFamily: 'Play, sans-serif', // Enforce the font here
+                }}
               />
               <Radar
                 name="Activity"
@@ -139,7 +143,12 @@ export default function BrainActivityChart() {
                   return [`${value}%`, `${regionDescription}`];
                 }}
                 labelFormatter={(label) => `Region: ${label}`}
-                contentStyle={{ backgroundColor: "#222", color: "#fff", borderRadius: '8px' }}
+                contentStyle={{
+                  backgroundColor: '#222',
+                  color: '#fff',
+                  borderRadius: '8px',
+                  fontFamily: 'Play, sans-serif', // Enforce the font in tooltips
+                }}
               />
             </RadarChart>
           </ResponsiveContainer>
