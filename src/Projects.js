@@ -121,7 +121,6 @@ function Projects() {
                 <MLGame />
               </div>
             </div>
-
             </div>
           </motion.div>
         )}

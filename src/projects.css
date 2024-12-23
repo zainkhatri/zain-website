@@ -81,6 +81,7 @@
   .project-title {
     font-size: 4.625vw;
     margin-bottom: 15px;
+    margin-left: 20px;
   }
 
   .project-description {
@@ -95,18 +96,37 @@
 }
 
 @media screen and (max-width: 480px) {
+  .project {
+      flex-direction: column;
+      align-items: center;
+  }
+
+  .project-image {
+      width: 90%; /* Adjust width for smaller screens */
+      margin: 0 auto; /* Center image */
+  }
+
+  .project-content {
+      margin: 0 auto; /* Center project content */
+      text-align: center; /* Align text centrally */
+      width: 90%; /* Prevent content from stretching */
+      background-color: rgba(255, 255, 255, 0.1); /* Optional subtle background */
+      border-radius: 10px;
+      padding: 15px;
+  }
+
   .project-title {
-    font-size: 21.25px;
-    margin-left: -10px;
+      font-size: 18px; /* Consistent font size */
+      margin: 10px auto;
   }
 
   .project-description {
-    font-size: 5.25vw;
-    margin-left: -20px;
-    margin-right: 0px;
-    padding: 10px;
+      font-size: 16px;
+      margin: 10px auto;
+      padding: 10px;
   }
 }
+
 
 @media screen and (min-width: 769px) {
   .project-image {
