@@ -249,37 +249,39 @@
     text-align: center;
   }
 
-.fitness-goals-grid {
+  .fitness-goals-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); /* Dynamically adjusts to screen size */
     gap: 1rem;
     margin-bottom: 1.5rem;
     font-family: 'Fahkwang', sans-serif;
+    padding: 0 1rem; /* Adds padding to prevent clipping */
 }
 
 .fitness-goal-button {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 1rem;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 0.5rem;
-    color: var(--text-color);
-    cursor: pointer;
-    transition: all 0.2s ease;
-    font-family: 'Fahkwang', sans-serif;
-    font-weight: 400;
-    letter-spacing: 0.02em;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.875rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  color: var(--text-color);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: 'Fahkwang', sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  justify-content: center; /* Ensures button content is centered */
 }
 
 .fitness-goal-button:hover {
-    background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .fitness-goal-button.selected {
-    background: rgba(59, 130, 246, 0.2);
-    border-color: var(--primary-color);
+  background: rgba(59, 130, 246, 0.2);
+  border-color: var(--primary-color);
 }
 
 .fitness-checkbox {
@@ -349,9 +351,10 @@
 
 @media screen and (max-width: 768px) {
   .munchmate-container {
-    margin: 0.75rem;
+    margin: 0 auto; /* Center the entire container */
     padding: 1rem;
     border-radius: 0.75rem;
+    text-align: center; /* Center-align the content */
   }
 
   .munchmate-title {
@@ -407,13 +410,27 @@
     font-size: 1.25rem;
     margin-bottom: 0.875rem;
   }
+
+  .fitness-goals-grid {
+    display: flex; /* Switch from grid to flex for better centering */
+    flex-wrap: wrap; /* Allow buttons to wrap if necessary */
+    justify-content: center; /* Center buttons horizontally */
+    gap: 1rem; /* Maintain spacing between buttons */
+}
+
+.fitness-goal-button {
+    width: auto; /* Allow buttons to shrink appropriately */
+    min-width: 100px; /* Maintain a reasonable button size */
+    text-align: center; /* Center-align button content */
+  }
 }
 
 @media screen and (max-width: 480px) {
   .munchmate-container {
-    margin: 0.5rem;
+    margin: 0 auto; /* Center the entire container */
     padding: 0.75rem;
     border-radius: 0.5rem;
+    text-align: center; /* Center-align the content */
   }
 
   .munchmate-container::before {
@@ -497,6 +514,16 @@
     border-radius: 0.375rem;
     margin: 0.75rem auto;
   }
+
+  .fitness-goals-grid {
+    flex-direction: column; /* Stack buttons vertically on very small screens */
+    gap: 0.75rem; /* Adjust spacing for smaller screens */
+  }
+
+.fitness-goal-button {
+    width: 100%; /* Make buttons full width for vertical stacking */
+    text-align: center; /* Center-align button content */
+  } 
 }
 
 /* New addition for very small devices */

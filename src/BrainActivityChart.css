@@ -6,7 +6,7 @@
     margin: 10px auto;
     padding-bottom: 20px;
     background: linear-gradient(135deg, #111 0%, #1a1a1a 100%);
-    border: 10px solid;
+    border: 5px solid;
     border-image: linear-gradient(45deg, #7873f5, #ff6ec4) 1;
     border-radius: 10px;
     display: flex;
