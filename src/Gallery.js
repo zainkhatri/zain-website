@@ -9,11 +9,10 @@ import img6 from './images/6.jpeg';
 import img7 from './images/7.jpeg';
 import img8 from './images/8.jpeg';
 import img9 from './images/9.jpeg';
+import img10 from './images/10.jpeg';
 import img12 from './images/12.jpeg';
 import img13 from './images/13.jpeg';
-import img14 from './images/14.jpeg';
-import img15 from './images/15.jpeg';
-import img16 from './images/16.jpeg';
+
 import './gallery.css';
 
 function Gallery() {
@@ -36,9 +35,12 @@ function Gallery() {
             transition={{ duration: 0.3 }}
           >
             <div className="gallery-grid">
-              {[img13, img4 , img6, img5 , img8, img1, img7, img3, img9, img2 , img14, img12].map((img, index) => (
+              {[img1, img8, img3, img6, img5, img4, img7, img2, img9, img10, img12, img13].map((img, index) => (
                 <div key={index} className="gallery-item">
-                  <img src={img} alt={`Gallery ${index + 1}`} />
+                  <img
+                    src={img}
+                    alt={`Gallery ${index + 1}`}
+                  />
                 </div>
               ))}
             </div>
