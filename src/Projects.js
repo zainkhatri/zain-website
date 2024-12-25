@@ -85,7 +85,21 @@ function Projects() {
                 <MunchMate />
               </div>
             </div>
-
+            {/* ML Game Section */}
+            <div className="project">
+              <div className="project-content">
+                <h3 className="project-title">
+                  <a
+                    href="https://github.com/zainkhatri/eagle-eye-game"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Eagle Eye Algorithm
+                  </a>
+                </h3>
+                <MLGame />
+              </div>
+            </div>
             {/* Exoskeleton Project */}
             <div className="project">
               <div className="project-content">
@@ -105,22 +119,6 @@ function Projects() {
                 </p>
                 <BrainActivityChart />
               </div>
-
-            {/* ML Game Section */}
-            <div className="project">
-              <div className="project-content">
-                <h3 className="project-title">
-                  <a
-                    href="https://github.com/zainkhatri/eagle-eye-game"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Eagle Eye Algorithm
-                  </a>
-                </h3>
-                <MLGame />
-              </div>
-            </div>
             </div>
           </motion.div>
         )}
