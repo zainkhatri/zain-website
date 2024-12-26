@@ -99,7 +99,7 @@ function Projects() {
                 </h3>
                 <MLGame />
               </div>
-            </div>
+            </div>``
             {/* Exoskeleton Project */}
             <div className="project">
               <div className="project-content">
