@@ -1,7 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import roverImage from './rover.jpeg';
-import eegImage from './eeg.jpeg';
 import './projects.css';
 import MLGame from './MLGame';
 import RoverSimulation from './RoverSimulation';
@@ -94,12 +93,12 @@ function Projects() {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    Eagle Eye Algorithm
+                    Eagle Eye
                   </a>
                 </h3>
                 <MLGame />
               </div>
-            </div>``
+            </div>
             {/* Exoskeleton Project */}
             <div className="project">
               <div className="project-content">
