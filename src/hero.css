@@ -13,7 +13,7 @@
     max-width: 1200px;
     width: 100%;
     text-align: left;
-    margin-bottom: -90px;
+    margin-bottom: -130px;
     color: #ffffff;
 }
 
@@ -85,6 +85,13 @@
 
 .hero-content .expandable-title.expanded {
     font-size: inherit;
+}
+
+@media screen and (max-width: 1020px) {
+
+  .hero-content {
+    margin-bottom: -60px;
+  }
 }
 
 @media screen and (max-width: 768px) {

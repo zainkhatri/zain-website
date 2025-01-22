@@ -18,34 +18,6 @@ To get started, ensure you have the following tools installed:
 - **[Node.js](https://nodejs.org/)**: The runtime environment for JavaScript.
 - **Package Manager**: Either [npm](https://www.npmjs.com/) or [yarn](https://yarnpkg.com/) is recommended to manage dependencies.
 
-### Installation
-
-1. **Clone the Repository**
-   
-   ```sh
-   git clone https://github.com/zainkhatri/zain-website.git
-   cd zain-website
-   ```
-
-2. **Install Dependencies**
-   
-   ```sh
-   npm install
-   ```
-   or, if using yarn:
-   
-   ```sh
-   yarn install
-   ```
-
-### Available Scripts
-
-In the project directory, you can run:
-
-- **`npm start`** or **`yarn start`**: Runs the app in development mode. Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-- **`npm build`** or **`yarn build`**: Builds the app for production, optimizing the output for the best performance.
-
 ### Deployment
 
 The website is currently hosted on [Vercel](https://vercel.com/). To deploy any changes, push to the main branch, and Vercel will automatically build and deploy the latest version.

@@ -22,7 +22,7 @@ function Bio() {
             transition={{ duration: 0.3 }}
           >
             <p>
-              Hi, I'm Zain! I'm a Senior at the University of California, San Diego, pursuing a degree in CS/COGSCI & ML. I've been fortunate to work on diverse projects, like developing algorithms for exoskeletons, building autonomous rovers, and creating real-time detection and data management.
+              Hi, I'm Zain! I'm a Senior at the University of California, San Diego, pursuing a degree in COGSCI & ML. I've been fortunate to work on diverse projects, like developing algorithms for exoskeletons, building autonomous rovers, and creating real-time detection and data management.
             </p>
             <p>
               Aside from technical work, I love to play basketball, learn new songs on the guitar, skateboard, play chess, and meet new people when I have the pleasure.

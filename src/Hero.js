@@ -61,7 +61,7 @@ function Hero() {
             }}
           />
           </h1>
-          <h2>Computer Science & Cognitive Science with specialization in Machine Learning</h2>
+          <h2>Cognitive Science & Machine Learning</h2>
           <p>Creating solutions that merge technology and human cognition. Peace be upon you.</p>
         </div>
         <div className="image-and-contact">
