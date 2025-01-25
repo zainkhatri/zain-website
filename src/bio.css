@@ -18,7 +18,7 @@
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.3s ease;
-  margin-top: 3px; /* Reduced top margin */
+  margin-top: 5px; /* Reduced top margin */
 }
 
 .content.expanded {
