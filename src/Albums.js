@@ -12,11 +12,15 @@ import img9 from './images/bleach.jpeg';
 import img10 from './images/wgo.jpeg';
 import img11 from './images/testing.jpeg';
 import img12 from './images/beauty behind the madness.jpeg';
-
 import img13 from './images/led zep.jpeg';
 import img14 from './images/blond.jpeg';
 import img15 from './images/currents.jpeg';
 import img16 from './images/astro.jpeg';
+// New imports
+import img17 from './images/mj.jpeg';
+import img18 from './images/faces.jpeg';
+import img19 from './images/love.jpeg';
+import img20 from './images/utopia.jpeg';
 
 import './albums.css';
 
@@ -34,17 +38,28 @@ const spotifyLinks = [
   'https://open.spotify.com/album/2v6ANhWhZBUKkg6pJJBs3B', 
   'https://open.spotify.com/album/3MATDdrpHmQCmuOcozZjDa', 
   'https://open.spotify.com/album/0P3oVJBFOv3TDXlYRhGL7s', 
-
   'https://open.spotify.com/album/70lQYZtypdCALtFVlQAcvx', 
   'https://open.spotify.com/album/3mH6qwIy9crq0I9YQbOuDf', 
   'https://open.spotify.com/album/79dL7FLiJFOO0EoehUHQBv', 
-  'https://open.spotify.com/album/41GuZcammIkupMPKH2OJ6I', 
+  'https://open.spotify.com/album/41GuZcammIkupMPKH2OJ6I',
+  // New Spotify links
+  'https://open.spotify.com/album/2ANVost0y2y52ema1E9xAZ', // Thriller
+  'https://open.spotify.com/album/5SKnXCvB4fcGSZu32o3LRY', // Faces
+  'https://open.spotify.com/album/2Q2TRdT994vTzGE3Grmmht', // Love Sick
+  'https://open.spotify.com/album/18NOKLkZETa4sWwLMIm0UZ'  // Utopia
 ];
 
 function Albums() {
   const [isAlbumsVisible, setIsAlbumsVisible] = useState(false);
 
   const toggleAlbums = () => setIsAlbumsVisible(!isAlbumsVisible);
+
+  // Create an array of all album images
+  const albumImages = [
+    img1, img2, img3, img4, img5, img6, img7, img8, 
+    img9, img10, img11, img12, img13, img14, img15, img16,
+    img17, img18, img19, img20 // Added the new albums
+  ];
 
   return (
     <section id="albums" className={`content-section albums ${isAlbumsVisible ? 'expanded-margin' : ''}`}>
@@ -61,9 +76,9 @@ function Albums() {
             transition={{ duration: 0.3 }}
           >
             <div className="albums-grid">
-              {[img1, img2, img3, img4, img5, img6, img7, img8, img9, img10, img11, img12, img13, img14, img15, img16].map((img, index) => (
+              {albumImages.map((img, index) => (
                 <a key={index} href={spotifyLinks[index]} target="_blank" rel="noopener noreferrer" className="albums-item">
-                  <img src={img} alt={`Albums ${index + 1}`} />
+                  <img src={img} alt={`Album ${index + 1}`} />
                 </a>
               ))}
             </div>
