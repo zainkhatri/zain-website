@@ -74,7 +74,7 @@ function Hero() {
             transition={{ duration: 1, ease: 'easeInOut' }}
           />
           <div className="contact-section">
-            <a href="mailto:zainkhatri2560@gmail.com" aria-label="Email">
+            <a href="mailto:zainnkhatri@gmail.com" aria-label="Email">
               <i className="fas fa-envelope"></i>
             </a>
             <a href="https://www.linkedin.com/in/zainkhatri2560" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
