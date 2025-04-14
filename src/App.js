@@ -4,7 +4,7 @@ import Hero from './Hero';
 import Bio from './Bio';
 import Projects from './Projects';
 import Gallery from './Gallery';
-import resumePDF from './resumes.pdf';
+import resumePDF from './resume.pdf';
 import Albums from './Albums.js';
 import { Analytics } from "@vercel/analytics/react"; // Import Analytics
 
