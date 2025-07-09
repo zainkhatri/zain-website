@@ -61,7 +61,14 @@ let laserBeamLength = 0;
 let danceAngle = 0;
 
 p.setup = () => {
-  p.createCanvas(containerSize.width, containerSize.height).parent(sketchRef.current);
+  const canvas = p.createCanvas(containerSize.width, containerSize.height).parent(sketchRef.current);
+  
+  // Mobile optimizations
+  canvas.style('touch-action', 'none');
+  canvas.style('user-select', 'none');
+  canvas.style('-webkit-user-select', 'none');
+  canvas.style('-webkit-touch-callout', 'none');
+  
   rover = new Rover(waypoints[0].x * p.width, waypoints[0].y * p.height);
   updateObstacles();
 };
@@ -308,14 +315,17 @@ const isBBlocked = () => {
 p.draw = () => {
   p.background(240);
 
-  // Draw grid
+  // Draw grid (optimized for mobile)
   p.stroke(200);
-  for (let i = 0; i < p.width; i += 50) {
+  p.strokeWeight(0.5); // Thinner lines for mobile performance
+  const gridStep = p.width < 600 ? 100 : 50; // Larger grid on mobile
+  for (let i = 0; i < p.width; i += gridStep) {
     p.line(i, 0, i, p.height);
   }
-  for (let i = 0; i < p.height; i += 50) {
+  for (let i = 0; i < p.height; i += gridStep) {
     p.line(0, i, p.width, i);
   }
+  p.strokeWeight(1); // Reset stroke weight
 
   // Draw waypoints
   for (let wp of waypoints) {
@@ -696,13 +706,26 @@ p.mouseDragged = (event) => {
   }
 };
 
-// For touch devices
+// For touch devices - improved mobile support
 p.touchStarted = (event) => {
-  p.mousePressed(event);
+  if (event && event.preventDefault) {
+    event.preventDefault();
+  }
+  return p.mousePressed(event);
 };
 
 p.touchMoved = (event) => {
-  p.mouseDragged(event);
+  if (event && event.preventDefault) {
+    event.preventDefault();
+  }
+  return p.mouseDragged(event);
+};
+
+p.touchEnded = (event) => {
+  if (event && event.preventDefault) {
+    event.preventDefault();
+  }
+  return false;
 };
 
 // Control functions accessible from outside the sketch
@@ -1020,12 +1043,15 @@ class Rover {
 
   readSensors(obstacles) {
     let readings = [this.sensorRange, this.sensorRange, this.sensorRange];
+    const isMobile = p.width < 600; // Simple mobile detection
+    const sensorStep = isMobile ? 4 : 2; // Reduce sensor resolution on mobile
+    
     for (let i = 0; i < this.numSensors; i++) {
       let sensorAngle = this.angle + this.sensorAngles[i];
       let sensorDistance = this.sensorRange;
 
-      // Check for obstacles along each sensor's path
-      for (let d = 0; d <= this.sensorRange; d += 2) {
+      // Check for obstacles along each sensor's path (optimized for mobile)
+      for (let d = 0; d <= this.sensorRange; d += sensorStep) {
         let sensorX = this.x + d * p.cos(sensorAngle);
         let sensorY = this.y + d * p.sin(sensorAngle);
 
