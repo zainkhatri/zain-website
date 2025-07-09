@@ -22,19 +22,69 @@ module.exports = async (req, res) => {
       require('dotenv').config({ path: '.env.local' });
     }
 
-    console.log('Environment:', {
+    console.log('Environment Debug:', {
       nodeEnv: process.env.NODE_ENV,
       hasApiKey: !!process.env.OPENAI_API_KEY,
-      vercel: !!process.env.VERCEL
+      vercel: !!process.env.VERCEL,
+      vercelEnv: process.env.VERCEL_ENV,
+      allEnvKeys: Object.keys(process.env).filter(key => key.includes('OPENAI') || key.includes('API'))
     });
 
     const apiKey = process.env.OPENAI_API_KEY;
     
     if (!apiKey) {
       console.error('OpenAI API key not found in environment variables');
-      return res.status(500).json({ 
-        error: 'Service temporarily unavailable',
-        details: 'API configuration error'
+      
+      // Provide a fallback response for demo purposes
+      const { ingredients, fitnessGoals } = req.body;
+      
+      if (!ingredients || !Array.isArray(ingredients) || ingredients.length === 0) {
+        return res.status(400).json({ 
+          error: 'Invalid ingredients format',
+          received: ingredients 
+        });
+      }
+
+      const fitnessText = fitnessGoals && fitnessGoals.length > 0 
+        ? ` for ${fitnessGoals.join(', ').toLowerCase()}` 
+        : '';
+
+      const fallbackRecipe = `Healthy ${ingredients[0].charAt(0).toUpperCase() + ingredients[0].slice(1)} Recipe${fitnessText}
+
+Cooking Time
+30 minutes
+
+Ingredients
+${ingredients.map(ingredient => `- ${ingredient.trim()}`).join('\n')}
+- Salt and pepper to taste
+- Olive oil
+- Fresh herbs (optional)
+
+Steps
+1. Prepare all ingredients by washing and chopping as needed
+2. Heat olive oil in a large pan over medium heat
+3. Add main ingredients (${ingredients.slice(0, 2).join(', ')}) and cook for 5-7 minutes
+4. Season with salt, pepper, and herbs
+5. Continue cooking until ingredients are tender and well combined
+6. Serve hot and enjoy!
+
+Nutrition Facts
+Calories: 250-350 (estimated)
+Protein: 15-25g
+Carbs: 20-30g
+Fat: 8-15g
+
+Health Benefits
+- Rich in essential nutrients and vitamins
+- Provides balanced macronutrients
+- Made with fresh, wholesome ingredients${fitnessGoals.includes('Weight Loss') ? '\n- Low in calories to support weight management' : ''}${fitnessGoals.includes('Muscle Gain') ? '\n- High protein content for muscle building' : ''}
+
+Note: This is a demo recipe. For personalized nutrition advice, please consult a registered dietitian.`;
+
+      return res.status(200).json({
+        status: 'success',
+        mealSuggestion: fallbackRecipe,
+        demo: true
       });
     }
 

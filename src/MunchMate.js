@@ -8,6 +8,7 @@ const MunchMate = () => {
   const [error, setError] = useState('');
   const [selectedGoals, setSelectedGoals] = useState(new Set());
   const [apiStatus, setApiStatus] = useState('checking');
+  const [isDemoMode, setIsDemoMode] = useState(false);
 
   // Test API connectivity on component mount
   useEffect(() => {
@@ -42,6 +43,7 @@ const MunchMate = () => {
     setLoading(true);
     setError('');
     setRecipe(null);
+    setIsDemoMode(false);
 
     try {
       const ingredientList = ingredients
@@ -67,6 +69,7 @@ const MunchMate = () => {
       }
 
       setRecipe(data.mealSuggestion);
+      setIsDemoMode(data.demo || false);
     } catch (err) {
       console.error('Recipe generation error:', err);
       
@@ -106,6 +109,7 @@ const MunchMate = () => {
   const handleTryAgain = () => {
     setError('');
     setRecipe(null);
+    setIsDemoMode(false);
   };
 
   return (
@@ -163,7 +167,7 @@ const MunchMate = () => {
 
         <button
           onClick={handleSubmit}
-          disabled={loading || !ingredients.trim() || apiStatus === 'disconnected'}
+          disabled={loading || !ingredients.trim()}
           className="generate-button"
         >
           {loading ? 'Generating Recipe...' : 'Generate Recipe'}
@@ -186,6 +190,11 @@ const MunchMate = () => {
 
       {recipe && (
         <div className="recipe-result">
+          {isDemoMode && (
+            <div className="demo-notice">
+              <p>🧪 <strong>Demo Mode:</strong> This is a sample recipe. Full AI-powered recipes are temporarily unavailable.</p>
+            </div>
+          )}
           <div className="recipe-container">
             {recipe.split('\n\n').map((section, index) => {
               const lines = section.split('\n');
