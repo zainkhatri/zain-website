@@ -1,0 +1,76 @@
+.expandable-title {
+  font-size: 2.3em; /* Adjusted font size */
+  font-weight: 700;
+  margin-top: 5px;
+  margin-bottom: 20px; /* Increased bottom margin */
+  color: #ffffff;
+  cursor: pointer;
+  transition: font-size 0.2s ease, transform 0.2s ease;
+}
+
+.expandable-title:hover {
+  font-size: 2.6em; /* Adjusted hover font size */
+  transform: scale(1.02); /* Slightly smaller scale effect */
+}
+
+.content {
+  font-size: 1.6em;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+  margin-top: 5px; /* Reduced top margin */
+}
+
+.content.expanded {
+  max-height: none;
+}
+
+/* Responsive Styles */
+
+/* For screens up to 768px */
+@media screen and (max-width: 768px) {
+  .expandable-title {
+    font-size: 4vw;
+    margin-left: 20px;
+    cursor: pointer;
+    transition: none;
+  }
+
+  .expandable-title:hover {
+    font-size: 4vw;
+    transform: none;
+  }
+
+  .content {
+    font-size: 3.5vw;
+    transition: max-height 0.3s ease, opacity 0.3s ease;
+  }
+}
+
+/* For screens up to 480px */
+@media screen and (max-width: 480px) {
+  .expandable-title {
+    margin-left: 10px;
+    font-size: 8vw;
+    cursor: pointer;
+    transition: none;
+  }
+
+  .expandable-title:hover {
+    font-size: 10vw;
+    transform: none;
+  }
+
+  .content {
+    font-size: 5vw;
+    transition: max-height 0.3s ease, opacity 0.3s ease;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+}
+
+@media (max-width: 768px) {
+  #resume {
+    display: none;
+  }
+}

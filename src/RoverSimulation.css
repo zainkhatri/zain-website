@@ -1,0 +1,53 @@
+.simulation-container {
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.sketch-container {
+  margin: 0 auto;
+  width: 100%;
+  max-width: 1200px; 
+  height: 50vh;      
+  position: relative;
+  touch-action: none; /* Prevent default touch actions */
+  border: 10px solid white; /* White border for classic arcade look */
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.controls button {
+  padding: 8px 12px;
+  font-size: 16px;
+  font-family: 'Fahkwang', sans-serif; /* Ensure buttons use Fahkwang font */
+}
+
+/* Ensure the canvas fits the container */
+canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  touch-action: none; /* Prevent default touch actions */
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* Media query for mobile devices */
+@media (max-width: 768px) {
+  .simulation-container {
+    padding: 5px;
+  }
+  
+  .sketch-container {
+    border-width: 5px;
+  }
+}

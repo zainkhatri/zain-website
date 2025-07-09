@@ -1,0 +1,123 @@
+/* Existing Global Styles */
+@import url('https://fonts.googleapis.com/css2?family=Fahkwang:wght@300;400;500;600;700&display=swap');
+
+/* Global styles */
+html, body {
+  width: 100%;
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+  background-image: url('/gradient.jpeg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  color: #ffffff;
+  font-family: 'Fahkwang', sans-serif;
+}
+
+.App {
+  max-width: 1200px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  padding: 10px;
+}
+
+b, strong {
+  font-family: 'Fahkwang', sans-serif; 
+  font-weight: bold;
+}
+
+/* Loading spinner styles */
+.loading-spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  font-size: 16px;
+  color: #ffffff;
+}
+
+.loading-spinner:after {
+  content: '';
+  width: 20px;
+  height: 20px;
+  margin-left: 10px;
+  border: 2px solid #ffffff;
+  border-top: 2px solid transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Remove expandable title styles */
+.expandable-title {
+  cursor: default;
+  font-size: 24px; /* Set a reasonable default size */
+}
+
+button, a {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.footer {
+  color: #ffffff;
+  text-align: center;
+  padding: 20px 0;
+  position: relative; 
+  width: 100%;
+  bottom: 0;
+}
+
+.footer p {
+  margin: 0;
+  font-size: 12px;
+}
+
+/* Responsive Styles */
+
+/* For screens up to 768px */
+@media screen and (max-width: 768px) {
+  .contact-section {
+    justify-content: flex-start;
+  }
+
+  .contact-section i {
+    font-size: 30px;
+  }
+}
+
+/* For screens up to 480px */
+@media screen and (max-width: 480px) {
+  .contact-section i {
+    font-size: 24px;
+  }
+}
+
+/* Small screens: 2x4 layout with smaller images */
+@media screen and (max-width: 767px) {
+  /* Disable font-size increase on click */
+  .expandable-title {
+    font-size: 24px !important; /* Maintain default size */
+  }
+
+  .expandable-title.clicked {
+    font-size: 24px !important; /* Prevent increase on click */
+  }
+}
+
+.Gallery {
+  margin-bottom: 40px; /* Adjust this value as needed */
+}
+
+.Albums {
+  margin-top: 40px; /* Adjust this value as needed */
+}
+
+body.ego-mode {
+  background-image: url('/egogradient.jpeg');
+}

@@ -1,0 +1,150 @@
+.hero-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: -25px;
+}
+
+.hero-content {
+    font-size: 2em;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    max-width: 1200px;
+    width: 100%;
+    text-align: left;
+    margin-bottom: -80px;
+    color: #ffffff;
+}
+
+.text-content {
+    flex: 1;
+    margin-right: 60px;
+}
+
+.image-and-contact {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.hero-image {
+    width: 315px;
+    height: 315px;
+    border-radius: 60%;
+    object-fit: cover;
+    margin-top: 60px;
+    margin-bottom: 20px;
+    box-shadow: 0px 4px 300px rgba(0, 0, 0, 0.5);
+}
+
+.hero-content h1 {
+    font-size: 1.8em;
+    margin-bottom: 20px;
+}
+
+.hero-content h2 {
+    font-weight: 400;
+    font-size: 1em;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.hero-content p {
+    font-size: 0.8em;
+    margin-top: 30px;
+    margin-bottom: 120px;
+}
+
+.contact-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+}
+
+.contact-section a {
+    color: #ffffff;
+    transition: color 0.3s ease;
+}
+
+.contact-section a:hover {
+    color: #cccccc;
+}
+
+.contact-section i {
+    font-size: 34px;
+}
+
+/* Ensure expandable titles in hero section don't change size */
+.hero-content .expandable-title {
+    font-size: inherit;
+    transition: none;
+}
+
+.hero-content .expandable-title.expanded {
+    font-size: inherit;
+}
+
+@media screen and (max-width: 1020px) {
+
+  .hero-content {
+    margin-bottom: -60px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+    .hero-content {
+      flex-direction: column;
+      align-items: flex-start;
+      text-align: left;
+      margin-top: -40px;
+      margin-bottom: -20px;
+      padding: 50px 20px;
+    }
+  
+    .hero-image {
+      width: 140px !important;
+      height: 140px !important;
+      margin: 20px 0;
+    }
+  
+    .hero-content h1 {
+      margin: 30px 0 20px 0;
+      font-size: 40px !important;
+      text-align: left;
+    }
+  
+    .hero-content h2 {
+      font-size: 20px;
+      margin: 10px -30px 0 0;
+      text-align: left;
+    }
+  
+    .hero-content p {
+      font-size: 18px;
+      margin-top: 20px;
+      margin-bottom: 0;
+    }
+}
+
+/* For screens up to 480px */
+@media screen and (max-width: 480px) {
+    .hero-content h1 {
+      font-size: 44px !important;
+    }
+  
+    .hero-content h2 {
+      font-size: 18px;
+    }
+  
+    .hero-content p {
+      font-size: 16px;
+    }
+}
+
+  body.ego-mode {
+    min-height: 100vh;
+    background-size: cover;
+  }
