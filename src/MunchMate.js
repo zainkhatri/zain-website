@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './MunchMate.css';
 
 const MunchMate = () => {
@@ -7,6 +7,29 @@ const MunchMate = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [selectedGoals, setSelectedGoals] = useState(new Set());
+  const [apiStatus, setApiStatus] = useState('checking');
+
+  // Test API connectivity on component mount
+  useEffect(() => {
+    const testAPI = async () => {
+      try {
+        const response = await fetch('/api/test');
+        if (response.ok) {
+          const data = await response.json();
+          console.log('API test successful:', data);
+          setApiStatus('connected');
+        } else {
+          console.error('API test failed:', response.status);
+          setApiStatus('disconnected');
+        }
+      } catch (error) {
+        console.error('API test error:', error);
+        setApiStatus('disconnected');
+      }
+    };
+
+    testAPI();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -58,6 +81,8 @@ const MunchMate = () => {
         errorMessage += 'The recipe service is currently being configured. Please try again later.';
       } else if (err.message.includes('temporarily busy')) {
         errorMessage += 'The service is busy right now. Please wait a moment and try again.';
+      } else if (err.message.includes('404')) {
+        errorMessage += 'The recipe service is currently unavailable. Please try again later.';
       } else {
         errorMessage += 'Please try again with different ingredients or check your connection.';
       }
@@ -88,6 +113,15 @@ const MunchMate = () => {
       <header className="munchmate-header">
         <h2 className="munchmate-title">MunchMate</h2>
         <p className="munchmate-tagline">Transform your ingredients into healthy, delicious meals!</p>
+        {apiStatus === 'checking' && (
+          <p className="api-status checking">Checking API connection...</p>
+        )}
+        {apiStatus === 'disconnected' && (
+          <p className="api-status disconnected">⚠️ Recipe service temporarily unavailable</p>
+        )}
+        {apiStatus === 'connected' && (
+          <p className="api-status connected">✅ Recipe service online</p>
+        )}
       </header>
 
       <div className="input-container">
@@ -129,7 +163,7 @@ const MunchMate = () => {
 
         <button
           onClick={handleSubmit}
-          disabled={loading || !ingredients.trim()}
+          disabled={loading || !ingredients.trim() || apiStatus === 'disconnected'}
           className="generate-button"
         >
           {loading ? 'Generating Recipe...' : 'Generate Recipe'}

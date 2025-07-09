@@ -77,6 +77,32 @@
     margin: 0 auto;
     line-height: 1.6;
   }
+
+  .api-status {
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-weight: 500;
+  }
+
+  .api-status.checking {
+    color: var(--warning-color);
+    background-color: rgba(245, 158, 11, 0.1);
+    border: 1px solid rgba(245, 158, 11, 0.3);
+  }
+
+  .api-status.connected {
+    color: var(--success-color);
+    background-color: rgba(34, 197, 94, 0.1);
+    border: 1px solid rgba(34, 197, 94, 0.3);
+  }
+
+  .api-status.disconnected {
+    color: var(--error-color);
+    background-color: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+  }
   
   /* Form Elements */
   .input-container {
