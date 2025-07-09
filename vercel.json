@@ -1,13 +1,5 @@
 {
   "version": 2,
-  "functions": {
-    "api/get-meal.js": {
-      "runtime": "@vercel/node"
-    },
-    "api/test.js": {
-      "runtime": "@vercel/node"
-    }
-  },
   "rewrites": [
     {
       "source": "/api/get-meal",
