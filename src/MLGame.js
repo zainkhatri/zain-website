@@ -23,8 +23,10 @@ const MLGame = () => {
   useEffect(() => {
     if (database) {
       setIsFirebaseConnected(true);
+      console.log('Firebase connected successfully');
     } else {
       setIsFirebaseConnected(false);
+      console.log('Firebase not connected, using local storage');
       // Load local high scores from localStorage
       const savedScores = localStorage.getItem('eagleEyeHighScores');
       if (savedScores) {
@@ -32,10 +34,24 @@ const MLGame = () => {
           const parsedScores = JSON.parse(savedScores);
           setLocalHighScores(parsedScores);
           setHighScores(parsedScores);
+          console.log('Loaded local high scores:', parsedScores);
         } catch (error) {
           console.error('Error loading local high scores:', error);
           setLocalHighScores([]);
         }
+      } else {
+        // Add some sample scores for demo purposes
+        const sampleScores = [
+          { initials: 'ZAI', score: 25, time: 45 },
+          { initials: 'JOE', score: 20, time: 52 },
+          { initials: 'ANN', score: 15, time: 38 },
+          { initials: 'BOB', score: 12, time: 41 },
+          { initials: 'SUE', score: 8, time: 35 }
+        ];
+        setLocalHighScores(sampleScores);
+        setHighScores(sampleScores);
+        localStorage.setItem('eagleEyeHighScores', JSON.stringify(sampleScores));
+        console.log('Created sample high scores for demo');
       }
     }
   }, []);
@@ -68,6 +84,7 @@ const MLGame = () => {
           const parsedScores = JSON.parse(savedScores);
           setHighScores(parsedScores);
           setLocalHighScores(parsedScores);
+          console.log('Fetched local high scores:', parsedScores);
         } catch (error) {
           console.error('Error loading local high scores:', error);
         }
@@ -103,8 +120,10 @@ const MLGame = () => {
         const uniqueScores = Object.values(scoresByInitials);
         uniqueScores.sort((a, b) => b.score - a.score || a.time - b.time);
         setHighScores(uniqueScores.slice(0, 10)); // Store up to 10 scores
+        console.log('Fetched Firebase high scores:', uniqueScores);
       } else {
         setHighScores([]);
+        console.log('No Firebase scores found');
       }
     }, (error) => {
       console.error('Error fetching high scores:', error);
@@ -116,6 +135,7 @@ const MLGame = () => {
           const parsedScores = JSON.parse(savedScores);
           setHighScores(parsedScores);
           setLocalHighScores(parsedScores);
+          console.log('Fell back to local high scores:', parsedScores);
         } catch (error) {
           console.error('Error loading local high scores:', error);
         }
@@ -159,6 +179,7 @@ const MLGame = () => {
       localStorage.setItem('eagleEyeHighScores', JSON.stringify(topScores));
       setLocalHighScores(topScores);
       setHighScores(topScores);
+      console.log('Saved score locally:', newScore, 'Updated scores:', topScores);
       
       return true;
     } catch (error) {
@@ -351,6 +372,8 @@ const MLGame = () => {
   };
 
   const toggleHighScores = () => {
+    console.log('Toggling high scores. Current state:', showHighScores);
+    console.log('Current high scores:', highScores);
     setShowHighScores(!showHighScores);
   };
 
@@ -430,7 +453,7 @@ const MLGame = () => {
           <p>
             Welcome to Eagle Eye, a game where we test your speed and precision.
             Your goal is to find and click all the numbers from 1 to 50 in
-            ascending order as fast as you can. Compete to make it to the top 6
+            ascending order as fast as you can. Compete to make it to the top 10
             scorers list! Click the "Start" button when you're ready to begin.
             Good luck!
           </p>
@@ -480,6 +503,9 @@ const MLGame = () => {
         <button onClick={toggleHighScores}>
           {showHighScores ? 'Hide High Scores' : 'Show High Scores'}
         </button>
+        {!isFirebaseConnected && (
+          <span className="offline-indicator"> (Offline Mode)</span>
+        )}
       </div>
 
       {showHighScores && (
@@ -487,7 +513,7 @@ const MLGame = () => {
           <h3>Leaderboard</h3>
           {highScores.length > 0 ? (
             <ol>
-              {highScores.slice(0, 6).map((score, index) => (
+              {highScores.slice(0, 10).map((score, index) => (
                 <li key={index}>
                   {score.initials} - {score.score} in {score.time}s
                 </li>

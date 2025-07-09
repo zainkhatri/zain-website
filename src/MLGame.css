@@ -193,7 +193,14 @@
   margin-top: 20px;
   display: flex;
   justify-content: center;
+  align-items: center;
   gap: 10px;
+}
+
+.offline-indicator {
+  color: #ff6b6b;
+  font-size: 10px;
+  font-style: italic;
 }
 
 .ml-game-score-management button {
