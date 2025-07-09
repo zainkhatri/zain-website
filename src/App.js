@@ -2,7 +2,7 @@ import React, { useState, useEffect, Suspense, lazy } from 'react';
 import './app.css';
 import Hero from './Hero';
 import Bio from './Bio';
-import resumePDF from './zain_khatri_resume.pdf';
+import resumePDF from './Zain_Khatri_Resume.pdf';
 import { Analytics } from "@vercel/analytics/react";
 
 // Lazy load heavy components

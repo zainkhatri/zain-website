@@ -1,5 +1,5 @@
 import React from 'react';
-import resumePDF from './zain_khatri_resume.pdf';
+import resumePDF from './Zain_Khatri_Resume.pdf';
 import './bio.css';
 
 function Resume() {
