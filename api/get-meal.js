@@ -17,17 +17,29 @@ module.exports = async (req, res) => {
   }
 
   try {
+    // Load environment variables from .env.local if running locally
+    if (!process.env.VERCEL) {
+      require('dotenv').config({ path: '.env.local' });
+    }
+
     console.log('Environment:', {
       nodeEnv: process.env.NODE_ENV,
-      hasApiKey: !!process.env.OPENAI_API_KEY
+      hasApiKey: !!process.env.OPENAI_API_KEY,
+      vercel: !!process.env.VERCEL
     });
 
-    if (!process.env.OPENAI_API_KEY) {
-      throw new Error('OpenAI API key is not configured');
+    const apiKey = process.env.OPENAI_API_KEY;
+    
+    if (!apiKey) {
+      console.error('OpenAI API key not found in environment variables');
+      return res.status(500).json({ 
+        error: 'Service temporarily unavailable',
+        details: 'API configuration error'
+      });
     }
 
     const openai = new OpenAI({
-      apiKey: process.env.OPENAI_API_KEY,
+      apiKey: apiKey,
     });
 
     const { ingredients, fitnessGoals } = req.body;
@@ -123,9 +135,19 @@ Health Benefits
       body: req.body
     });
 
+    // Provide more specific error messages
+    let errorMessage = 'Failed to generate recipe';
+    if (error.message.includes('API key')) {
+      errorMessage = 'Service configuration error';
+    } else if (error.message.includes('rate limit')) {
+      errorMessage = 'Service temporarily busy, please try again';
+    } else if (error.message.includes('network')) {
+      errorMessage = 'Network error, please check your connection';
+    }
+
     res.status(500).json({
-      error: 'Failed to generate recipe',
-      details: error.message
+      error: errorMessage,
+      details: process.env.NODE_ENV === 'development' ? error.message : 'Internal server error'
     });
   }
 };

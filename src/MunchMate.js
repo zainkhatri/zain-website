@@ -18,6 +18,7 @@ const MunchMate = () => {
 
     setLoading(true);
     setError('');
+    setRecipe(null);
 
     try {
       const ingredientList = ingredients
@@ -36,14 +37,32 @@ const MunchMate = () => {
         })
       });
 
+      const data = await response.json();
+
       if (!response.ok) {
-        throw new Error(`Server responded with ${response.status}`);
+        throw new Error(data.error || `Server responded with ${response.status}`);
       }
 
-      const data = await response.json();
       setRecipe(data.mealSuggestion);
     } catch (err) {
-      setError(`Recipe generation failed: ${err.message}`);
+      console.error('Recipe generation error:', err);
+      
+      // Provide user-friendly error messages
+      let errorMessage = 'Recipe generation failed. ';
+      
+      if (err.message.includes('Failed to fetch') || err.message.includes('network')) {
+        errorMessage += 'Please check your internet connection and try again.';
+      } else if (err.message.includes('Service temporarily unavailable')) {
+        errorMessage += 'The recipe service is temporarily unavailable. Please try again later.';
+      } else if (err.message.includes('Service configuration error')) {
+        errorMessage += 'The recipe service is currently being configured. Please try again later.';
+      } else if (err.message.includes('temporarily busy')) {
+        errorMessage += 'The service is busy right now. Please wait a moment and try again.';
+      } else {
+        errorMessage += 'Please try again with different ingredients or check your connection.';
+      }
+      
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -57,6 +76,11 @@ const MunchMate = () => {
       newSelectedGoals.add(goal);
     }
     setSelectedGoals(newSelectedGoals);
+  };
+
+  const handleTryAgain = () => {
+    setError('');
+    setRecipe(null);
   };
 
   return (
@@ -89,6 +113,7 @@ const MunchMate = () => {
                 key={goal}
                 onClick={() => toggleGoal(goal)}
                 className={`fitness-goal-button ${selectedGoals.has(goal) ? 'selected' : ''}`}
+                disabled={loading}
               >
                 <input
                   type="checkbox"
@@ -104,16 +129,24 @@ const MunchMate = () => {
 
         <button
           onClick={handleSubmit}
-          disabled={loading}
+          disabled={loading || !ingredients.trim()}
           className="generate-button"
         >
-          {loading ? 'Generating...' : 'Generate Recipe'}
+          {loading ? 'Generating Recipe...' : 'Generate Recipe'}
         </button>
       </div>
 
       {error && (
         <div className="error-message" role="alert">
-          {error}
+          <div className="error-content">
+            <p>{error}</p>
+            <button 
+              onClick={handleTryAgain}
+              className="try-again-button"
+            >
+              Try Again
+            </button>
+          </div>
         </div>
       )}
 

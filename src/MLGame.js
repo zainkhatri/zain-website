@@ -14,8 +14,31 @@ const MLGame = () => {
   const [showScoreInput, setShowScoreInput] = useState(false);
   const [playerInitials, setPlayerInitials] = useState('');
   const [showHighScores, setShowHighScores] = useState(false);
+  const [isFirebaseConnected, setIsFirebaseConnected] = useState(false);
+  const [localHighScores, setLocalHighScores] = useState([]);
 
   const timerRef = useRef(null);
+
+  // Check Firebase connection and load local scores as fallback
+  useEffect(() => {
+    if (database) {
+      setIsFirebaseConnected(true);
+    } else {
+      setIsFirebaseConnected(false);
+      // Load local high scores from localStorage
+      const savedScores = localStorage.getItem('eagleEyeHighScores');
+      if (savedScores) {
+        try {
+          const parsedScores = JSON.parse(savedScores);
+          setLocalHighScores(parsedScores);
+          setHighScores(parsedScores);
+        } catch (error) {
+          console.error('Error loading local high scores:', error);
+          setLocalHighScores([]);
+        }
+      }
+    }
+  }, []);
 
   const initializeGame = useCallback(() => {
     const numbersArray = Array.from({ length: 50 }, (_, i) => i + 1);
@@ -37,6 +60,21 @@ const MLGame = () => {
   }, []);
 
   const fetchHighScores = useCallback(() => {
+    if (!isFirebaseConnected) {
+      // Use local storage fallback
+      const savedScores = localStorage.getItem('eagleEyeHighScores');
+      if (savedScores) {
+        try {
+          const parsedScores = JSON.parse(savedScores);
+          setHighScores(parsedScores);
+          setLocalHighScores(parsedScores);
+        } catch (error) {
+          console.error('Error loading local high scores:', error);
+        }
+      }
+      return () => {}; // Return empty unsubscribe function
+    }
+
     const scoresRef = ref(database, 'scores/');
     const unsubscribe = onValue(scoresRef, (snapshot) => {
       const data = snapshot.val();
@@ -65,11 +103,27 @@ const MLGame = () => {
         const uniqueScores = Object.values(scoresByInitials);
         uniqueScores.sort((a, b) => b.score - a.score || a.time - b.time);
         setHighScores(uniqueScores.slice(0, 10)); // Store up to 10 scores
+      } else {
+        setHighScores([]);
+      }
+    }, (error) => {
+      console.error('Error fetching high scores:', error);
+      setIsFirebaseConnected(false);
+      // Fall back to local storage
+      const savedScores = localStorage.getItem('eagleEyeHighScores');
+      if (savedScores) {
+        try {
+          const parsedScores = JSON.parse(savedScores);
+          setHighScores(parsedScores);
+          setLocalHighScores(parsedScores);
+        } catch (error) {
+          console.error('Error loading local high scores:', error);
+        }
       }
     });
 
     return unsubscribe;
-  }, []);
+  }, [isFirebaseConnected]);
 
   useEffect(() => {
     initializeGame();
@@ -78,6 +132,40 @@ const MLGame = () => {
       if (unsubscribe) unsubscribe();
     };
   }, [initializeGame, fetchHighScores]);
+
+  const saveScoreLocally = (newScore) => {
+    try {
+      const currentScores = [...localHighScores];
+      
+      // Check if user already has a score
+      const existingIndex = currentScores.findIndex(score => score.initials === newScore.initials);
+      
+      if (existingIndex !== -1) {
+        // Update if new score is better
+        if (newScore.score > currentScores[existingIndex].score ||
+            (newScore.score === currentScores[existingIndex].score && newScore.time < currentScores[existingIndex].time)) {
+          currentScores[existingIndex] = newScore;
+        }
+      } else {
+        // Add new score
+        currentScores.push(newScore);
+      }
+      
+      // Sort and keep top 10
+      currentScores.sort((a, b) => b.score - a.score || a.time - b.time);
+      const topScores = currentScores.slice(0, 10);
+      
+      // Save to localStorage
+      localStorage.setItem('eagleEyeHighScores', JSON.stringify(topScores));
+      setLocalHighScores(topScores);
+      setHighScores(topScores);
+      
+      return true;
+    } catch (error) {
+      console.error('Error saving score locally:', error);
+      return false;
+    }
+  };
 
   const handleGameOver = useCallback(
     (endMessage, finalScore) => {
@@ -99,7 +187,7 @@ const MLGame = () => {
       if (wouldMakeTopTen) {
         setShowScoreInput(true);
       } else {
-        setMessage(`${endMessage} You didn't make the top 6. Try again!`);
+        setMessage(`${endMessage} You didn't make the top 10. Try again!`);
       }
 
       setNextNumber(current);
@@ -133,6 +221,17 @@ const MLGame = () => {
   }, [gameStarted, isGameOver]);
 
   const submitScore = (newScore) => {
+    if (!isFirebaseConnected) {
+      // Use local storage fallback
+      const success = saveScoreLocally(newScore);
+      if (success) {
+        setMessage('Score saved locally! (Online leaderboard unavailable)');
+      } else {
+        setMessage('Failed to save score. Please try again.');
+      }
+      return;
+    }
+
     const scoresRef = ref(database, 'scores/');
 
     get(scoresRef)

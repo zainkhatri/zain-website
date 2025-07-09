@@ -249,6 +249,47 @@
     text-align: center;
   }
 
+  .error-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  .error-content p {
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  .try-again-button {
+    background: linear-gradient(135deg, var(--error-color), #dc2626);
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .try-again-button:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+  }
+
+  .generate-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .generate-button:disabled:hover {
+    transform: none;
+    box-shadow: var(--shadow-md);
+  }
+
   .fitness-goals-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); /* Dynamically adjusts to screen size */
