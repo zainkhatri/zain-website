@@ -232,32 +232,71 @@
   box-sizing: border-box; /* Ensure padding doesn't affect the total width */
 }
 
-/* Retain existing child elements styles */
-.ml-game-high-scores.arcade-style ol {
-  list-style-type: none;
+/* Leaderboard styling */
+.leaderboard-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
   padding: 0;
 }
 
-.ml-game-high-scores.arcade-style li {
-  margin: 5px 0;
-  padding: 5px;
-  background-color: black;
-  border-bottom: 1px solid #128ca1; /* Teal shade */
+.leaderboard-entry {
+  display: grid;
+  grid-template-columns: 40px 60px 1fr 60px;
+  align-items: center;
+  padding: 8px;
+  background-color: rgba(18, 140, 161, 0.1);
+  border: 1px solid #128ca1;
+  border-radius: 4px;
   font-size: 12px;
   color: white;
+  transition: background-color 0.2s ease;
+}
+
+.leaderboard-entry:hover {
+  background-color: rgba(18, 140, 161, 0.2);
+}
+
+.leaderboard-entry .rank {
+  font-weight: bold;
+  color: #128ca1;
+  text-align: center;
+}
+
+.leaderboard-entry .initials {
+  font-weight: bold;
+  color: white;
+  text-align: center;
+}
+
+.leaderboard-entry .score {
+  color: #90ee90;
+  text-align: center;
+  font-weight: bold;
+}
+
+.leaderboard-entry .time {
+  color: #ffd700;
+  text-align: center;
+}
+
+/* Special styling for top 3 ranks */
+.leaderboard-entry:nth-child(1) .rank {
+  color: #ffd700; /* Gold */
+}
+
+.leaderboard-entry:nth-child(2) .rank {
+  color: #c0c0c0; /* Silver */
+}
+
+.leaderboard-entry:nth-child(3) .rank {
+  color: #cd7f32; /* Bronze */
 }
 
 .ml-game-high-scores.arcade-style h3 {
   text-align: center;
-  margin-bottom: 10px;
-}
-
-.ml-game-high-scores ol {
-  padding-left: 20px;
-}
-
-.ml-game-high-scores li {
-  margin-bottom: 5px;
+  margin-bottom: 15px;
+  font-size: 16px;
 }
 
 .ml-game-high-scores p {
@@ -290,6 +329,16 @@
   
     .ml-game-high-scores.arcade-style h3 {
       font-size: 15px;
+    }
+
+    .leaderboard-entry {
+      grid-template-columns: 30px 50px 1fr 50px;
+      padding: 6px;
+      font-size: 11px;
+    }
+
+    .leaderboard-entry .rank {
+      font-size: 10px;
     }
 }
 

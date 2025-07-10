@@ -512,13 +512,16 @@ const MLGame = () => {
         <div className="ml-game-high-scores arcade-style">
           <h3>Leaderboard</h3>
           {highScores.length > 0 ? (
-            <ol>
+            <div className="leaderboard-list">
               {highScores.slice(0, 10).map((score, index) => (
-                <li key={index}>
-                  {score.initials} - {score.score} in {score.time}s
-                </li>
+                <div key={index} className="leaderboard-entry">
+                  <span className="rank">#{index + 1}</span>
+                  <span className="initials">{score.initials}</span>
+                  <span className="score">{score.score}</span>
+                  <span className="time">{score.time}s</span>
+                </div>
               ))}
-            </ol>
+            </div>
           ) : (
             <p>No high scores yet. Be the first to set a record!</p>
           )}
