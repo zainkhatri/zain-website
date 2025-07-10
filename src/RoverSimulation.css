@@ -29,6 +29,23 @@
   padding: 8px 12px;
   font-size: 16px;
   font-family: 'Fahkwang', sans-serif; /* Ensure buttons use Fahkwang font */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  outline: none;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  border: none;
+  background: linear-gradient(135deg, #7873f5, #ff6ec4);
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 /* Ensure the canvas fits the container */

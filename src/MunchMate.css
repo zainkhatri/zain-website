@@ -147,6 +147,11 @@
     transition: all 0.2s ease;
     box-shadow: var(--shadow-sm);
     box-sizing: border-box;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    outline: none;
+    touch-action: manipulation;
   }
   
   .input-field:focus {
@@ -173,6 +178,12 @@
     box-shadow: var(--shadow-md);
     max-width: 800px;
     margin: 0 auto;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    outline: none;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
   }
   
   .generate-button:hover:not(:disabled) {
@@ -356,6 +367,17 @@
   font-weight: 400;
   letter-spacing: 0.02em;
   justify-content: center; /* Ensures button content is centered */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  outline: none;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 .fitness-goal-button:hover {

@@ -155,11 +155,81 @@ const BrainActivityChart = memo(() => {
         </div>
 
         <div className="button-group">
-          <button className="button" onClick={() => handleActivityChange('thinking')}>Thinking</button>
-          <button className="button" onClick={() => handleActivityChange('visualProcessing')}>Visual Processing</button>
-          <button className="button" onClick={() => handleActivityChange('left')}>Look Left</button>
-          <button className="button" onClick={() => handleActivityChange('right')}>Look Right</button>
-          <button className="button" onClick={() => handleActivityChange('straight')}>Look Straight</button>
+          <button 
+            className="button" 
+            onTouchEnd={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              handleActivityChange('thinking');
+            }}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              handleActivityChange('thinking');
+            }}
+          >
+            Thinking
+          </button>
+          <button 
+            className="button" 
+            onTouchEnd={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              handleActivityChange('visualProcessing');
+            }}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              handleActivityChange('visualProcessing');
+            }}
+          >
+            Visual Processing
+          </button>
+          <button 
+            className="button" 
+            onTouchEnd={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              handleActivityChange('left');
+            }}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              handleActivityChange('left');
+            }}
+          >
+            Look Left
+          </button>
+          <button 
+            className="button" 
+            onTouchEnd={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              handleActivityChange('right');
+            }}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              handleActivityChange('right');
+            }}
+          >
+            Look Right
+          </button>
+          <button 
+            className="button" 
+            onTouchEnd={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              handleActivityChange('straight');
+            }}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              handleActivityChange('straight');
+            }}
+          >
+            Look Straight
+          </button>
         </div>
       </div>
     </div>

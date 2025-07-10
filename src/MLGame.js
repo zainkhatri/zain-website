@@ -461,15 +461,25 @@ const MLGame = () => {
         {numbers.map((number) => (
           <button
             key={number.value}
-            onTouchStart={(e) => {
-              e.preventDefault(); // Prevent default touch behavior
-              handleNumberClick(number);
+            onTouchEnd={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              if (!isGameOver) {
+                handleNumberClick(number);
+              }
             }}
-            onClick={() => handleNumberClick(number)} // Keep onClick for non-touch devices
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              if (!isGameOver) {
+                handleNumberClick(number);
+              }
+            }}
             className={`ml-game-number ${number.status} ${
               nextNumber === number.value ? 'highlight-next' : ''
             }`}
             disabled={isGameOver}
+            style={{ WebkitTapHighlightColor: 'transparent' }}
           >
             {number.value}
           </button>
@@ -513,9 +523,8 @@ const MLGame = () => {
               {highScores.slice(0, 10).map((score, index) => (
                 <div key={index} className="leaderboard-entry">
                   <span className="rank">#{index + 1}</span>
-                  <span className="initials">{score.initials}</span>
                   <span className="score">{score.score}s</span>
-                  <span className="time">50/50</span>
+                  <span className="initials">{score.initials}</span>
                 </div>
               ))}
             </div>

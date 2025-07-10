@@ -93,7 +93,16 @@
     font-family: 'Press Start 2P', cursive;
     touch-action: manipulation;
     -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
     user-select: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    outline: none;
+    will-change: background-color;
 }
 
 .ml-game-number.correct {
@@ -242,7 +251,7 @@
 
 .leaderboard-entry {
   display: grid;
-  grid-template-columns: 40px 60px 1fr 60px;
+  grid-template-columns: 40px 80px 1fr;
   align-items: center;
   padding: 8px;
   background-color: rgba(18, 140, 161, 0.1);
@@ -275,11 +284,7 @@
   font-weight: bold;
 }
 
-.leaderboard-entry .time {
-  color: #ffd700;
-  text-align: center;
-  font-size: 10px;
-}
+
 
 /* Special styling for top 3 ranks */
 .leaderboard-entry:nth-child(1) .rank {
@@ -333,7 +338,7 @@
     }
 
     .leaderboard-entry {
-      grid-template-columns: 30px 50px 1fr 50px;
+      grid-template-columns: 30px 60px 1fr;
       padding: 6px;
       font-size: 11px;
     }

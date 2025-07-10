@@ -7,30 +7,7 @@ const MunchMate = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [selectedGoals, setSelectedGoals] = useState(new Set());
-  const [apiStatus, setApiStatus] = useState('checking');
   const [isDemoMode, setIsDemoMode] = useState(false);
-
-  // Test API connectivity on component mount
-  useEffect(() => {
-    const testAPI = async () => {
-      try {
-        const response = await fetch('/api/test');
-        if (response.ok) {
-          const data = await response.json();
-          console.log('API test successful:', data);
-          setApiStatus('connected');
-        } else {
-          console.error('API test failed:', response.status);
-          setApiStatus('disconnected');
-        }
-      } catch (error) {
-        console.error('API test error:', error);
-        setApiStatus('disconnected');
-      }
-    };
-
-    testAPI();
-  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -117,15 +94,6 @@ const MunchMate = () => {
       <header className="munchmate-header">
         <h2 className="munchmate-title">MunchMate</h2>
         <p className="munchmate-tagline">Transform your ingredients into healthy, delicious meals!</p>
-        {apiStatus === 'checking' && (
-          <p className="api-status checking">Checking API connection...</p>
-        )}
-        {apiStatus === 'disconnected' && (
-          <p className="api-status disconnected">⚠️ Recipe service temporarily unavailable</p>
-        )}
-        {apiStatus === 'connected' && (
-          <p className="api-status connected">✅ Recipe service online</p>
-        )}
       </header>
 
       <div className="input-container">
@@ -149,7 +117,16 @@ const MunchMate = () => {
             {['Weight Loss', 'Muscle Gain', 'General Fitness'].map((goal) => (
               <button
                 key={goal}
-                onClick={() => toggleGoal(goal)}
+                onTouchEnd={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  if (!loading) toggleGoal(goal);
+                }}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  if (!loading) toggleGoal(goal);
+                }}
                 className={`fitness-goal-button ${selectedGoals.has(goal) ? 'selected' : ''}`}
                 disabled={loading}
               >
@@ -166,7 +143,16 @@ const MunchMate = () => {
         </div>
 
         <button
-          onClick={handleSubmit}
+          onTouchEnd={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            if (!loading && ingredients.trim()) handleSubmit(e);
+          }}
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            if (!loading && ingredients.trim()) handleSubmit(e);
+          }}
           disabled={loading || !ingredients.trim()}
           className="generate-button"
         >
@@ -179,7 +165,16 @@ const MunchMate = () => {
           <div className="error-content">
             <p>{error}</p>
             <button 
-              onClick={handleTryAgain}
+              onTouchEnd={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                handleTryAgain();
+              }}
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                handleTryAgain();
+              }}
               className="try-again-button"
             >
               Try Again

@@ -1129,14 +1129,64 @@ return (
   ref={sketchRef}
   className={`sketch-container ${editMode ? 'edit-mode' : ''}`}
 ></div>
-<div className="controls">
-  <button onClick={() => p5InstanceRef.current.start()}>Start</button>
-  <button onClick={() => p5InstanceRef.current.pause()}>Pause</button>
-  <button onClick={() => p5InstanceRef.current.stop()}>Restart</button>
-  <button onClick={handleEditMode}>
-    {editMode ? 'Exit Edit Mode' : 'Edit Obstacles'}
-  </button>
-</div>
+      <div className="controls">
+        <button 
+          onTouchEnd={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            p5InstanceRef.current.start();
+          }}
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            p5InstanceRef.current.start();
+          }}
+        >
+          Start
+        </button>
+        <button 
+          onTouchEnd={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            p5InstanceRef.current.pause();
+          }}
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            p5InstanceRef.current.pause();
+          }}
+        >
+          Pause
+        </button>
+        <button 
+          onTouchEnd={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            p5InstanceRef.current.stop();
+          }}
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            p5InstanceRef.current.stop();
+          }}
+        >
+          Restart
+        </button>
+        <button 
+          onTouchEnd={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            handleEditMode();
+          }}
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            handleEditMode();
+          }}
+        >
+          {editMode ? 'Exit Edit Mode' : 'Edit Obstacles'}
+        </button>
+      </div>
 </div>
 );
 };
