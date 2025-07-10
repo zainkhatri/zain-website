@@ -819,16 +819,16 @@ class Rover {
   constructor(x, y) {
     this.x = x;
     this.y = y;
-    this.speed = 3;
+    this.speed = 2.5; // Slightly slower for better control
     this.angle = 0;
     this.size = 20;
-    this.sensorRange = 100;
-    this.numSensors = 3; // Left, Center, Right
-    this.sensorAngles = [-p.radians(45), 0, p.radians(45)];
-    this.maxAngularVelocity = p.radians(3);
-    this.dangerZone = 30;
+    this.sensorRange = 120; // Increased sensor range
+    this.numSensors = 5; // More sensors for better detection
+    this.sensorAngles = [-p.radians(60), -p.radians(30), 0, p.radians(30), p.radians(60)];
+    this.maxAngularVelocity = p.radians(5); // Faster turning
+    this.dangerZone = 40; // Increased danger zone
     this.obstacleStuckCounter = 0; // Track how long the rover is stuck
-    this.maxStuckThreshold = 50; // Threshold for being stuck
+    this.maxStuckThreshold = 30; // Reduced threshold
     this.pathToFollow = []; // Path to follow from pathfinding
     this.currentPathIndex = 0; // Current index in the path
   }
@@ -999,52 +999,92 @@ class Rover {
     angleDifference = p.constrain(angleDifference, -this.maxAngularVelocity, this.maxAngularVelocity);
     this.angle += angleDifference;
 
-    // Check if the rover is stuck in one place
-    if (Math.min(...Object.values(sensorReadings)) < this.dangerZone) {
-      this.obstacleStuckCounter++;
-    } else {
-      this.obstacleStuckCounter = 0;
-    }
-
-    // Reverse and choose an alternate path if stuck for too long
-    if (this.obstacleStuckCounter > this.maxStuckThreshold) {
-      this.reverse();
-      this.obstacleStuckCounter = 0; // Reset the counter after reversing
+    // Enhanced crash-proof movement system
+    const minSensorReading = Math.min(...Object.values(sensorReadings));
+    
+    // Always try to move, but with multiple safety checks
+    let moved = false;
+    
+    // First, try direct movement if safe
+    if (minSensorReading > this.dangerZone * 1.5) {
+      const nextX = this.x + p.cos(this.angle) * this.speed;
+      const nextY = this.y + p.sin(this.angle) * this.speed;
       
-      // If following a path and getting stuck, try skipping ahead in the path
-      if (this.pathToFollow && this.pathToFollow.length > 0) {
-        this.currentPathIndex = Math.min(this.currentPathIndex + 2, this.pathToFollow.length - 1);
+      if (!this.wouldCollideAtPosition(nextX, nextY, obstacles)) {
+        this.x = nextX;
+        this.y = nextY;
+        moved = true;
+        this.obstacleStuckCounter = 0;
       }
-    } else {
-      // Move forward only if safe - increased safety margin
-      const minSensorReading = Math.min(...Object.values(sensorReadings));
-      if (minSensorReading > this.dangerZone) {
-        // Calculate next position
-        const nextX = this.x + p.cos(this.angle) * this.speed;
-        const nextY = this.y + p.sin(this.angle) * this.speed;
-        
-        // Check if next position would cause collision
-        if (!this.wouldCollideAtPosition(nextX, nextY, obstacles)) {
-          this.x = nextX;
-          this.y = nextY;
-        } else {
-          // If would collide, try a slight angle adjustment
-          for (let angleOffset = 0.1; angleOffset <= 0.5; angleOffset += 0.1) {
-            for (let direction of [-1, 1]) {
-              const testAngle = this.angle + (angleOffset * direction);
-              const testX = this.x + p.cos(testAngle) * this.speed;
-              const testY = this.y + p.sin(testAngle) * this.speed;
-              
-              if (!this.wouldCollideAtPosition(testX, testY, obstacles)) {
-                this.angle = testAngle;
-                this.x = testX;
-                this.y = testY;
-                return; // Successfully moved
-              }
+    }
+    
+    // If direct movement failed, try angle adjustments
+    if (!moved) {
+      for (let angleOffset = 0.05; angleOffset <= 1.0; angleOffset += 0.05) {
+        for (let direction of [-1, 1]) {
+          const testAngle = this.angle + (angleOffset * direction);
+          const testX = this.x + p.cos(testAngle) * this.speed;
+          const testY = this.y + p.sin(testAngle) * this.speed;
+          
+          if (!this.wouldCollideAtPosition(testX, testY, obstacles)) {
+            this.angle = testAngle;
+            this.x = testX;
+            this.y = testY;
+            moved = true;
+            this.obstacleStuckCounter = 0;
+            break;
+          }
+        }
+        if (moved) break;
+      }
+    }
+    
+    // If still can't move, try smaller movements
+    if (!moved) {
+      for (let speedReduction = 0.5; speedReduction > 0.1; speedReduction -= 0.1) {
+        for (let angleOffset = 0; angleOffset <= p.PI; angleOffset += 0.1) {
+          for (let direction of [-1, 1]) {
+            const testAngle = this.angle + (angleOffset * direction);
+            const testX = this.x + p.cos(testAngle) * this.speed * speedReduction;
+            const testY = this.y + p.sin(testAngle) * this.speed * speedReduction;
+            
+            if (!this.wouldCollideAtPosition(testX, testY, obstacles)) {
+              this.angle = testAngle;
+              this.x = testX;
+              this.y = testY;
+              moved = true;
+              this.obstacleStuckCounter = 0;
+              break;
             }
           }
-          // If no safe movement found, don't move
+          if (moved) break;
         }
+        if (moved) break;
+      }
+    }
+    
+    // If completely stuck, find the direction with most space and move there
+    if (!moved) {
+      let bestAngle = this.angle;
+      let maxDistance = 0;
+      
+      for (let testAngle = 0; testAngle < p.TWO_PI; testAngle += 0.1) {
+        let distance = this.getDistanceInDirection(testAngle, obstacles);
+        if (distance > maxDistance) {
+          maxDistance = distance;
+          bestAngle = testAngle;
+        }
+      }
+      
+      // Move in the direction with most space, even if it's a small step
+      if (maxDistance > this.size) {
+        this.angle = bestAngle;
+        const moveDistance = Math.min(this.speed * 0.3, maxDistance * 0.3);
+        this.x += p.cos(this.angle) * moveDistance;
+        this.y += p.sin(this.angle) * moveDistance;
+        this.obstacleStuckCounter = 0;
+      } else {
+        this.obstacleStuckCounter++;
       }
     }
 
@@ -1053,12 +1093,7 @@ class Rover {
     this.y = p.constrain(this.y, this.size / 2, p.height - this.size / 2);
   }
 
-  reverse() {
-    // Reverse a small distance and change direction slightly to get unstuck
-    this.x -= p.cos(this.angle) * this.speed * 2;
-    this.y -= p.sin(this.angle) * this.speed * 2;
-    this.angle += p.radians(90); // Change direction
-  }
+
 
   normalizeAngle(angle) {
     while (angle > p.PI) angle -= p.TWO_PI;
@@ -1067,9 +1102,13 @@ class Rover {
   }
 
   readSensors(obstacles) {
-    let readings = [this.sensorRange, this.sensorRange, this.sensorRange];
+    let readings = [];
+    for (let i = 0; i < this.numSensors; i++) {
+      readings.push(this.sensorRange);
+    }
+    
     const isMobile = p.width < 600; // Simple mobile detection
-    const sensorStep = isMobile ? 4 : 2; // Reduce sensor resolution on mobile
+    const sensorStep = isMobile ? 6 : 3; // Reduce sensor resolution on mobile
     
     for (let i = 0; i < this.numSensors; i++) {
       let sensorAngle = this.angle + this.sensorAngles[i];
@@ -1080,8 +1119,9 @@ class Rover {
         let sensorX = this.x + d * p.cos(sensorAngle);
         let sensorY = this.y + d * p.sin(sensorAngle);
 
-        // Check if sensor point is outside canvas boundaries
-        if (sensorX < 0 || sensorX > p.width || sensorY < 0 || sensorY > p.height) {
+        // Check if sensor point is outside canvas boundaries with margin
+        if (sensorX < this.size || sensorX > p.width - this.size || 
+            sensorY < this.size || sensorY > p.height - this.size) {
           sensorDistance = d;
           break;
         }
@@ -1109,12 +1149,20 @@ class Rover {
   }
 
   checkCollision(obstacles) {
+    // Check obstacles with safety margin
     for (let obstacle of obstacles) {
       let d = p.dist(this.x, this.y, obstacle.x, obstacle.y);
-      if (d < this.size / 2 + obstacle.size / 2) {
+      if (d < this.size / 2 + obstacle.size / 2 + 5) {
         return true;
       }
     }
+    
+    // Check canvas boundaries
+    if (this.x < this.size / 2 || this.x > p.width - this.size / 2 || 
+        this.y < this.size / 2 || this.y > p.height - this.size / 2) {
+      return true;
+    }
+    
     return false;
   }
 
@@ -1122,11 +1170,51 @@ class Rover {
     for (let obstacle of obstacles) {
       let d = p.dist(x, y, obstacle.x, obstacle.y);
       // Add extra safety margin
-      if (d < this.size / 2 + obstacle.size / 2 + 5) {
+      if (d < this.size / 2 + obstacle.size / 2 + 10) {
         return true;
       }
     }
+    
+    // Also check canvas boundaries with margin
+    if (x < this.size || x > p.width - this.size || 
+        y < this.size || y > p.height - this.size) {
+      return true;
+    }
+    
     return false;
+  }
+
+  getDistanceInDirection(angle, obstacles) {
+    let maxDistance = 0;
+    
+    for (let distance = this.size; distance <= this.sensorRange; distance += 5) {
+      const testX = this.x + p.cos(angle) * distance;
+      const testY = this.y + p.sin(angle) * distance;
+      
+      // Check canvas boundaries
+      if (testX < this.size || testX > p.width - this.size || 
+          testY < this.size || testY > p.height - this.size) {
+        break;
+      }
+      
+      // Check obstacles
+      let collision = false;
+      for (let obstacle of obstacles) {
+        let d = p.dist(testX, testY, obstacle.x, obstacle.y);
+        if (d < obstacle.size / 2 + this.size / 2 + 10) {
+          collision = true;
+          break;
+        }
+      }
+      
+      if (collision) {
+        break;
+      }
+      
+      maxDistance = distance;
+    }
+    
+    return maxDistance;
   }
 
   reachedWaypoint(target) {
