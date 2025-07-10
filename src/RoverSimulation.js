@@ -1016,10 +1016,35 @@ class Rover {
         this.currentPathIndex = Math.min(this.currentPathIndex + 2, this.pathToFollow.length - 1);
       }
     } else {
-      // Move forward only if not in immediate danger
-      if (Math.min(...Object.values(sensorReadings)) > this.dangerZone / 2) {
-        this.x += p.cos(this.angle) * this.speed;
-        this.y += p.sin(this.angle) * this.speed;
+      // Move forward only if safe - increased safety margin
+      const minSensorReading = Math.min(...Object.values(sensorReadings));
+      if (minSensorReading > this.dangerZone) {
+        // Calculate next position
+        const nextX = this.x + p.cos(this.angle) * this.speed;
+        const nextY = this.y + p.sin(this.angle) * this.speed;
+        
+        // Check if next position would cause collision
+        if (!this.wouldCollideAtPosition(nextX, nextY, obstacles)) {
+          this.x = nextX;
+          this.y = nextY;
+        } else {
+          // If would collide, try a slight angle adjustment
+          for (let angleOffset = 0.1; angleOffset <= 0.5; angleOffset += 0.1) {
+            for (let direction of [-1, 1]) {
+              const testAngle = this.angle + (angleOffset * direction);
+              const testX = this.x + p.cos(testAngle) * this.speed;
+              const testY = this.y + p.sin(testAngle) * this.speed;
+              
+              if (!this.wouldCollideAtPosition(testX, testY, obstacles)) {
+                this.angle = testAngle;
+                this.x = testX;
+                this.y = testY;
+                return; // Successfully moved
+              }
+            }
+          }
+          // If no safe movement found, don't move
+        }
       }
     }
 
@@ -1087,6 +1112,17 @@ class Rover {
     for (let obstacle of obstacles) {
       let d = p.dist(this.x, this.y, obstacle.x, obstacle.y);
       if (d < this.size / 2 + obstacle.size / 2) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  wouldCollideAtPosition(x, y, obstacles) {
+    for (let obstacle of obstacles) {
+      let d = p.dist(x, y, obstacle.x, obstacle.y);
+      // Add extra safety margin
+      if (d < this.size / 2 + obstacle.size / 2 + 5) {
         return true;
       }
     }

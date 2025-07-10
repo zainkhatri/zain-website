@@ -17,18 +17,21 @@
 }
 
 .controls {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
   gap: 10px;
   margin-top: 10px;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .controls button {
-  padding: 8px 12px;
-  font-size: 16px;
-  font-family: 'Fahkwang', sans-serif; /* Ensure buttons use Fahkwang font */
+  padding: 12px 16px;
+  font-size: 14px;
+  font-family: 'Fahkwang', sans-serif;
+  font-weight: 600;
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
@@ -40,18 +43,27 @@
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  border: 2px solid white;
-  background: white;
-  color: black;
-  border-radius: 6px;
+  border: 2px solid #128ca1;
+  background: linear-gradient(135deg, #128ca1, #0a6b7a);
+  color: white;
+  border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 4px rgba(18, 140, 161, 0.3);
 }
 
 .controls button:hover {
-  background: #f0f0f0;
+  background: linear-gradient(135deg, #0a6b7a, #128ca1);
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 12px rgba(18, 140, 161, 0.5);
+  border-color: #0a6b7a;
+}
+
+.controls button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(18, 140, 161, 0.3);
 }
 
 /* Ensure the canvas fits the container */
@@ -82,10 +94,17 @@ canvas {
     height: 40vh; /* Smaller height on mobile */
   }
   
+  .controls {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    max-width: 320px;
+  }
+  
   .controls button {
-    padding: 12px 16px; /* Larger touch targets on mobile */
-    font-size: 18px;
-    min-width: 80px;
+    padding: 14px 18px; /* Larger touch targets on mobile */
+    font-size: 12px;
+    min-width: 120px;
+    min-height: 48px;
   }
 }
 

@@ -105,9 +105,21 @@ const MunchMate = () => {
             type="text"
             value={ingredients}
             onChange={(e) => setIngredients(e.target.value)}
+            onFocus={(e) => {
+              // Prevent zoom on mobile
+              e.target.style.fontSize = '16px';
+            }}
             className="input-field"
             placeholder="Enter ingredients (comma-separated)"
             disabled={loading}
+            style={{
+              fontSize: '16px',
+              WebkitAppearance: 'none',
+              MozAppearance: 'none',
+              appearance: 'none',
+              outline: 'none',
+              touchAction: 'manipulation'
+            }}
           />
         </div>
 
