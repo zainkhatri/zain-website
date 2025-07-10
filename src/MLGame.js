@@ -439,7 +439,19 @@ const MLGame = () => {
     <div className="ml-game">
       <div className="ml-game-header">
         <div className="ml-game-timer">{timeElapsed}s</div>
-        <button className="ml-game-button" onClick={handleStartOrRestart}>
+        <button 
+          className="ml-game-button" 
+          onTouchEnd={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            handleStartOrRestart();
+          }}
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            handleStartOrRestart();
+          }}
+        >
           {isGameOver && !gameStarted ? 'Start' : 'Restart'}
         </button>
       </div>
@@ -496,9 +508,31 @@ const MLGame = () => {
             value={playerInitials}
             onChange={(e) => setPlayerInitials(e.target.value.toUpperCase())}
             placeholder="Enter 3 initials"
+            style={{
+              fontSize: '16px',
+              padding: '8px',
+              border: '2px solid white',
+              backgroundColor: '#3c3c3c',
+              color: 'white',
+              borderRadius: '5px',
+              outline: 'none',
+              touchAction: 'manipulation',
+              WebkitAppearance: 'none',
+              MozAppearance: 'none',
+              appearance: 'none'
+            }}
           />
           <button
-            onClick={handleScoreSubmit}
+            onTouchEnd={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              if (playerInitials.length === 3) handleScoreSubmit();
+            }}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              if (playerInitials.length === 3) handleScoreSubmit();
+            }}
             disabled={playerInitials.length !== 3}
           >
             Submit Score
@@ -507,7 +541,18 @@ const MLGame = () => {
       )}
 
       <div className="ml-game-score-management">
-        <button onClick={toggleHighScores}>
+        <button 
+          onTouchEnd={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            toggleHighScores();
+          }}
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            toggleHighScores();
+          }}
+        >
           {showHighScores ? 'Hide High Scores' : 'Show High Scores'}
         </button>
         {!isFirebaseConnected && (
