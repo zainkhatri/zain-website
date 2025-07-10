@@ -1,6 +1,6 @@
 /* Albums Section */
 .albums {
-  margin-bottom: 40px;
+  margin-bottom: 20px;
 }
 
 .albums-grid {
@@ -26,7 +26,7 @@
 }
 
 .albums.expanded-margin {
-  margin-top: 40px; /* Adjust this value as needed */
+  margin-top: 20px; /* Reduced from 40px */
 }  
 
 /* Large screens: 5x4 layout for 20 albums */

@@ -24,6 +24,9 @@ const MLGame = () => {
     if (database) {
       setIsFirebaseConnected(true);
       console.log('Firebase connected successfully');
+      // Clear any cached local storage data when Firebase is available
+      localStorage.removeItem('eagleEyeHighScores');
+      setLocalHighScores([]);
     } else {
       setIsFirebaseConnected(false);
       console.log('Firebase not connected, using local storage');
@@ -39,19 +42,6 @@ const MLGame = () => {
           console.error('Error loading local high scores:', error);
           setLocalHighScores([]);
         }
-      } else {
-        // Add some sample scores for demo purposes (time-based scoring)
-        const sampleScores = [
-          { initials: 'ZAI', score: 35, numbersCompleted: 50 },
-          { initials: 'JOE', score: 38, numbersCompleted: 50 },
-          { initials: 'ANN', score: 41, numbersCompleted: 50 },
-          { initials: 'BOB', score: 45, numbersCompleted: 50 },
-          { initials: 'SUE', score: 52, numbersCompleted: 50 }
-        ];
-        setLocalHighScores(sampleScores);
-        setHighScores(sampleScores);
-        localStorage.setItem('eagleEyeHighScores', JSON.stringify(sampleScores));
-        console.log('Created sample high scores for demo');
       }
     }
   }, []);
@@ -92,14 +82,21 @@ const MLGame = () => {
       return () => {}; // Return empty unsubscribe function
     }
 
+    console.log('Fetching high scores from Firebase...');
     const scoresRef = ref(database, 'scores/');
     const unsubscribe = onValue(scoresRef, (snapshot) => {
       const data = snapshot.val();
+      console.log('Raw Firebase data:', data);
+      
       if (data) {
-        const scoresArray = Object.entries(data).map(([id, score]) => ({
+        const scoresArray = Object.entries(data).map(([id, scoreData]) => ({
           id,
-          ...score,
+          initials: scoreData.initials,
+          score: scoreData.time || scoreData.score, // Use time field as score for display
+          numbersCompleted: scoreData.score || 50, // Original score field contains numbers completed
+          time: scoreData.time, // Keep original time field
         }));
+        console.log('Parsed scores array:', scoresArray);
 
         const scoresByInitials = {};
 
@@ -117,8 +114,9 @@ const MLGame = () => {
 
         const uniqueScores = Object.values(scoresByInitials);
         uniqueScores.sort((a, b) => a.score - b.score); // Sort by time ascending (lower is better)
-        setHighScores(uniqueScores.slice(0, 10)); // Store up to 10 scores
-        console.log('Fetched Firebase high scores:', uniqueScores);
+        const topScores = uniqueScores.slice(0, 10);
+        setHighScores(topScores); // Store up to 10 scores
+        console.log('Final processed Firebase high scores:', topScores);
       } else {
         setHighScores([]);
         console.log('No Firebase scores found');
@@ -195,13 +193,14 @@ const MLGame = () => {
       if (finalScore === 50) {
         const newScore = {
           initials: playerInitials.toUpperCase(),
-          score: timeElapsed, // Time is the score - lower is better
+          score: 50, // Number of numbers completed
+          time: timeElapsed, // Completion time in seconds
           numbersCompleted: finalScore,
         };
         
         const wouldMakeTopTen =
           highScores.length < 10 ||
-          newScore.score < highScores[highScores.length - 1].score;
+          timeElapsed < (highScores[highScores.length - 1].score || Infinity);
 
         if (wouldMakeTopTen) {
           setShowScoreInput(true);
@@ -271,7 +270,10 @@ const MLGame = () => {
           if (existingScore) {
             // Update existing score if the new time is better (lower)
             const existingScoreId = existingScore.id;
-            if (newScore.score < existingScore.score) {
+            const existingTime = existingScore.time || existingScore.score;
+            const newTime = newScore.time;
+            
+            if (newTime < existingTime) {
               set(ref(database, `scores/${existingScoreId}`), newScore)
                 .then(() => {
                   setMessage(
@@ -359,7 +361,8 @@ const MLGame = () => {
 
       const newScore = {
         initials: initials,
-        score: timeElapsed, // Time is the score
+        score: 50, // Number of numbers completed
+        time: timeElapsed, // Completion time in seconds
         numbersCompleted: 50, // They completed all numbers to get here
       };
 

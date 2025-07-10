@@ -20,11 +20,21 @@ let app;
 let database;
 
 try {
-  app = initializeApp(firebaseConfig);
-  database = getDatabase(app);
+  // Check if we have real Firebase config (not fallback values)
+  const hasRealConfig = process.env.REACT_APP_FIREBASE_API_KEY && 
+                       process.env.REACT_APP_FIREBASE_DATABASE_URL &&
+                       process.env.REACT_APP_FIREBASE_PROJECT_ID;
+  
+  if (hasRealConfig) {
+    app = initializeApp(firebaseConfig);
+    database = getDatabase(app);
+    console.log('Firebase initialized successfully with real configuration');
+  } else {
+    console.log('Firebase environment variables not found, using local storage fallback');
+    database = null;
+  }
 } catch (error) {
   console.warn('Firebase initialization failed:', error);
-  // Create mock database functions for demo mode
   database = null;
 }
 

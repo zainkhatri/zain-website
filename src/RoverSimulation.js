@@ -63,11 +63,12 @@ let danceAngle = 0;
 p.setup = () => {
   const canvas = p.createCanvas(containerSize.width, containerSize.height).parent(sketchRef.current);
   
-  // Mobile optimizations
-  canvas.style('touch-action', 'none');
+  // Mobile optimizations - allow scrolling but prevent other gestures
+  canvas.style('touch-action', 'manipulation');
   canvas.style('user-select', 'none');
   canvas.style('-webkit-user-select', 'none');
   canvas.style('-webkit-touch-callout', 'none');
+  canvas.style('pointer-events', 'auto'); // Ensure events are handled properly
   
   rover = new Rover(waypoints[0].x * p.width, waypoints[0].y * p.height);
   updateObstacles();
@@ -479,6 +480,8 @@ p.draw = () => {
       }
     }
   }
+  
+
 };
 
 const handleEasterEggAnimation = () => {
@@ -661,11 +664,13 @@ const handleEasterEggAnimation = () => {
 };
 
 p.mousePressed = (event) => {
+  // Only handle mouse events if they're actually within the canvas bounds
+  if (event && event.target && event.target !== p.canvas) {
+    return true; // Allow event to propagate normally
+  }
+  
   if (editModeActive) {
-    if (event.target === p.canvas) {
-      event.preventDefault(); // Prevent default touch behavior
-    }
-
+    // Only prevent default if we're actually interacting with an obstacle
     let obstacleClicked = false;
     for (let i = 0; i < obstacles.length; i++) {
       let d = p.dist(
@@ -677,7 +682,12 @@ p.mousePressed = (event) => {
       if (d < obstacles[i].size / 2) {
         selectedObstacleIndex = i;
         obstacleClicked = true;
-        break;
+        // Only prevent default when actually clicking on an obstacle
+        if (event && event.preventDefault) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+        return false;
       }
     }
 
@@ -686,12 +696,21 @@ p.mousePressed = (event) => {
       selectedObstacleIndex = -1;
     }
   }
+  // Always allow event to propagate for non-edit interactions
+  return true;
 };
 
 p.mouseDragged = (event) => {
+  // Only handle mouse events if they're actually within the canvas bounds
+  if (event && event.target && event.target !== p.canvas) {
+    return true; // Allow event to propagate normally
+  }
+  
   if (editModeActive && selectedObstacleIndex !== -1) {
-    if (event.target === p.canvas) {
-      event.preventDefault(); // Prevent default touch behavior
+    // Only prevent default when actually dragging an obstacle
+    if (event && event.preventDefault) {
+      event.preventDefault();
+      event.stopPropagation();
     }
 
     obstacles[selectedObstacleIndex].x = p.mouseX / p.width;
@@ -703,29 +722,55 @@ p.mouseDragged = (event) => {
     destroyedObstacles = [];
     easterEggPhase = 0;
     cannonSize = 0;
+    
+    return false; // Prevent further event propagation
   }
+  // Always allow event to propagate for non-edit interactions
+  return true;
 };
 
 // For touch devices - improved mobile support
 p.touchStarted = (event) => {
-  if (event && event.preventDefault) {
-    event.preventDefault();
+  // Only handle touch events if they're actually within the canvas bounds
+  if (event && event.target && event.target !== p.canvas) {
+    return true; // Allow event to propagate normally
   }
-  return p.mousePressed(event);
+  
+  // Only handle touch events in edit mode
+  if (editModeActive) {
+    return p.mousePressed(event);
+  }
+  // Allow normal touch behavior for non-edit mode
+  return true;
 };
 
 p.touchMoved = (event) => {
-  if (event && event.preventDefault) {
-    event.preventDefault();
+  // Only handle touch events if they're actually within the canvas bounds
+  if (event && event.target && event.target !== p.canvas) {
+    return true; // Allow event to propagate normally
   }
-  return p.mouseDragged(event);
+  
+  // Only handle touch events in edit mode
+  if (editModeActive) {
+    return p.mouseDragged(event);
+  }
+  // Allow normal touch behavior for non-edit mode
+  return true;
 };
 
 p.touchEnded = (event) => {
-  if (event && event.preventDefault) {
-    event.preventDefault();
+  // Only handle touch events if they're actually within the canvas bounds
+  if (event && event.target && event.target !== p.canvas) {
+    return true; // Allow event to propagate normally
   }
-  return false;
+  
+  // Only handle touch events in edit mode
+  if (editModeActive) {
+    selectedObstacleIndex = -1; // Deselect on touch end
+    return false;
+  }
+  // Allow normal touch behavior for non-edit mode
+  return true;
 };
 
 // Control functions accessible from outside the sketch
@@ -819,18 +864,29 @@ class Rover {
   constructor(x, y) {
     this.x = x;
     this.y = y;
-    this.speed = 2.5; // Slightly slower for better control
+    this.speed = 3;
     this.angle = 0;
     this.size = 20;
-    this.sensorRange = 120; // Increased sensor range
-    this.numSensors = 5; // More sensors for better detection
-    this.sensorAngles = [-p.radians(60), -p.radians(30), 0, p.radians(30), p.radians(60)];
-    this.maxAngularVelocity = p.radians(5); // Faster turning
-    this.dangerZone = 40; // Increased danger zone
-    this.obstacleStuckCounter = 0; // Track how long the rover is stuck
-    this.maxStuckThreshold = 30; // Reduced threshold
-    this.pathToFollow = []; // Path to follow from pathfinding
-    this.currentPathIndex = 0; // Current index in the path
+    this.sensorRange = 100;
+    this.numSensors = 3; // Back to 3 sensors
+    this.sensorAngles = [-p.radians(45), 0, p.radians(45)];
+    this.maxAngularVelocity = p.radians(4);
+    this.dangerZone = 35;
+    this.obstacleStuckCounter = 0;
+    this.maxStuckThreshold = 40;
+    this.pathToFollow = [];
+    this.currentPathIndex = 0;
+    
+    // Machine Learning Components
+    this.memory = []; // Store attempted paths and outcomes
+    this.currentAttempt = { path: [], success: false, startTime: 0 };
+    this.learningRate = 0.1;
+    this.explorationRate = 0.3; // 30% chance to try new paths
+    this.successfulPaths = []; // Store paths that worked
+    this.failedPaths = []; // Store paths that failed
+    this.attemptCount = 0;
+    this.bestDistance = Infinity; // Track closest we've gotten to B
+    this.targetReached = false;
   }
 
   show() {
@@ -937,35 +993,40 @@ class Rover {
   }
 
   update(target, obstacles) {
-    // If we have a path to follow from pathfinding
-    if (this.pathToFollow && this.pathToFollow.length > 0) {
-      const currentTarget = this.pathToFollow[this.currentPathIndex];
-      const distToPathPoint = p.dist(this.x, this.y, currentTarget.x, currentTarget.y);
-      
-      // If close enough to current path point, move to next point
-      if (distToPathPoint < this.size) {
-        this.currentPathIndex++;
-        
-        // If we've reached the end of the path, switch to normal target (waypoint B)
-        if (this.currentPathIndex >= this.pathToFollow.length) {
-          this.pathToFollow = []; // Clear path
-          this.currentPathIndex = 0;
-        }
-      }
-      
-      // If we still have path points to follow, target the current one
-      if (this.currentPathIndex < this.pathToFollow.length) {
-        // Create a temporary target for the current path point
-        target = {
-          x: this.pathToFollow[this.currentPathIndex].x,
-          y: this.pathToFollow[this.currentPathIndex].y
-        };
-      }
+    // Machine Learning: Start new attempt if needed
+    if (this.currentAttempt.startTime === 0) {
+      this.startNewAttempt();
+    }
+    
+    // Record current state in path
+    this.currentAttempt.path.push({
+      x: this.x,
+      y: this.y,
+      angle: this.angle,
+      timestamp: Date.now()
+    });
+    
+    // Calculate distance to target for learning
+    const distanceToTarget = p.dist(this.x, this.y, target.x, target.y);
+    
+    // Update best distance if we're getting closer
+    if (distanceToTarget < this.bestDistance) {
+      this.bestDistance = distanceToTarget;
+    }
+    
+    // Check if we've reached the target
+    if (this.reachedWaypoint(target)) {
+      this.targetReached = true;
+      this.learnFromAttempt(true);
+      return;
     }
     
     // Read sensors
     let sensorReadings = this.readSensors(obstacles);
 
+    // Use machine learning to decide movement strategy
+    let movementStrategy = this.chooseMovementStrategy(sensorReadings, target, obstacles);
+    
     // Calculate avoidance vector
     let avoidanceVector = p.createVector(0, 0);
 
@@ -973,24 +1034,31 @@ class Rover {
     for (let i = 0; i < this.numSensors; i++) {
       let reading = sensorReadings[i];
       if (reading < this.dangerZone) {
-        // Object is in danger zone, apply strong avoidance
         let avoidanceStrength = p.map(reading, 0, this.dangerZone, 5, 1);
         let avoidanceAngle = this.angle + this.sensorAngles[i] + p.PI;
         avoidanceVector.add(p5.Vector.fromAngle(avoidanceAngle).mult(avoidanceStrength));
       } else if (reading < this.sensorRange) {
-        // Object detected but not in danger zone, apply moderate avoidance
         let avoidanceStrength = p.map(reading, this.dangerZone, this.sensorRange, 1, 0);
         let avoidanceAngle = this.angle + this.sensorAngles[i] + p.PI;
         avoidanceVector.add(p5.Vector.fromAngle(avoidanceAngle).mult(avoidanceStrength));
       }
     }
 
-    // Calculate goal vector
+    // Calculate goal vector with learning bias
     let goalVector = p.createVector(target.x - this.x, target.y - this.y);
     goalVector.normalize();
+    
+    // Apply learned preferences
+    if (movementStrategy.preferredDirection) {
+      let learnedVector = p5.Vector.fromAngle(movementStrategy.preferredDirection);
+      goalVector = p5.Vector.lerp(goalVector, learnedVector, this.learningRate);
+    }
 
-    // Combine avoidance and goal vectors
-    let combinedVector = p5.Vector.add(goalVector.mult(1), avoidanceVector.mult(2));
+    // Combine vectors with strategy weighting
+    let combinedVector = p5.Vector.add(
+      goalVector.mult(movementStrategy.goalWeight), 
+      avoidanceVector.mult(movementStrategy.avoidanceWeight)
+    );
     combinedVector.normalize();
 
     // Smoothly adjust the angle
@@ -999,14 +1067,149 @@ class Rover {
     angleDifference = p.constrain(angleDifference, -this.maxAngularVelocity, this.maxAngularVelocity);
     this.angle += angleDifference;
 
-    // Enhanced crash-proof movement system
-    const minSensorReading = Math.min(...Object.values(sensorReadings));
+    // Persistent movement system - never give up
+    this.executeMovement(obstacles, movementStrategy);
+
+    // Keep the rover within canvas boundaries
+    this.x = p.constrain(this.x, this.size / 2, p.width - this.size / 2);
+    this.y = p.constrain(this.y, this.size / 2, p.height - this.size / 2);
     
-    // Always try to move, but with multiple safety checks
+    // Check if we've been stuck too long and need to restart
+    if (this.obstacleStuckCounter > this.maxStuckThreshold * 3) {
+      this.learnFromAttempt(false);
+      this.restartAttempt();
+    }
+  }
+
+
+
+  normalizeAngle(angle) {
+    while (angle > p.PI) angle -= p.TWO_PI;
+    while (angle < -p.PI) angle += p.TWO_PI;
+    return angle;
+  }
+
+  // Machine Learning Methods
+  startNewAttempt() {
+    this.attemptCount++;
+    this.currentAttempt = {
+      path: [],
+      success: false,
+      startTime: Date.now(),
+      attemptNumber: this.attemptCount
+    };
+    this.bestDistance = Infinity;
+    console.log(`Rover ML: Starting attempt #${this.attemptCount}`);
+  }
+
+  learnFromAttempt(success) {
+    this.currentAttempt.success = success;
+    this.currentAttempt.endTime = Date.now();
+    this.currentAttempt.duration = this.currentAttempt.endTime - this.currentAttempt.startTime;
+    this.currentAttempt.finalDistance = this.bestDistance;
+
+    // Store in memory
+    this.memory.push({ ...this.currentAttempt });
+
+    if (success) {
+      this.successfulPaths.push(this.currentAttempt.path);
+      console.log(`Rover ML: SUCCESS! Attempt #${this.attemptCount} reached target in ${this.currentAttempt.duration}ms`);
+    } else {
+      this.failedPaths.push(this.currentAttempt.path);
+      console.log(`Rover ML: Failed attempt #${this.attemptCount}. Best distance: ${this.bestDistance.toFixed(2)}`);
+    }
+
+    // Keep memory manageable
+    if (this.memory.length > 20) {
+      this.memory.shift();
+    }
+    if (this.successfulPaths.length > 5) {
+      this.successfulPaths.shift();
+    }
+    if (this.failedPaths.length > 10) {
+      this.failedPaths.shift();
+    }
+  }
+
+  restartAttempt() {
+    console.log(`Rover ML: Restarting attempt due to being stuck`);
+    this.x = 50; // Reset to start position
+    this.y = 50;
+    this.angle = 0;
+    this.obstacleStuckCounter = 0;
+    this.startNewAttempt();
+  }
+
+  chooseMovementStrategy(sensorReadings, target, obstacles) {
+    // Default strategy
+    let strategy = {
+      goalWeight: 1,
+      avoidanceWeight: 2,
+      preferredDirection: null,
+      explorationBonus: 0
+    };
+
+    // Apply exploration vs exploitation
+    const shouldExplore = Math.random() < this.explorationRate;
+    
+    if (shouldExplore) {
+      // Exploration: Try new directions
+      strategy.explorationBonus = 0.5;
+      strategy.preferredDirection = Math.random() * p.TWO_PI;
+      console.log(`Rover ML: Exploring new direction: ${(strategy.preferredDirection * 180 / p.PI).toFixed(1)}°`);
+    } else if (this.successfulPaths.length > 0) {
+      // Exploitation: Use learned successful patterns
+      const bestPath = this.getBestSuccessfulPath();
+      if (bestPath) {
+        const similarPoint = this.findSimilarPoint(bestPath);
+        if (similarPoint) {
+          strategy.preferredDirection = similarPoint.angle;
+          strategy.goalWeight = 1.5; // Stronger goal seeking
+          console.log(`Rover ML: Using learned successful pattern`);
+        }
+      }
+    }
+
+    // Adjust strategy based on sensor readings
+    const avgSensorReading = sensorReadings.reduce((a, b) => a + b, 0) / sensorReadings.length;
+    if (avgSensorReading < this.dangerZone * 2) {
+      // In tight space, prioritize avoidance
+      strategy.avoidanceWeight = 3;
+      strategy.goalWeight = 0.5;
+    }
+
+    return strategy;
+  }
+
+  getBestSuccessfulPath() {
+    if (this.successfulPaths.length === 0) return null;
+    
+    // Return the most recent successful path
+    return this.successfulPaths[this.successfulPaths.length - 1];
+  }
+
+  findSimilarPoint(path) {
+    // Find a point in the successful path that's similar to current position
+    let bestMatch = null;
+    let bestDistance = Infinity;
+
+    for (let point of path) {
+      const distance = p.dist(this.x, this.y, point.x, point.y);
+      if (distance < bestDistance && distance < 100) { // Within 100 pixels
+        bestDistance = distance;
+        bestMatch = point;
+      }
+    }
+
+    return bestMatch;
+  }
+
+  executeMovement(obstacles, strategy) {
+    const minSensorReading = Math.min(...this.readSensors(obstacles));
     let moved = false;
     
     // First, try direct movement if safe
-    if (minSensorReading > this.dangerZone * 1.5) {
+    if (minSensorReading > this.dangerZone * 1.2) {
       const nextX = this.x + p.cos(this.angle) * this.speed;
       const nextY = this.y + p.sin(this.angle) * this.speed;
       
@@ -1018,9 +1221,9 @@ class Rover {
       }
     }
     
-    // If direct movement failed, try angle adjustments
+    // If direct movement failed, try progressive angle adjustments
     if (!moved) {
-      for (let angleOffset = 0.05; angleOffset <= 1.0; angleOffset += 0.05) {
+      for (let angleOffset = 0.1; angleOffset <= 1.5; angleOffset += 0.1) {
         for (let direction of [-1, 1]) {
           const testAngle = this.angle + (angleOffset * direction);
           const testX = this.x + p.cos(testAngle) * this.speed;
@@ -1039,36 +1242,32 @@ class Rover {
       }
     }
     
-    // If still can't move, try smaller movements
+    // If still can't move, try smaller movements with more angles
     if (!moved) {
-      for (let speedReduction = 0.5; speedReduction > 0.1; speedReduction -= 0.1) {
-        for (let angleOffset = 0; angleOffset <= p.PI; angleOffset += 0.1) {
-          for (let direction of [-1, 1]) {
-            const testAngle = this.angle + (angleOffset * direction);
-            const testX = this.x + p.cos(testAngle) * this.speed * speedReduction;
-            const testY = this.y + p.sin(testAngle) * this.speed * speedReduction;
-            
-            if (!this.wouldCollideAtPosition(testX, testY, obstacles)) {
-              this.angle = testAngle;
-              this.x = testX;
-              this.y = testY;
-              moved = true;
-              this.obstacleStuckCounter = 0;
-              break;
-            }
+      for (let speedReduction = 0.8; speedReduction > 0.2; speedReduction -= 0.2) {
+        for (let testAngle = 0; testAngle < p.TWO_PI; testAngle += 0.2) {
+          const testX = this.x + p.cos(testAngle) * this.speed * speedReduction;
+          const testY = this.y + p.sin(testAngle) * this.speed * speedReduction;
+          
+          if (!this.wouldCollideAtPosition(testX, testY, obstacles)) {
+            this.angle = testAngle;
+            this.x = testX;
+            this.y = testY;
+            moved = true;
+            this.obstacleStuckCounter = 0;
+            break;
           }
-          if (moved) break;
         }
         if (moved) break;
       }
     }
     
-    // If completely stuck, find the direction with most space and move there
+    // Last resort: find any direction with space and move there
     if (!moved) {
       let bestAngle = this.angle;
       let maxDistance = 0;
       
-      for (let testAngle = 0; testAngle < p.TWO_PI; testAngle += 0.1) {
+      for (let testAngle = 0; testAngle < p.TWO_PI; testAngle += 0.15) {
         let distance = this.getDistanceInDirection(testAngle, obstacles);
         if (distance > maxDistance) {
           maxDistance = distance;
@@ -1076,10 +1275,10 @@ class Rover {
         }
       }
       
-      // Move in the direction with most space, even if it's a small step
-      if (maxDistance > this.size) {
+      // Move in the direction with most space
+      if (maxDistance > this.size * 0.5) {
         this.angle = bestAngle;
-        const moveDistance = Math.min(this.speed * 0.3, maxDistance * 0.3);
+        const moveDistance = Math.min(this.speed * 0.5, maxDistance * 0.4);
         this.x += p.cos(this.angle) * moveDistance;
         this.y += p.sin(this.angle) * moveDistance;
         this.obstacleStuckCounter = 0;
@@ -1087,46 +1286,27 @@ class Rover {
         this.obstacleStuckCounter++;
       }
     }
-
-    // Keep the rover within canvas boundaries
-    this.x = p.constrain(this.x, this.size / 2, p.width - this.size / 2);
-    this.y = p.constrain(this.y, this.size / 2, p.height - this.size / 2);
-  }
-
-
-
-  normalizeAngle(angle) {
-    while (angle > p.PI) angle -= p.TWO_PI;
-    while (angle < -p.PI) angle += p.TWO_PI;
-    return angle;
   }
 
   readSensors(obstacles) {
-    let readings = [];
-    for (let i = 0; i < this.numSensors; i++) {
-      readings.push(this.sensorRange);
-    }
-    
-    const isMobile = p.width < 600; // Simple mobile detection
-    const sensorStep = isMobile ? 6 : 3; // Reduce sensor resolution on mobile
+    let readings = [this.sensorRange, this.sensorRange, this.sensorRange];
+    const isMobile = p.width < 600;
+    const sensorStep = isMobile ? 4 : 2;
     
     for (let i = 0; i < this.numSensors; i++) {
       let sensorAngle = this.angle + this.sensorAngles[i];
       let sensorDistance = this.sensorRange;
 
-      // Check for obstacles along each sensor's path (optimized for mobile)
       for (let d = 0; d <= this.sensorRange; d += sensorStep) {
         let sensorX = this.x + d * p.cos(sensorAngle);
         let sensorY = this.y + d * p.sin(sensorAngle);
 
-        // Check if sensor point is outside canvas boundaries with margin
         if (sensorX < this.size || sensorX > p.width - this.size || 
             sensorY < this.size || sensorY > p.height - this.size) {
           sensorDistance = d;
           break;
         }
 
-        // If the sensor detects an obstacle, store the distance
         if (this.detectObstacleAtPoint(sensorX, sensorY, obstacles)) {
           sensorDistance = d;
           break;
@@ -1229,6 +1409,13 @@ class Rover {
     this.y = y;
     this.angle = 0;
     this.obstacleStuckCounter = 0;
+    
+    // Reset machine learning state but keep memory
+    this.currentAttempt = { path: [], success: false, startTime: 0 };
+    this.bestDistance = Infinity;
+    this.targetReached = false;
+    
+    console.log(`Rover ML: Reset - keeping ${this.memory.length} memories, ${this.successfulPaths.length} successful paths`);
   }
 }
 };
@@ -1236,15 +1423,42 @@ class Rover {
 const myP5 = new p5(sketch);
 p5InstanceRef.current = myP5;
 
-// Cleanup function to remove the p5 sketch on unmount
-return () => {
-myP5.remove();
-};
+  // Cleanup function to remove the p5 sketch on unmount
+  return () => {
+    myP5.remove();
+  };
 }, [containerSize]);
 
+// Ensure the rover simulation doesn't interfere with page navigation
+useEffect(() => {
+  const handleGlobalEvent = (event) => {
+    // If event is outside the rover simulation container, ensure it propagates normally
+    if (sketchRef.current && !sketchRef.current.contains(event.target)) {
+      // Allow normal page interactions - don't interfere
+      return;
+    }
+  };
+
+  // Add passive listeners to avoid blocking page interactions
+  document.addEventListener('click', handleGlobalEvent, { passive: true, capture: true });
+  document.addEventListener('touchstart', handleGlobalEvent, { passive: true, capture: true });
+
+  return () => {
+    document.removeEventListener('click', handleGlobalEvent, { passive: true, capture: true });
+    document.removeEventListener('touchstart', handleGlobalEvent, { passive: true, capture: true });
+  };
+}, []);
+
 const handleEditMode = () => {
-setEditMode(!editMode);
-p5InstanceRef.current.setEditMode(!editMode);
+  const newEditMode = !editMode;
+  console.log('Edit mode toggled:', newEditMode);
+  setEditMode(newEditMode);
+  if (p5InstanceRef.current && p5InstanceRef.current.setEditMode) {
+    p5InstanceRef.current.setEditMode(newEditMode);
+    console.log('P5 setEditMode called with:', newEditMode);
+  } else {
+    console.log('P5 instance not available or setEditMode not found');
+  }
 };
 
 return (
@@ -1255,58 +1469,88 @@ return (
 ></div>
       <div className="controls">
         <button 
+          onTouchStart={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+          }}
           onTouchEnd={(e) => {
             e.preventDefault();
             e.stopPropagation();
-            p5InstanceRef.current.start();
+            if (p5InstanceRef.current && p5InstanceRef.current.start) {
+              p5InstanceRef.current.start();
+            }
           }}
           onClick={(e) => {
-            e.preventDefault();
             e.stopPropagation();
-            p5InstanceRef.current.start();
+            if (p5InstanceRef.current && p5InstanceRef.current.start) {
+              p5InstanceRef.current.start();
+            }
           }}
         >
           Start
         </button>
         <button 
+          onTouchStart={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+          }}
           onTouchEnd={(e) => {
             e.preventDefault();
             e.stopPropagation();
-            p5InstanceRef.current.pause();
+            if (p5InstanceRef.current && p5InstanceRef.current.pause) {
+              p5InstanceRef.current.pause();
+            }
           }}
           onClick={(e) => {
-            e.preventDefault();
             e.stopPropagation();
-            p5InstanceRef.current.pause();
+            if (p5InstanceRef.current && p5InstanceRef.current.pause) {
+              p5InstanceRef.current.pause();
+            }
           }}
         >
           Pause
         </button>
         <button 
+          onTouchStart={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+          }}
           onTouchEnd={(e) => {
             e.preventDefault();
             e.stopPropagation();
-            p5InstanceRef.current.stop();
+            if (p5InstanceRef.current && p5InstanceRef.current.stop) {
+              p5InstanceRef.current.stop();
+            }
           }}
           onClick={(e) => {
-            e.preventDefault();
             e.stopPropagation();
-            p5InstanceRef.current.stop();
+            if (p5InstanceRef.current && p5InstanceRef.current.stop) {
+              p5InstanceRef.current.stop();
+            }
           }}
         >
           Restart
         </button>
         <button 
+          onTouchStart={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+          }}
           onTouchEnd={(e) => {
             e.preventDefault();
             e.stopPropagation();
+            console.log('Edit button touched');
             handleEditMode();
+          }}
+          onMouseDown={(e) => {
+            e.stopPropagation();
           }}
           onClick={(e) => {
-            e.preventDefault();
             e.stopPropagation();
+            console.log('Edit button clicked');
             handleEditMode();
           }}
+          style={{ WebkitTapHighlightColor: 'rgba(0, 0, 0, 0.1)' }}
         >
           {editMode ? 'Exit Edit Mode' : 'Edit Obstacles'}
         </button>
