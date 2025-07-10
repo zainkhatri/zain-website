@@ -40,13 +40,13 @@ const MLGame = () => {
           setLocalHighScores([]);
         }
       } else {
-        // Add some sample scores for demo purposes
+        // Add some sample scores for demo purposes (time-based scoring)
         const sampleScores = [
-          { initials: 'ZAI', score: 25, time: 45 },
-          { initials: 'JOE', score: 20, time: 52 },
-          { initials: 'ANN', score: 15, time: 38 },
-          { initials: 'BOB', score: 12, time: 41 },
-          { initials: 'SUE', score: 8, time: 35 }
+          { initials: 'ZAI', score: 35, numbersCompleted: 50 },
+          { initials: 'JOE', score: 38, numbersCompleted: 50 },
+          { initials: 'ANN', score: 41, numbersCompleted: 50 },
+          { initials: 'BOB', score: 45, numbersCompleted: 50 },
+          { initials: 'SUE', score: 52, numbersCompleted: 50 }
         ];
         setLocalHighScores(sampleScores);
         setHighScores(sampleScores);
@@ -108,17 +108,15 @@ const MLGame = () => {
           if (!existingScore) {
             scoresByInitials[score.initials] = score;
           } else {
-            if (
-              score.score > existingScore.score ||
-              (score.score === existingScore.score && score.time < existingScore.time)
-            ) {
+            // Lower time is better
+            if (score.score < existingScore.score) {
               scoresByInitials[score.initials] = score;
             }
           }
         });
 
         const uniqueScores = Object.values(scoresByInitials);
-        uniqueScores.sort((a, b) => b.score - a.score || a.time - b.time);
+        uniqueScores.sort((a, b) => a.score - b.score); // Sort by time ascending (lower is better)
         setHighScores(uniqueScores.slice(0, 10)); // Store up to 10 scores
         console.log('Fetched Firebase high scores:', uniqueScores);
       } else {
@@ -161,9 +159,8 @@ const MLGame = () => {
       const existingIndex = currentScores.findIndex(score => score.initials === newScore.initials);
       
       if (existingIndex !== -1) {
-        // Update if new score is better
-        if (newScore.score > currentScores[existingIndex].score ||
-            (newScore.score === currentScores[existingIndex].score && newScore.time < currentScores[existingIndex].time)) {
+        // Update if new time is better (lower)
+        if (newScore.score < currentScores[existingIndex].score) {
           currentScores[existingIndex] = newScore;
         }
       } else {
@@ -171,8 +168,8 @@ const MLGame = () => {
         currentScores.push(newScore);
       }
       
-      // Sort and keep top 10
-      currentScores.sort((a, b) => b.score - a.score || a.time - b.time);
+      // Sort by time ascending (lower is better)
+      currentScores.sort((a, b) => a.score - b.score);
       const topScores = currentScores.slice(0, 10);
       
       // Save to localStorage
@@ -194,21 +191,25 @@ const MLGame = () => {
       setMessage(endMessage);
       clearInterval(timerRef.current);
 
-      const newScore = {
-        initials: playerInitials.toUpperCase(),
-        score: finalScore,
-        time: timeElapsed,
-      };
-      const wouldMakeTopTen =
-        highScores.length < 10 ||
-        newScore.score > highScores[highScores.length - 1].score ||
-        (newScore.score === highScores[highScores.length - 1].score &&
-          newScore.time < highScores[highScores.length - 1].time);
+      // Only save score if they completed the game (reached 50)
+      if (finalScore === 50) {
+        const newScore = {
+          initials: playerInitials.toUpperCase(),
+          score: timeElapsed, // Time is the score - lower is better
+          numbersCompleted: finalScore,
+        };
+        
+        const wouldMakeTopTen =
+          highScores.length < 10 ||
+          newScore.score < highScores[highScores.length - 1].score;
 
-      if (wouldMakeTopTen) {
-        setShowScoreInput(true);
+        if (wouldMakeTopTen) {
+          setShowScoreInput(true);
+        } else {
+          setMessage(`${endMessage} You didn't make the top 10. Try again!`);
+        }
       } else {
-        setMessage(`${endMessage} You didn't make the top 10. Try again!`);
+        setMessage(`${endMessage} Complete all 50 numbers to make the leaderboard!`);
       }
 
       setNextNumber(current);
@@ -268,13 +269,9 @@ const MLGame = () => {
           );
 
           if (existingScore) {
-            // Update existing score if the new one is better
+            // Update existing score if the new time is better (lower)
             const existingScoreId = existingScore.id;
-            if (
-              newScore.score > existingScore.score ||
-              (newScore.score === existingScore.score &&
-                newScore.time < existingScore.time)
-            ) {
+            if (newScore.score < existingScore.score) {
               set(ref(database, `scores/${existingScoreId}`), newScore)
                 .then(() => {
                   setMessage(
@@ -362,8 +359,8 @@ const MLGame = () => {
 
       const newScore = {
         initials: initials,
-        score: current - 1,
-        time: timeElapsed,
+        score: timeElapsed, // Time is the score
+        numbersCompleted: 50, // They completed all numbers to get here
       };
 
       submitScore(newScore);
@@ -517,8 +514,8 @@ const MLGame = () => {
                 <div key={index} className="leaderboard-entry">
                   <span className="rank">#{index + 1}</span>
                   <span className="initials">{score.initials}</span>
-                  <span className="score">{score.score}</span>
-                  <span className="time">{score.time}s</span>
+                  <span className="score">{score.score}s</span>
+                  <span className="time">50/50</span>
                 </div>
               ))}
             </div>
