@@ -8,6 +8,7 @@ const MLGame = lazy(() => import('./MLGame'));
 const RoverSimulation = lazy(() => import('./RoverSimulation'));
 const BrainActivityChart = lazy(() => import('./BrainActivityChart'));
 const MunchMate = lazy(() => import('./MunchMate'));
+const ManiaJournal = lazy(() => import('./ManiaJournal'));
 
 function Projects() {
   const [areProjectsVisible, setAreProjectsVisible] = useState(false);
@@ -87,6 +88,29 @@ function Projects() {
                 </p>
                 <Suspense fallback={<div className="loading-spinner">Loading MunchMate...</div>}>
                   <MunchMate />
+                </Suspense>
+              </div>
+            </div>
+
+            {/* Mania Journal Project */}
+            <div className="project">
+              <div className="project-content">
+                <h3 className="project-title">
+                  <a
+                    href="https://github.com/zainkhatri/mania"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Mania - Digital Journaling App
+                  </a>
+                </h3>
+                <p className="project-description">
+                  A personal digital journaling app that lets you create beautiful journal entries with images, text, and custom styling. 
+                  Features auto-save functionality, smart color extraction from uploaded images, PDF export capabilities, and AI-powered 
+                  journal prompts using OpenAI's GPT-4. Built with React, TypeScript, Firebase, and modern web technologies.
+                </p>
+                <Suspense fallback={<div className="loading-spinner">Loading Mania Journal...</div>}>
+                  <ManiaJournal />
                 </Suspense>
               </div>
             </div>
