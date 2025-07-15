@@ -2,7 +2,6 @@ import React, { useState, useEffect, Suspense, lazy } from 'react';
 import './app.css';
 import Hero from './Hero';
 import Bio from './Bio';
-import resumePDF from './resume/Zain_Khatri_Resume.pdf';
 import { Analytics } from "@vercel/analytics/react";
 
 // Lazy load heavy components
@@ -35,7 +34,7 @@ function App() {
       </Suspense>
       
       <section id="resume" className="content-section resume">
-        <h2 onClick={() => window.open(resumePDF, '_blank')} className="expandable-title">
+        <h2 onClick={() => window.open('/Zain_Khatri_Resume.pdf', '_blank')} className="expandable-title">
           Resume +
         </h2>
       </section>
