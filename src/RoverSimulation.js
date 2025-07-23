@@ -80,19 +80,19 @@ const getPathToB = () => {
   const targetX = targetWaypoint.x * p.width;
   const targetY = targetWaypoint.y * p.height;
   
-  // Create a balanced grid for pathfinding (optimized for performance)
-  const gridSize = 25; // Larger grid cells for better performance
+  // Create a more precise grid for pathfinding
+  const gridSize = 15; // Smaller grid cells for more precise pathfinding
   const gridWidth = Math.ceil(p.width / gridSize);
   const gridHeight = Math.ceil(p.height / gridSize);
   
   // Create a grid marking obstacles
   let grid = Array(gridHeight).fill().map(() => Array(gridWidth).fill(0)); // 0 = free space
   
-  // Mark all obstacles on the grid with appropriate buffer for the rover
+  // Mark all obstacles on the grid with reduced buffer for the rover
   for (let obstacle of obstacles) {
     const obsX = obstacle.x * p.width;
     const obsY = obstacle.y * p.height;
-    const radius = obstacle.size / 2 + rover.size/2 - 5; // Buffer for rover, but not too large
+    const radius = obstacle.size / 2 + rover.size/2 - 2; // Reduced buffer for tighter navigation
     
     // Mark cells covered by this obstacle
     for (let y = 0; y < gridHeight; y++) {
@@ -885,29 +885,56 @@ class Rover {
   constructor(x, y) {
     this.x = x;
     this.y = y;
-    this.speed = 6;
+    this.speed = 4; // Reduced speed for smoother movement
     this.angle = 0;
     this.size = 20;
-    this.sensorRange = 100;
-    this.numSensors = 3; // Back to 3 sensors
-    this.sensorAngles = [-p.radians(45), 0, p.radians(45)];
-    this.maxAngularVelocity = p.radians(6);
-    this.dangerZone = 35;
+    this.sensorRange = 120; // Increased sensor range
+    this.numSensors = 3; // 3 ultrasonic sensors like the real NASA rover
+    this.sensorAngles = [-p.radians(45), 0, p.radians(45)]; // Left, center, right sensors
+    this.maxAngularVelocity = p.radians(4); // Reduced for smoother turning
+    this.dangerZone = 45; // Increased danger zone
     this.obstacleStuckCounter = 0;
-    this.maxStuckThreshold = 40;
+    this.maxStuckThreshold = 20; // Reduced for more aggressive stuck detection
     this.pathToFollow = [];
     this.currentPathIndex = 0;
     
-    // Machine Learning Components
+    // Enhanced Machine Learning Components
     this.memory = []; // Store attempted paths and outcomes
     this.currentAttempt = { path: [], success: false, startTime: 0 };
-    this.learningRate = 0.1;
-    this.explorationRate = 0.3; // 30% chance to try new paths
+    this.learningRate = 0.15; // Increased learning rate
+    this.explorationRate = 0.4; // Higher exploration rate
     this.successfulPaths = []; // Store paths that worked
     this.failedPaths = []; // Store paths that failed
     this.attemptCount = 0;
     this.bestDistance = Infinity; // Track closest we've gotten to B
     this.targetReached = false;
+    
+    // New ML features to prevent repetitive behavior
+    this.recentMovements = []; // Track recent movement patterns
+    this.movementHistory = []; // Track all movement patterns
+    this.stuckPatterns = []; // Track patterns that led to getting stuck
+    this.successfulPatterns = []; // Track patterns that led to success
+    this.adaptiveSpeed = this.speed; // Speed that adapts based on success
+    this.lastSuccessfulDirection = null; // Remember last successful direction
+    this.repetitionPenalty = 0; // Penalty for repeating failed patterns
+    this.innovationBonus = 0.2; // Bonus for trying new approaches
+    this.patternMemorySize = 50; // How many patterns to remember
+    this.stuckThreshold = 30; // How many frames before considering stuck
+    this.consecutiveFailures = 0; // Track consecutive failures
+    this.lastPositions = []; // Track recent positions to detect loops
+    
+    // Enhanced Pathfinding Memory
+    this.pathMemory = []; // Store all attempted paths with outcomes
+    this.alternativeRoutes = []; // Store alternative route attempts
+    this.successfulRouteSegments = []; // Store successful parts of routes
+    this.failedRouteSegments = []; // Store failed parts of routes
+    this.routeProgress = []; // Track progress toward target for each route
+    this.bestRouteToTarget = null; // Remember the best route found so far
+    this.currentRouteAttempt = 0; // Track which route we're trying
+    this.maxRouteAttempts = 5; // Maximum different routes to try
+    this.routeMemorySize = 20; // How many routes to remember
+    this.progressThreshold = 10; // Minimum progress to consider a route "working"
+    this.lastProgressCheck = { x: 0, y: 0, distance: Infinity }; // Track last progress
   }
 
   show() {
@@ -1019,6 +1046,15 @@ class Rover {
       this.startNewAttempt();
     }
     
+    // Track progress toward target
+    this.trackProgress(target);
+    
+    // Check if we need to try alternative route
+    if (this.shouldTryAlternativeRoute(target)) {
+      this.tryAlternativeRoute(target, obstacles);
+      return;
+    }
+    
     // Record current state in path
     this.currentAttempt.path.push({
       x: this.x,
@@ -1027,25 +1063,39 @@ class Rover {
       timestamp: Date.now()
     });
     
+    // Track movement patterns
+    this.recentMovements.push(this.angle);
+    if (this.recentMovements.length > 10) {
+      this.recentMovements.shift();
+    }
+    
     // Calculate distance to target for learning
     const distanceToTarget = p.dist(this.x, this.y, target.x, target.y);
     
     // Update best distance if we're getting closer
     if (distanceToTarget < this.bestDistance) {
       this.bestDistance = distanceToTarget;
+      this.lastSuccessfulDirection = this.angle;
+      this.recordProgress(target, distanceToTarget);
     }
     
     // Check if we've reached the target
     if (this.reachedWaypoint(target)) {
       this.targetReached = true;
       this.learnFromAttempt(true);
+      this.consecutiveFailures = 0; // Reset failure counter on success
+      this.recordSuccessfulRoute();
+      
+      // Stop movement when target is reached
+      this.speed = 0;
+      console.log(`Rover ML: SUCCESS! Reached target B at distance ${Math.sqrt((this.x - target.x) ** 2 + (this.y - target.y) ** 2).toFixed(2)}`);
       return;
     }
     
     // Read sensors
     let sensorReadings = this.readSensors(obstacles);
 
-    // Use machine learning to decide movement strategy
+    // Use enhanced machine learning to decide movement strategy
     let movementStrategy = this.chooseMovementStrategy(sensorReadings, target, obstacles);
     
     // Calculate avoidance vector
@@ -1069,7 +1119,7 @@ class Rover {
     let goalVector = p.createVector(target.x - this.x, target.y - this.y);
     goalVector.normalize();
     
-    // Apply learned preferences
+    // Apply learned preferences with enhanced learning
     if (movementStrategy.preferredDirection) {
       let learnedVector = p5.Vector.fromAngle(movementStrategy.preferredDirection);
       goalVector = p5.Vector.lerp(goalVector, learnedVector, this.learningRate);
@@ -1082,27 +1132,349 @@ class Rover {
     );
     combinedVector.normalize();
 
-    // Smoothly adjust the angle
+    // Apply exploration bonus if present
+    if (movementStrategy.explorationBonus > 0) {
+      let explorationVector = p5.Vector.fromAngle(Math.random() * p.TWO_PI);
+      combinedVector = p5.Vector.lerp(combinedVector, explorationVector, movementStrategy.explorationBonus);
+      combinedVector.normalize();
+    }
+
+    // Smoothly adjust the angle with better smoothing
     let desiredAngle = combinedVector.heading();
     let angleDifference = this.normalizeAngle(desiredAngle - this.angle);
     angleDifference = p.constrain(angleDifference, -this.maxAngularVelocity, this.maxAngularVelocity);
-    this.angle += angleDifference;
+    
+    // Apply smoothing factor for more gradual turns
+    const smoothingFactor = 0.3; // Reduced from 1.0 for smoother movement
+    this.angle += angleDifference * smoothingFactor;
 
-    // Persistent movement system - never give up
+    // Execute movement with adaptive speed
     this.executeMovement(obstacles, movementStrategy);
 
     // Keep the rover within canvas boundaries
     this.x = p.constrain(this.x, this.size / 2, p.width - this.size / 2);
     this.y = p.constrain(this.y, this.size / 2, p.height - this.size / 2);
     
-    // Check if we've been stuck too long and need to restart
-    if (this.obstacleStuckCounter > this.maxStuckThreshold * 3) {
+    // Enhanced stuck detection and learning - more aggressive
+    if (this.obstacleStuckCounter > this.maxStuckThreshold) {
+      // Record this as a stuck pattern
+      this.stuckPatterns.push({
+        angle: this.angle,
+        position: { x: this.x, y: this.y },
+        sensorReadings: [...sensorReadings],
+        timestamp: Date.now()
+      });
+      
+      // Keep stuck patterns manageable
+      if (this.stuckPatterns.length > this.patternMemorySize) {
+        this.stuckPatterns.shift();
+      }
+      
       this.learnFromAttempt(false);
-      this.restartAttempt();
+      this.recordFailedRoute();
+      this.tryAlternativeRoute(target, obstacles);
     }
   }
 
+  // New methods for enhanced pathfinding memory
+  trackProgress(target) {
+    const currentDistance = p.dist(this.x, this.y, target.x, target.y);
+    const progress = this.lastProgressCheck.distance - currentDistance;
+    
+    // Update last progress check
+    this.lastProgressCheck = {
+      x: this.x,
+      y: this.y,
+      distance: currentDistance
+    };
+    
+    // Record significant progress
+    if (progress > this.progressThreshold) {
+      this.recordProgress(target, currentDistance);
+    }
+  }
 
+  recordProgress(target, distance) {
+    const progress = {
+      x: this.x,
+      y: this.y,
+      distance: distance,
+      timestamp: Date.now(),
+      routeAttempt: this.currentRouteAttempt
+    };
+    
+    this.routeProgress.push(progress);
+    
+    // Keep progress memory manageable
+    if (this.routeProgress.length > this.routeMemorySize) {
+      this.routeProgress.shift();
+    }
+    
+    // Update best route if this is better
+    if (distance < (this.bestRouteToTarget?.finalDistance || Infinity)) {
+      this.bestRouteToTarget = {
+        path: [...this.currentAttempt.path],
+        finalDistance: distance,
+        routeAttempt: this.currentRouteAttempt
+      };
+    }
+  }
+
+  shouldTryAlternativeRoute(target) {
+    // Much more aggressive stuck detection
+    if (this.obstacleStuckCounter > this.maxStuckThreshold / 2) {
+      return true;
+    }
+    
+    // Check if we've been in the same area too long (reduced threshold)
+    const recentProgress = this.routeProgress.slice(-5);
+    if (recentProgress.length >= 5) {
+      const avgDistance = recentProgress.reduce((sum, p) => sum + p.distance, 0) / recentProgress.length;
+      const distanceVariance = recentProgress.reduce((sum, p) => sum + Math.abs(p.distance - avgDistance), 0) / recentProgress.length;
+      
+      // If distance variance is low, we're likely looping
+      if (distanceVariance < 10) {
+        return true;
+      }
+    }
+    
+    // Check if we haven't made progress in the last few frames
+    if (this.lastProgressCheck.distance !== Infinity) {
+      const currentDistance = p.dist(this.x, this.y, target.x, target.y);
+      if (Math.abs(currentDistance - this.lastProgressCheck.distance) < 2) {
+        this.obstacleStuckCounter++;
+      }
+    }
+    
+    // Try alternative route more frequently
+    if (this.obstacleStuckCounter > 15) {
+      return true;
+    }
+    
+    return false;
+  }
+
+  tryAlternativeRoute(target, obstacles) {
+    this.currentRouteAttempt++;
+    
+    if (this.currentRouteAttempt > this.maxRouteAttempts) {
+      // Reset and try from beginning with different approach
+      this.currentRouteAttempt = 0;
+      this.resetToBestKnownPosition(target);
+      return;
+    }
+    
+    console.log(`Rover ML: Trying alternative route #${this.currentRouteAttempt}`);
+    
+    // More aggressive alternative route generation
+    const alternativeRoute = this.generateAlternativeRoute(target);
+    
+    if (alternativeRoute) {
+      // Move toward the alternative route starting point
+      const startPoint = alternativeRoute.startPoint;
+      const angleToStart = p.atan2(startPoint.y - this.y, startPoint.x - this.x);
+      this.angle = angleToStart;
+      
+      // Give a bigger boost toward the alternative route
+      const boostDistance = Math.min(40, Math.sqrt((this.x - startPoint.x) ** 2 + (this.y - startPoint.y) ** 2));
+      this.x += p.cos(this.angle) * boostDistance;
+      this.y += p.sin(this.angle) * boostDistance;
+      
+      this.obstacleStuckCounter = 0; // Reset stuck counter
+    } else {
+      // Try multiple random directions to find a better path
+      let bestAngle = Math.random() * p.TWO_PI;
+      let bestDistance = Infinity;
+      
+      // Test 5 random directions and pick the one that gets us closest to target
+      for (let i = 0; i < 5; i++) {
+        const testAngle = Math.random() * Math.PI * 2;
+        const testX = this.x + Math.cos(testAngle) * 50;
+        const testY = this.y + Math.sin(testAngle) * 50;
+        const testDistance = Math.sqrt((testX - target.x) ** 2 + (testY - target.y) ** 2);
+        
+        if (testDistance < bestDistance) {
+          bestDistance = testDistance;
+          bestAngle = testAngle;
+        }
+      }
+      
+      this.angle = bestAngle;
+      
+      // Move away from current position with the best direction
+      this.x += p.cos(this.angle) * 50;
+      this.y += p.sin(this.angle) * 50;
+      
+      this.obstacleStuckCounter = 0;
+    }
+    
+    // Clear recent progress to avoid false stuck detection
+    this.routeProgress = this.routeProgress.slice(-2);
+  }
+
+  generateAlternativeRoute(target) {
+    // Look for successful route segments that got closer to target
+    const successfulSegments = this.successfulRouteSegments.filter(segment => 
+      segment.finalDistance < p.dist(this.x, this.y, target.x, target.y)
+    );
+    
+    if (successfulSegments.length > 0) {
+      // Find the best successful segment
+      const bestSegment = successfulSegments.reduce((best, segment) => 
+        segment.finalDistance < best.finalDistance ? segment : best
+      );
+      
+      return {
+        startPoint: bestSegment.startPoint,
+        direction: bestSegment.direction,
+        type: 'successful_segment'
+      };
+    }
+    
+    // Look for progress points that got us closer
+    const currentDistance = Math.sqrt((this.x - target.x) ** 2 + (this.y - target.y) ** 2);
+    const progressPoints = this.routeProgress.filter(progress => 
+      progress.distance < currentDistance
+    );
+    
+    if (progressPoints.length > 0) {
+      const bestProgress = progressPoints.reduce((best, p) => 
+        p.distance < best.distance ? p : best
+      );
+      
+      return {
+        startPoint: { x: bestProgress.x, y: bestProgress.y },
+        direction: p.atan2(target.y - bestProgress.y, target.x - bestProgress.x),
+        type: 'progress_point'
+      };
+    }
+    
+    // Try multiple escape strategies
+    const strategies = [];
+    
+    // Strategy 1: Go around obstacles
+    const obstacleCenters = obstacles.map(obs => ({ x: obs.x * p.width, y: obs.y * p.height }));
+    const avgObstacleX = obstacleCenters.reduce((sum, obs) => sum + obs.x, 0) / obstacleCenters.length;
+    const avgObstacleY = obstacleCenters.reduce((sum, obs) => sum + obs.y, 0) / obstacleCenters.length;
+    const escapeAngle = p.atan2(this.y - avgObstacleY, this.x - avgObstacleX);
+    
+    strategies.push({
+      startPoint: { 
+        x: this.x + p.cos(escapeAngle) * 80, 
+        y: this.y + p.sin(escapeAngle) * 80 
+      },
+      direction: escapeAngle,
+      type: 'escape_route',
+      score: 0
+    });
+    
+    // Strategy 2: Try to go directly toward target from a different angle
+    const directAngle = p.atan2(target.y - this.y, target.x - this.x);
+    const perpendicularAngle1 = directAngle + p.PI/2;
+    const perpendicularAngle2 = directAngle - p.PI/2;
+    
+    strategies.push({
+      startPoint: { 
+        x: this.x + p.cos(perpendicularAngle1) * 60, 
+        y: this.y + p.sin(perpendicularAngle1) * 60 
+      },
+      direction: directAngle,
+      type: 'perpendicular_approach',
+      score: 0
+    });
+    
+    strategies.push({
+      startPoint: { 
+        x: this.x + p.cos(perpendicularAngle2) * 60, 
+        y: this.y + p.sin(perpendicularAngle2) * 60 
+      },
+      direction: directAngle,
+      type: 'perpendicular_approach',
+      score: 0
+    });
+    
+    // Strategy 3: Try going to the opposite side of the target
+    const oppositeAngle = p.atan2(target.y - this.y, target.x - this.x) + p.PI;
+    strategies.push({
+      startPoint: { 
+        x: this.x + p.cos(oppositeAngle) * 100, 
+        y: this.y + p.sin(oppositeAngle) * 100 
+      },
+      direction: directAngle,
+      type: 'opposite_approach',
+      score: 0
+    });
+    
+    // Score each strategy based on how close it gets to target
+    strategies.forEach(strategy => {
+      const distanceToTarget = Math.sqrt((strategy.startPoint.x - target.x) ** 2 + (strategy.startPoint.y - target.y) ** 2);
+      strategy.score = 1 / (distanceToTarget + 1); // Closer = higher score
+    });
+    
+    // Return the best strategy
+    const bestStrategy = strategies.reduce((best, strategy) => 
+      strategy.score > best.score ? strategy : best
+    );
+    
+    return bestStrategy;
+  }
+
+  resetToBestKnownPosition(target) {
+    if (this.bestRouteToTarget) {
+      // Reset to the best position we've found
+      const bestPoint = this.bestRouteToTarget.path[Math.floor(this.bestRouteToTarget.path.length / 2)];
+      this.x = bestPoint.x;
+      this.y = bestPoint.y;
+      this.angle = p.atan2(target.y - this.y, target.x - this.x);
+      console.log(`Rover ML: Reset to best known position`);
+    } else {
+      // Reset to start position
+      this.x = 50;
+      this.y = 50;
+      this.angle = 0;
+      console.log(`Rover ML: Reset to start position`);
+    }
+    
+    this.obstacleStuckCounter = 0;
+    this.currentRouteAttempt = 0;
+  }
+
+  recordSuccessfulRoute() {
+    const route = {
+      path: [...this.currentAttempt.path],
+      finalDistance: this.bestDistance,
+      routeAttempt: this.currentRouteAttempt,
+      timestamp: Date.now()
+    };
+    
+    this.pathMemory.push(route);
+    
+    // Keep memory manageable
+    if (this.pathMemory.length > this.routeMemorySize) {
+      this.pathMemory.shift();
+    }
+    
+    console.log(`Rover ML: Recorded successful route with distance ${this.bestDistance.toFixed(2)}`);
+  }
+
+  recordFailedRoute() {
+    const route = {
+      path: [...this.currentAttempt.path],
+      finalDistance: this.bestDistance,
+      routeAttempt: this.currentRouteAttempt,
+      timestamp: Date.now(),
+      failureReason: 'stuck'
+    };
+    
+    this.failedRouteSegments.push(route);
+    
+    // Keep memory manageable
+    if (this.failedRouteSegments.length > this.routeMemorySize) {
+      this.failedRouteSegments.shift();
+    }
+    
+    console.log(`Rover ML: Recorded failed route with best distance ${this.bestDistance.toFixed(2)}`);
+  }
 
   normalizeAngle(angle) {
     while (angle > p.PI) angle -= p.TWO_PI;
@@ -1162,44 +1534,258 @@ class Rover {
   }
 
   chooseMovementStrategy(sensorReadings, target, obstacles) {
-    // Default strategy
+    // Balanced strategy for smooth autonomous navigation
     let strategy = {
-      goalWeight: 1,
-      avoidanceWeight: 2,
+      goalWeight: 2.5, // Balanced goal weight
+      avoidanceWeight: 1.5, // Balanced avoidance weight
       preferredDirection: null,
-      explorationBonus: 0
+      explorationBonus: 0,
+      speedMultiplier: 1.0 // Normal speed for smooth movement
     };
 
-    // Apply exploration vs exploitation
-    const shouldExplore = Math.random() < this.explorationRate;
+    // Check for repetitive patterns and apply penalties
+    this.detectRepetitivePatterns();
+    
+    // Calculate adaptive exploration rate based on recent performance
+    const adaptiveExplorationRate = this.calculateAdaptiveExplorationRate();
+    
+    // If we're stuck, be more aggressive but still smooth
+    if (this.obstacleStuckCounter > 10) {
+      strategy.goalWeight = 3;
+      strategy.avoidanceWeight = 1;
+      strategy.speedMultiplier = 1.3;
+      strategy.explorationBonus = 0.2; // Moderate exploration when stuck
+    }
+    
+    // If we're close to target, be more careful and precise
+    const distanceToTarget = Math.sqrt((this.x - target.x) ** 2 + (this.y - target.y) ** 2);
+    if (distanceToTarget < 80) {
+      strategy.goalWeight = 3;
+      strategy.avoidanceWeight = 1.5;
+      strategy.speedMultiplier = 0.6; // Slow down more when very close
+    }
+    
+    // If we're very close to target, be extra careful
+    if (distanceToTarget < 40) {
+      strategy.goalWeight = 4;
+      strategy.avoidanceWeight = 1;
+      strategy.speedMultiplier = 0.4; // Very slow when almost there
+    }
+    
+    // Apply exploration vs exploitation with adaptive rates
+    const shouldExplore = Math.random() < adaptiveExplorationRate;
     
     if (shouldExplore) {
-      // Exploration: Try new directions
-      strategy.explorationBonus = 0.5;
-      strategy.preferredDirection = Math.random() * p.TWO_PI;
-      console.log(`Rover ML: Exploring new direction: ${(strategy.preferredDirection * 180 / p.PI).toFixed(1)}°`);
+      // Enhanced exploration: Try new directions but still toward target
+      strategy.explorationBonus = this.innovationBonus * 0.3; // Reduced exploration bonus
+      strategy.preferredDirection = this.generateInnovativeDirectionTowardTarget(target);
+      strategy.speedMultiplier = 0.9; // Keep good speed for exploration
+      console.log(`Rover ML: Exploring innovative direction toward target: ${(strategy.preferredDirection * 180 / p.PI).toFixed(1)}°`);
     } else if (this.successfulPaths.length > 0) {
-      // Exploitation: Use learned successful patterns
+      // Enhanced exploitation: Use learned successful patterns with adaptation
       const bestPath = this.getBestSuccessfulPath();
       if (bestPath) {
         const similarPoint = this.findSimilarPoint(bestPath);
-        if (similarPoint) {
+        if (similarPoint && !this.isPatternRepetitive(similarPoint)) {
           strategy.preferredDirection = similarPoint.angle;
-          strategy.goalWeight = 1.5; // Stronger goal seeking
-          console.log(`Rover ML: Using learned successful pattern`);
+          strategy.goalWeight = 2.5; // Even stronger goal seeking for known good paths
+          strategy.speedMultiplier = 1.2; // Faster for known good paths
+          console.log(`Rover ML: Using adapted successful pattern toward target`);
+        } else {
+          // Fall back to target-focused approach if pattern is repetitive
+          strategy.preferredDirection = p.atan2(target.y - this.y, target.x - this.x);
+          strategy.goalWeight = 2.2; // Strong goal seeking
+          console.log(`Rover ML: Avoiding repetitive pattern, focusing on target`);
         }
+      } else {
+        // No successful paths, focus directly on target
+        strategy.preferredDirection = p.atan2(target.y - this.y, target.x - this.x);
+        strategy.goalWeight = 2.2;
+        console.log(`Rover ML: No successful patterns, focusing on target`);
       }
+    } else {
+      // No learning history, focus directly on target
+      strategy.preferredDirection = p.atan2(target.y - this.y, target.x - this.x);
+      strategy.goalWeight = 2.2;
+      console.log(`Rover ML: First attempt, focusing on target`);
     }
 
-    // Adjust strategy based on sensor readings
+    // Apply repetition penalty if we're repeating failed patterns
+    if (this.repetitionPenalty > 0) {
+      strategy.explorationBonus += this.repetitionPenalty * 0.2; // Reduced penalty impact
+      strategy.goalWeight = Math.max(strategy.goalWeight * 0.9, 1.5); // Keep strong goal seeking
+      console.log(`Rover ML: Applying repetition penalty: ${this.repetitionPenalty.toFixed(2)}`);
+    }
+
+    // Adjust strategy based on sensor readings while maintaining goal focus
     const avgSensorReading = sensorReadings.reduce((a, b) => a + b, 0) / sensorReadings.length;
     if (avgSensorReading < this.dangerZone * 2) {
-      // In tight space, prioritize avoidance
-      strategy.avoidanceWeight = 3;
-      strategy.goalWeight = 0.5;
+      // In tight space, still prioritize goal but increase avoidance
+      strategy.avoidanceWeight = 2.5;
+      strategy.goalWeight = Math.max(strategy.goalWeight * 0.8, 1.5); // Keep minimum goal seeking
+      strategy.explorationBonus += 0.2; // Moderate exploration in tight spaces
     }
 
+    // Adaptive speed based on recent success
+    strategy.speedMultiplier *= this.adaptiveSpeed / this.speed;
+
     return strategy;
+  }
+
+  // New method to generate innovative direction toward target
+  generateInnovativeDirectionTowardTarget(target) {
+    // Calculate direct angle to target
+    const directAngle = p.atan2(target.y - this.y, target.x - this.x);
+    
+    // Generate a direction that's innovative but still toward the target
+    let attempts = 0;
+    const maxAttempts = 15;
+    
+    while (attempts < maxAttempts) {
+      // Add some randomness to the target direction
+      const angleVariation = (Math.random() - 0.5) * p.radians(60); // ±30 degrees
+      const newDirection = directAngle + angleVariation;
+      
+      // Check if this direction is significantly different from recent movements
+      if (this.isDirectionInnovative(newDirection)) {
+        return newDirection;
+      }
+      
+      attempts++;
+    }
+    
+    // If we can't find an innovative direction, use the direct angle to target
+    return directAngle;
+  }
+
+  // New methods for enhanced ML
+  detectRepetitivePatterns() {
+    // Track current position
+    this.lastPositions.push({ x: this.x, y: this.y, time: Date.now() });
+    
+    // Keep only recent positions
+    if (this.lastPositions.length > 20) {
+      this.lastPositions.shift();
+    }
+    
+    // Check for loops in recent movement
+    if (this.lastPositions.length > 10) {
+      const recentPositions = this.lastPositions.slice(-10);
+      const isLooping = this.detectLoop(recentPositions);
+      
+      if (isLooping) {
+        this.repetitionPenalty = Math.min(this.repetitionPenalty + 0.1, 1.0);
+        this.consecutiveFailures++;
+        console.log(`Rover ML: Detected movement loop! Penalty: ${this.repetitionPenalty.toFixed(2)}`);
+      } else {
+        this.repetitionPenalty = Math.max(this.repetitionPenalty - 0.05, 0);
+      }
+    }
+  }
+
+  detectLoop(positions) {
+    if (positions.length < 6) return false;
+    
+    // Check if we're moving in a small circle
+    const centerX = positions.reduce((sum, pos) => sum + pos.x, 0) / positions.length;
+    const centerY = positions.reduce((sum, pos) => sum + pos.y, 0) / positions.length;
+    
+    const avgDistanceFromCenter = positions.reduce((sum, pos) => {
+      return sum + p.dist(pos.x, pos.y, centerX, centerY);
+    }, 0) / positions.length;
+    
+    // If average distance from center is small, we're likely looping
+    return avgDistanceFromCenter < this.size * 2;
+  }
+
+  calculateAdaptiveExplorationRate() {
+    let baseRate = this.explorationRate;
+    
+    // Increase exploration if we've been failing
+    if (this.consecutiveFailures > 3) {
+      baseRate = Math.min(baseRate + 0.2, 0.8);
+    }
+    
+    // Increase exploration if we're stuck
+    if (this.obstacleStuckCounter > this.stuckThreshold) {
+      baseRate = Math.min(baseRate + 0.3, 0.9);
+    }
+    
+    // Decrease exploration if we've been successful recently
+    if (this.successfulPaths.length > 0) {
+      const lastSuccess = this.successfulPaths[this.successfulPaths.length - 1];
+      if (Date.now() - lastSuccess.endTime < 10000) { // 10 seconds
+        baseRate = Math.max(baseRate - 0.1, 0.2);
+      }
+    }
+    
+    return baseRate;
+  }
+
+  generateInnovativeDirection() {
+    // Generate a direction that's different from recent attempts
+    let attempts = 0;
+    const maxAttempts = 10;
+    
+    while (attempts < maxAttempts) {
+      const newDirection = Math.random() * p.TWO_PI;
+      
+      // Check if this direction is significantly different from recent movements
+      if (this.isDirectionInnovative(newDirection)) {
+        return newDirection;
+      }
+      
+      attempts++;
+    }
+    
+    // If we can't find an innovative direction, use a random one
+    return Math.random() * p.TWO_PI;
+  }
+
+  isDirectionInnovative(direction) {
+    // Check if this direction is significantly different from recent movements
+    if (this.recentMovements.length === 0) return true;
+    
+    const recentDirections = this.recentMovements.slice(-5);
+    
+    for (let recentDir of recentDirections) {
+      const angleDiff = Math.abs(direction - recentDir);
+      const normalizedDiff = Math.min(angleDiff, p.TWO_PI - angleDiff);
+      
+      // If direction is too similar to recent ones, it's not innovative
+      if (normalizedDiff < p.radians(45)) {
+        return false;
+      }
+    }
+    
+    return true;
+  }
+
+  isPatternRepetitive(pattern) {
+    // Check if this pattern is similar to recently failed patterns
+    if (this.stuckPatterns.length === 0) return false;
+    
+    const recentStuckPatterns = this.stuckPatterns.slice(-3);
+    
+    for (let stuckPattern of recentStuckPatterns) {
+      const similarity = this.calculatePatternSimilarity(pattern, stuckPattern);
+      if (similarity > 0.7) { // 70% similarity threshold
+        return true;
+      }
+    }
+    
+    return false;
+  }
+
+  calculatePatternSimilarity(pattern1, pattern2) {
+    // Simple similarity calculation based on angle difference
+    if (!pattern1.angle || !pattern2.angle) return 0;
+    
+    const angleDiff = Math.abs(pattern1.angle - pattern2.angle);
+    const normalizedDiff = Math.min(angleDiff, p.TWO_PI - angleDiff);
+    
+    // Convert to similarity (0 = very different, 1 = very similar)
+    return 1 - (normalizedDiff / p.PI);
   }
 
   getBestSuccessfulPath() {
@@ -1229,10 +1815,18 @@ class Rover {
     const minSensorReading = Math.min(...this.readSensors(obstacles));
     let moved = false;
     
-    // First, try direct movement if safe
-    if (minSensorReading > this.dangerZone * 1.2) {
-      const nextX = this.x + p.cos(this.angle) * this.speed;
-      const nextY = this.y + p.sin(this.angle) * this.speed;
+    // Use adaptive speed from strategy
+    const currentSpeed = this.speed * (strategy.speedMultiplier || 1);
+    
+    // Don't move if we've reached the target
+    if (this.targetReached) {
+      return;
+    }
+    
+    // Safe direct movement with proper safety margins
+    if (minSensorReading > this.dangerZone * 1.2) { // Increased safety margin
+      const nextX = this.x + Math.cos(this.angle) * currentSpeed;
+      const nextY = this.y + Math.sin(this.angle) * currentSpeed;
       
       if (!this.wouldCollideAtPosition(nextX, nextY, obstacles)) {
         this.x = nextX;
@@ -1242,13 +1836,14 @@ class Rover {
       }
     }
     
-    // If direct movement failed, try progressive angle adjustments
+    // If direct movement failed, try smooth angle adjustments
     if (!moved) {
-      for (let angleOffset = 0.1; angleOffset <= 1.5; angleOffset += 0.1) {
+      const angleStep = strategy.explorationBonus > 0 ? 0.1 : 0.08; // Smaller steps for smoother movement
+      for (let angleOffset = 0.05; angleOffset <= 1.0; angleOffset += angleStep) { // Reduced range for smoother turns
         for (let direction of [-1, 1]) {
           const testAngle = this.angle + (angleOffset * direction);
-          const testX = this.x + p.cos(testAngle) * this.speed;
-          const testY = this.y + p.sin(testAngle) * this.speed;
+          const testX = this.x + Math.cos(testAngle) * currentSpeed;
+          const testY = this.y + Math.sin(testAngle) * currentSpeed;
           
           if (!this.wouldCollideAtPosition(testX, testY, obstacles)) {
             this.angle = testAngle;
@@ -1263,12 +1858,15 @@ class Rover {
       }
     }
     
-    // If still can't move, try smaller movements with more angles
+    // If still can't move, try smaller movements with smooth angles
     if (!moved) {
-      for (let speedReduction = 0.8; speedReduction > 0.2; speedReduction -= 0.2) {
-        for (let testAngle = 0; testAngle < p.TWO_PI; testAngle += 0.2) {
-          const testX = this.x + p.cos(testAngle) * this.speed * speedReduction;
-          const testY = this.y + p.sin(testAngle) * this.speed * speedReduction;
+      const speedReductions = strategy.explorationBonus > 0 ? [0.8, 0.6, 0.4, 0.2] : [0.7, 0.5, 0.3, 0.2]; // Conservative speed reductions
+      const angleSteps = strategy.explorationBonus > 0 ? 0.15 : 0.2; // Moderate angle coverage
+      
+      for (let speedReduction of speedReductions) {
+        for (let testAngle = 0; testAngle < Math.PI * 2; testAngle += angleSteps) {
+          const testX = this.x + Math.cos(testAngle) * currentSpeed * speedReduction;
+          const testY = this.y + Math.sin(testAngle) * currentSpeed * speedReduction;
           
           if (!this.wouldCollideAtPosition(testX, testY, obstacles)) {
             this.angle = testAngle;
@@ -1283,12 +1881,13 @@ class Rover {
       }
     }
     
-    // Last resort: find any direction with space and move there
+    // Last resort: find any direction with space and move there smoothly
     if (!moved) {
       let bestAngle = this.angle;
       let maxDistance = 0;
+      const angleStep = strategy.explorationBonus > 0 ? 0.1 : 0.15; // Moderate search
       
-      for (let testAngle = 0; testAngle < p.TWO_PI; testAngle += 0.15) {
+      for (let testAngle = 0; testAngle < Math.PI * 2; testAngle += angleStep) {
         let distance = this.getDistanceInDirection(testAngle, obstacles);
         if (distance > maxDistance) {
           maxDistance = distance;
@@ -1296,34 +1895,44 @@ class Rover {
         }
       }
       
-      // Move in the direction with most space
-      if (maxDistance > this.size * 0.5) {
+      // Move in the direction with most space - conservative
+      if (maxDistance > this.size * 0.8) { // Increased threshold for safety
         this.angle = bestAngle;
-        const moveDistance = Math.min(this.speed * 0.5, maxDistance * 0.4);
-        this.x += p.cos(this.angle) * moveDistance;
-        this.y += p.sin(this.angle) * moveDistance;
+        const moveDistance = Math.min(currentSpeed * 0.5, maxDistance * 0.4); // Conservative movement
+        this.x += Math.cos(this.angle) * moveDistance;
+        this.y += Math.sin(this.angle) * moveDistance;
         this.obstacleStuckCounter = 0;
       } else {
         this.obstacleStuckCounter++;
       }
     }
+    
+    // Update adaptive speed based on success
+    if (moved) {
+      // Gradually increase speed if we're making progress
+      this.adaptiveSpeed = Math.min(this.adaptiveSpeed * 1.01, this.speed * 1.5);
+    } else {
+      // Decrease speed if we're stuck
+      this.adaptiveSpeed = Math.max(this.adaptiveSpeed * 0.99, this.speed * 0.5);
+    }
   }
 
   readSensors(obstacles) {
-    let readings = [this.sensorRange, this.sensorRange, this.sensorRange];
+    let readings = [this.sensorRange, this.sensorRange, this.sensorRange]; // 3 ultrasonic sensors
     const isMobile = p.width < 600;
-    const sensorStep = isMobile ? 4 : 2;
+    const sensorStep = isMobile ? 3 : 2; // More precise sensor readings
     
     for (let i = 0; i < this.numSensors; i++) {
       let sensorAngle = this.angle + this.sensorAngles[i];
       let sensorDistance = this.sensorRange;
 
       for (let d = 0; d <= this.sensorRange; d += sensorStep) {
-        let sensorX = this.x + d * p.cos(sensorAngle);
-        let sensorY = this.y + d * p.sin(sensorAngle);
+        let sensorX = this.x + d * Math.cos(sensorAngle);
+        let sensorY = this.y + d * Math.sin(sensorAngle);
 
-        if (sensorX < this.size || sensorX > p.width - this.size || 
-            sensorY < this.size || sensorY > p.height - this.size) {
+        // Check canvas boundaries with comfortable margin
+        if (sensorX < this.size / 2 + 10 || sensorX > p.width - this.size / 2 - 10 || 
+            sensorY < this.size / 2 + 10 || sensorY > p.height - this.size / 2 - 10) {
           sensorDistance = d;
           break;
         }
@@ -1341,8 +1950,8 @@ class Rover {
 
   detectObstacleAtPoint(x, y, obstacles) {
     for (let obstacle of obstacles) {
-      let d = p.dist(x, y, obstacle.x, obstacle.y);
-      if (d < obstacle.size / 2) {
+      let d = Math.sqrt((x - obstacle.x) ** 2 + (y - obstacle.y) ** 2);
+      if (d < obstacle.size / 2 + 5) { // Added small buffer for better detection
         return true;
       }
     }
@@ -1350,17 +1959,17 @@ class Rover {
   }
 
   checkCollision(obstacles) {
-    // Check obstacles with safety margin
+    // Check obstacles with proper safety margin
     for (let obstacle of obstacles) {
-      let d = p.dist(this.x, this.y, obstacle.x, obstacle.y);
-      if (d < this.size / 2 + obstacle.size / 2 + 5) {
+      let d = Math.sqrt((this.x - obstacle.x) ** 2 + (this.y - obstacle.y) ** 2);
+      if (d < this.size / 2 + obstacle.size / 2 + 10) { // Increased safety margin
         return true;
       }
     }
     
-    // Check canvas boundaries
-    if (this.x < this.size / 2 || this.x > p.width - this.size / 2 || 
-        this.y < this.size / 2 || this.y > p.height - this.size / 2) {
+    // Check canvas boundaries with comfortable margin
+    if (this.x < this.size / 2 + 10 || this.x > p.width - this.size / 2 - 10 || 
+        this.y < this.size / 2 + 10 || this.y > p.height - this.size / 2 - 10) {
       return true;
     }
     
@@ -1369,16 +1978,16 @@ class Rover {
 
   wouldCollideAtPosition(x, y, obstacles) {
     for (let obstacle of obstacles) {
-      let d = p.dist(x, y, obstacle.x, obstacle.y);
-      // Add extra safety margin
-      if (d < this.size / 2 + obstacle.size / 2 + 10) {
+      let d = Math.sqrt((x - obstacle.x) ** 2 + (y - obstacle.y) ** 2);
+      // Increased safety margin to prevent crashes
+      if (d < this.size / 2 + obstacle.size / 2 + 15) { // Increased from 5 to 15
         return true;
       }
     }
     
-    // Also check canvas boundaries with margin
-    if (x < this.size || x > p.width - this.size || 
-        y < this.size || y > p.height - this.size) {
+    // Also check canvas boundaries with comfortable margin
+    if (x < this.size / 2 + 10 || x > p.width - this.size / 2 - 10 || 
+        y < this.size / 2 + 10 || y > p.height - this.size / 2 - 10) {
       return true;
     }
     
@@ -1389,20 +1998,20 @@ class Rover {
     let maxDistance = 0;
     
     for (let distance = this.size; distance <= this.sensorRange; distance += 5) {
-      const testX = this.x + p.cos(angle) * distance;
-      const testY = this.y + p.sin(angle) * distance;
+      const testX = this.x + Math.cos(angle) * distance;
+      const testY = this.y + Math.sin(angle) * distance;
       
-      // Check canvas boundaries
-      if (testX < this.size || testX > p.width - this.size || 
-          testY < this.size || testY > p.height - this.size) {
+      // Check canvas boundaries with comfortable margin
+      if (testX < this.size / 2 + 10 || testX > p.width - this.size / 2 - 10 || 
+          testY < this.size / 2 + 10 || testY > p.height - this.size / 2 - 10) {
         break;
       }
       
-      // Check obstacles
+      // Check obstacles with increased safety margin
       let collision = false;
       for (let obstacle of obstacles) {
-        let d = p.dist(testX, testY, obstacle.x, obstacle.y);
-        if (d < obstacle.size / 2 + this.size / 2 + 10) {
+        let d = Math.sqrt((testX - obstacle.x) ** 2 + (testY - obstacle.y) ** 2);
+        if (d < obstacle.size / 2 + this.size / 2 + 15) { // Increased from 5 to 15
           collision = true;
           break;
         }
@@ -1419,9 +2028,9 @@ class Rover {
   }
 
   reachedWaypoint(target) {
-    const distance = p.dist(this.x, this.y, target.x, target.y);
-    // Make the threshold for reaching waypoint B a bit larger and more forgiving
-    const threshold = this.size * 0.75;
+    const distance = Math.sqrt((this.x - target.x) ** 2 + (this.y - target.y) ** 2);
+    // Much more forgiving threshold for reaching waypoint B
+    const threshold = this.size * 2.5; // Increased from 1.2 to 2.5 for better detection
     return distance < threshold;
   }
 
