@@ -32,10 +32,13 @@ function Gallery() {
         {isGalleryVisible && (
           <motion.div
             className="content expanded"
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3 }}
+            initial={{ opacity: 0, maxHeight: 0 }}
+            animate={{ opacity: 1, maxHeight: "2000px" }}
+            exit={{ opacity: 0, maxHeight: 0 }}
+            transition={{ 
+              duration: 0.6,
+              ease: "easeInOut"
+            }}
           >
             <div className="gallery-grid">
               {[img1, img8, img3, img6, img5, img4, img7, img2, img9, img10, img12, img13].map((img, index) => (

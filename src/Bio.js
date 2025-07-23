@@ -26,7 +26,7 @@ function Bio() {
               animate={{ opacity: 1, maxHeight: "1000px" }}
               exit={{ opacity: 0, maxHeight: 0 }}
               transition={{ 
-                duration: 0.4,
+                duration: 0.6,
                 ease: "easeInOut"
               }}
             >

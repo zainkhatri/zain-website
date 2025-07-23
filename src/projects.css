@@ -202,7 +202,8 @@
 }
 
 .content-wrapper {
-  overflow: visible;
+  overflow: hidden;
+  transition: all 0.6s ease;
 }
 
 .content {
@@ -242,7 +243,7 @@
 
   .content {
     font-size: 3.5vw;
-    transition: max-height 0.3s ease, opacity 0.3s ease;
+    transition: max-height 0.6s ease, opacity 0.6s ease;
     margin-left: 20px; /* Match the title alignment */
     text-align: center;
   }
@@ -333,7 +334,7 @@
 
   .content {
     font-size: 5vw;
-    transition: max-height 0.3s ease, opacity 0.3s ease;
+    transition: max-height 0.6s ease, opacity 0.6s ease;
     margin-left: 10px; /* Match the title alignment */
     margin-right: 10px;
     text-align: center;

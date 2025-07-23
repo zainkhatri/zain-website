@@ -71,10 +71,13 @@ function Albums() {
         {isAlbumsVisible && (
           <motion.div
             className="content expanded"
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3 }}
+            initial={{ opacity: 0, maxHeight: 0 }}
+            animate={{ opacity: 1, maxHeight: "2000px" }}
+            exit={{ opacity: 0, maxHeight: 0 }}
+            transition={{ 
+              duration: 0.6,
+              ease: "easeInOut"
+            }}
           >
             <div className="albums-grid">
               {albumImages.map((img, index) => (
