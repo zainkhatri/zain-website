@@ -618,11 +618,32 @@ const handleEasterEggAnimation = () => {
       break;
       
     case 4: // Moving to B
+      // Temporarily boost speed for epic dash to B!
+      const originalSpeed = rover.speed;
+      const originalAngularVelocity = rover.maxAngularVelocity;
+      rover.speed = 25; // HELLA fast speed for easter egg
+      rover.maxAngularVelocity = p.radians(15); // Super fast turning
+      
+      // Add speed trail effect
+      p.push();
+      p.stroke(255, 255, 0, 100);
+      p.strokeWeight(3);
+      for (let i = 0; i < 5; i++) {
+        const trailX = rover.x - p.cos(rover.angle) * (i * 8);
+        const trailY = rover.y - p.sin(rover.angle) * (i * 8);
+        p.ellipse(trailX, trailY, 10 - i * 2, 10 - i * 2);
+      }
+      p.pop();
+      
       // Navigate to B (using normal update logic but with no obstacles)
       rover.update(
         { x: waypoints[1].x * p.width, y: waypoints[1].y * p.height },
         [] // No obstacles
       );
+      
+      // Restore original speed and angular velocity
+      rover.speed = originalSpeed;
+      rover.maxAngularVelocity = originalAngularVelocity;
       
       // Check if reached B
       if (rover.reachedWaypoint({ x: waypoints[1].x * p.width, y: waypoints[1].y * p.height })) {
@@ -864,13 +885,13 @@ class Rover {
   constructor(x, y) {
     this.x = x;
     this.y = y;
-    this.speed = 3;
+    this.speed = 6;
     this.angle = 0;
     this.size = 20;
     this.sensorRange = 100;
     this.numSensors = 3; // Back to 3 sensors
     this.sensorAngles = [-p.radians(45), 0, p.radians(45)];
-    this.maxAngularVelocity = p.radians(4);
+    this.maxAngularVelocity = p.radians(6);
     this.dangerZone = 35;
     this.obstacleStuckCounter = 0;
     this.maxStuckThreshold = 40;

@@ -77,8 +77,27 @@
     margin-bottom: 0px; /* Reduced from 10px to bring lines closer together */
 }
 
+.description-line p {
+    margin: 0;
+    line-height: 1.4;
+}
+
 .greeting-line {
-    margin-top: 15px; /* Added space above "peace be upon you" */
+    margin-top: 10px;
+    font-size: 0.7em;
+    opacity: 0.8;
+    min-height: 1.4em; /* Reserve space to prevent layout shift */
+}
+
+.greeting-typewriter {
+    position: absolute;
+    left: 0;
+    top: 1.4em; /* Position it below the description line */
+    font-size: 0.7em;
+    opacity: 0.8;
+    width: 100%; /* Give it full width so text isn't cut off */
+    white-space: nowrap;
+    overflow: visible; /* Ensure text isn't hidden */
 }
 
 .contact-section {
@@ -187,11 +206,6 @@
         text-align: center;
     }
     
-    .greeting-line {
-        margin-top: 10px; /* Slightly less space on mobile */
-        text-align: center;
-    }
-    
     .contact-section {
         margin-top: 20px;
     }
@@ -239,11 +253,6 @@
     
     .description-line {
         margin-bottom: 0px;
-        text-align: center;
-    }
-    
-    .greeting-line {
-        margin-top: 8px; /* Even less space on smaller mobile */
         text-align: center;
     }
     
