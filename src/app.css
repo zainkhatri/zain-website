@@ -32,9 +32,41 @@ html, body {
   transition: all 0.3s ease;
 }
 
+/* Push expandable titles up by 20px on desktop */
+@media screen and (min-width: 769px) {
+  .content-section {
+    margin-top: -60px;
+  }
+  
+  .content-section + .content-section {
+    margin-top: -30px;
+  }
+}
+
 /* Ensure smooth transitions for all content sections */
 .content-section + .content-section {
   margin-top: 0;
+}
+
+/* Mobile centering for content sections */
+@media screen and (max-width: 768px) {
+  .content-section {
+    text-align: center;
+  }
+  
+  .expandable-title {
+    text-align: center !important;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .content-section {
+    text-align: center;
+  }
+  
+  .expandable-title {
+    text-align: center !important;
+  }
 }
 
 b, strong {

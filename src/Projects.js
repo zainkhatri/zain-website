@@ -30,7 +30,7 @@ function Projects() {
               ref={contentRef}
               className="content expanded"
               initial={{ opacity: 0, maxHeight: 0 }}
-              animate={{ opacity: 1, maxHeight: "2000px" }}
+              animate={{ opacity: 1, maxHeight: "6000px" }}
               exit={{ opacity: 0, maxHeight: 0 }}
               transition={{ 
                 duration: 0.4,

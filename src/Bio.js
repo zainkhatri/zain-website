@@ -42,7 +42,7 @@ function Bio() {
                    outside of code, i'm usually playing basketball, learning new songs on the guitar, or playing chess.
                   </p>
                 </div>
-                <div className="bio-image">
+                <div className="bio-image desktop-only">
                   <img 
                     src={piperImage} 
                     alt="Air" 

@@ -39,11 +39,13 @@
 
 .bio-text {
   flex: 1;
+  width: 100%;
 }
 
 .bio-image {
   flex-shrink: 0;
   margin-top: 20px;
+  display: none; /* Hidden by default */
 }
 
 .air-image {
@@ -60,6 +62,13 @@
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
 }
 
+/* Show image on desktop only */
+@media screen and (min-width: 769px) {
+  .bio-image.desktop-only {
+    display: block;
+  }
+}
+
 /* Responsive Styles */
 
 /* For screens up to 768px */
@@ -69,6 +78,7 @@
     margin-left: 20px;
     cursor: pointer;
     transition: none;
+    text-align: center;
   }
 
   .expandable-title:hover {
@@ -80,21 +90,13 @@
     font-size: 3.5vw;
     transition: max-height 0.3s ease, opacity 0.3s ease;
     margin-left: 20px; /* Match the title alignment */
+    text-align: center;
   }
   
   .bio-content {
     flex-direction: column;
     gap: 30px;
-  }
-  
-  .bio-image {
-    align-self: center;
-    margin-top: 0;
-  }
-  
-  .air-image {
-    width: 240px;
-    height: auto;
+    text-align: center;
   }
 }
 
@@ -105,6 +107,7 @@
     font-size: 8vw;
     cursor: pointer;
     transition: none;
+    text-align: center;
   }
 
   .expandable-title:hover {
@@ -117,15 +120,12 @@
     transition: max-height 0.3s ease, opacity 0.3s ease;
     margin-left: 10px; /* Match the title alignment */
     margin-right: 10px;
+    text-align: center;
   }
   
   .bio-content {
     gap: 20px;
-  }
-  
-  .air-image {
-    width: 200px;
-    height: auto;
+    text-align: center;
   }
 }
 

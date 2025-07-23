@@ -51,14 +51,14 @@
 }
 
 .hero-content h1 {
-    font-size: 1.8em;
+    font-size: 1.6em;
     margin-bottom: 20px;
     line-height: 1.2;
 }
 
 .hero-content h2 {
     font-weight: 400;
-    font-size: 1em;
+    font-size: 0.9em;
     margin-top: 10px;
     margin-bottom: 10px;
     opacity: 0.9;
@@ -66,7 +66,7 @@
 }
 
 .hero-content p {
-    font-size: 0.8em;
+    font-size: 0.7em;
     margin-top: 15px;
     margin-bottom: 20px;
     opacity: 0.8;
@@ -133,14 +133,16 @@
     
     .hero-content {
         flex-direction: column;
-        align-items: flex-start;
-        text-align: left;
+        align-items: center;
+        text-align: center;
         gap: 30px;
     }
     
     .text-content {
-        text-align: left;
+        text-align: center;
         order: 1;
+        width: 100%;
+        padding: 0 10px;
     }
     
     .image-and-contact {
@@ -157,18 +159,37 @@
     
     .hero-content h1 {
         margin: 0 0 20px 0;
-        font-size: 2.2em;
+        font-size: 1.6em;
+        text-align: center;
+        word-wrap: break-word;
     }
     
     .hero-content h2 {
-        font-size: 1.1em;
+        font-size: 0.85em;
         margin: 10px 0;
+        text-align: center;
+        white-space: normal;
+        word-wrap: break-word;
+        line-height: 1.3;
     }
     
     .hero-content p {
-        font-size: 0.9em;
+        font-size: 0.75em;
         margin-top: 20px;
         margin-bottom: 0;
+        text-align: center;
+        word-wrap: break-word;
+        line-height: 1.4;
+    }
+    
+    .description-line {
+        margin-bottom: 0px;
+        text-align: center;
+    }
+    
+    .greeting-line {
+        margin-top: 10px; /* Slightly less space on mobile */
+        text-align: center;
     }
     
     .contact-section {
@@ -186,21 +207,44 @@
         gap: 25px;
     }
     
+    .text-content {
+        padding: 0 5px;
+    }
+    
     .hero-image {
         width: 200px;
         height: 200px;
     }
     
     .hero-content h1 {
-        font-size: 2em;
+        font-size: 1.4em;
+        text-align: center;
+        word-wrap: break-word;
     }
     
     .hero-content h2 {
-        font-size: 1em;
+        font-size: 0.75em;
+        text-align: center;
+        white-space: normal;
+        word-wrap: break-word;
+        line-height: 1.3;
     }
     
     .hero-content p {
-        font-size: 0.85em;
+        font-size: 0.65em;
+        text-align: center;
+        word-wrap: break-word;
+        line-height: 1.4;
+    }
+    
+    .description-line {
+        margin-bottom: 0px;
+        text-align: center;
+    }
+    
+    .greeting-line {
+        margin-top: 8px; /* Even less space on smaller mobile */
+        text-align: center;
     }
     
     .contact-section i {
