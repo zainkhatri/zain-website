@@ -15,6 +15,7 @@ html, body {
   color: #ffffff;
   font-family: 'Fahkwang', sans-serif;
   scroll-behavior: smooth;
+  scroll-padding-top: 20px;
 }
 
 .App {

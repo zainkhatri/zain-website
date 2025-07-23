@@ -118,7 +118,7 @@
 
   .content {
     font-size: 5vw;
-    transition: max-height 0.3s ease, opacity 0.3s ease;
+    transition: max-height 0.6s ease, opacity 0.6s ease;
     margin-left: 10px; /* Match the title alignment */
     margin-right: 10px;
     text-align: center;
