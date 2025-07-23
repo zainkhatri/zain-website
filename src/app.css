@@ -23,6 +23,20 @@ html, body {
   padding: 10px;
 }
 
+/* Global content section alignment to match hero */
+.content-section {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  box-sizing: border-box;
+  transition: all 0.3s ease;
+}
+
+/* Ensure smooth transitions for all content sections */
+.content-section + .content-section {
+  margin-top: 0;
+}
+
 b, strong {
   font-family: 'Fahkwang', sans-serif; 
   font-weight: bold;

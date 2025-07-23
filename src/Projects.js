@@ -1,4 +1,4 @@
-import React, { useState, useCallback, lazy, Suspense, memo } from 'react';
+import React, { useState, useCallback, lazy, Suspense, memo, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import roverImage from './rover.jpeg';
 import './projects.css';
@@ -12,6 +12,7 @@ const ManiaJournal = lazy(() => import('./ManiaJournal'));
 
 function Projects() {
   const [areProjectsVisible, setAreProjectsVisible] = useState(false);
+  const contentRef = useRef(null);
 
   const toggleProjects = useCallback(() => {
     setAreProjectsVisible((prev) => !prev);
@@ -20,142 +21,139 @@ function Projects() {
   return (
     <section id="projects" className="content-section projects">
       <h2 onClick={toggleProjects} className="expandable-title">
-        Projects {areProjectsVisible ? '-' : '+'}
+        projects {areProjectsVisible ? '-' : '+'}
       </h2>
-      <AnimatePresence mode="wait">
-        {areProjectsVisible && (
-          <motion.div
-            className="content expanded"
-            initial={{ opacity: 0, scaleY: 0 }}
-            animate={{ opacity: 1, scaleY: 1 }}
-            exit={{ opacity: 0, scaleY: 0 }}
-            transition={{ 
-              duration: 0.3,
-              ease: "easeInOut"
-            }}
-            style={{ transformOrigin: 'top' }}
-          >
-            {/* NASA Rover Project */}
-            <div className="project">
-              <div className="project-content">
-                <h3 className="project-title">
-                  <a
-                    href="https://github.com/zainkhatri/NASA-CASGC"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    NASA Autonomous Rover
-                  </a>
-                </h3>
-                <p className="project-description">
-                  This project involves building an autonomous rover for navigation using GPS and magnetometer data. The rover was developed using Arduino, 
-                  programmed in C, with extensive work on wiring, soldering, and 3D printing custom parts. The rover autonomously follows waypoints while 
-                  avoiding obstacles, demonstrating its capabilities in a real-time simulation.
-                </p>
-                {/* Rover Simulation */}
-                <div className="rover-simulation">
-                  <Suspense fallback={<div className="loading-spinner">Loading Rover Simulation...</div>}>
-                    <RoverSimulation />
+      <div className="content-wrapper">
+        <AnimatePresence mode="wait">
+          {areProjectsVisible && (
+            <motion.div
+              ref={contentRef}
+              className="content expanded"
+              initial={{ opacity: 0, maxHeight: 0 }}
+              animate={{ opacity: 1, maxHeight: "2000px" }}
+              exit={{ opacity: 0, maxHeight: 0 }}
+              transition={{ 
+                duration: 0.4,
+                ease: "easeInOut"
+              }}
+            >
+              {/* NASA Rover Project */}
+              <div className="project">
+                <div className="project-content">
+                  <h3 className="project-title">
+                    <a
+                      href="https://github.com/zainkhatri/NASA-CASGC"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      NASA Autonomous Rover
+                    </a>
+                  </h3>
+                  <p className="project-description">
+                    built a gps guided rover using c and arduino. handled obstacle avoidance, waypoint logic, and custom chassis design. integrated magnetometer + gps data to autonomously navigate rough terrain. included soldering, 3d printing, and full system calibration.
+                  </p>
+                  {/* Rover Simulation */}
+                  <div className="rover-simulation">
+                    <Suspense fallback={<div className="loading-spinner">Loading Rover Simulation...</div>}>
+                      <RoverSimulation />
+                    </Suspense>
+                  </div>
+                </div>
+                <motion.img
+                  src={roverImage}
+                  alt="Autonomous Rover"
+                  className="project-image nasa-rover-image"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.8, delay: 0.2 }}
+                />
+              </div>
+
+              {/* MunchMate Project */}
+              <div className="project">
+                <div className="project-content">
+                  <h3 className="project-title">
+                    <a
+                      href="https://github.com/zainkhatri/munchmate"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      MunchMate - AI Recipe Generator
+                    </a>
+                  </h3>
+                  <p className="project-description">
+                    ai powered meal generator that converts leftover ingredients into recipes, macros, and optional workouts. built with react and openai gpt-3.5. added dietary filters, goal-based suggestions, and a lightweight frontend for fast user input/output.
+                  </p>
+                  <Suspense fallback={<div className="loading-spinner">Loading MunchMate...</div>}>
+                    <MunchMate />
                   </Suspense>
                 </div>
               </div>
-              <motion.img
-                src={roverImage}
-                alt="Autonomous Rover"
-                className="project-image nasa-rover-image"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.8, delay: 0.2 }}
-              />
-            </div>
 
-         {/* MunchMate Project */}
-            <div className="project">
-              <div className="project-content">
-                <h3 className="project-title">
-                  <a
-                    href="https://github.com/zainkhatri/munchmate"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    MunchMate - AI Recipe Generator
-                  </a>
-                </h3>
-                <p className="project-description">
-                  An AI-powered recipe generator that transforms available ingredients into 
-                  healthy, delicious meals. Built with React and OpenAI's GPT-3.5, it provides 
-                  personalized recipes with nutritional information and workout plans.
-                </p>
-                <Suspense fallback={<div className="loading-spinner">Loading MunchMate...</div>}>
-                  <MunchMate />
-                </Suspense>
+              {/* Mania Journal Project */}
+              <div className="project">
+                <div className="project-content">
+                  <h3 className="project-title">
+                    <a
+                      href="https://github.com/zainkhatri/mania"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Mania - Digital Journaling App
+                    </a>
+                  </h3>
+                  <p className="project-description">
+                    built for myself to make journaling feel less like typing into a google doc and more like keeping a real notebook. implemented features to  upload photos, write freely, auto save entries, and export everything to pdf. it pulls colors from images to theme the page, and uses gpt-4 to suggest prompts when people get stuck.
+                  </p>
+                  <Suspense fallback={<div className="loading-spinner">Loading Mania Journal...</div>}>
+                    <ManiaJournal />
+                  </Suspense>
+                </div>
               </div>
-            </div>
-
-            {/* Mania Journal Project */}
-            <div className="project">
-              <div className="project-content">
-                <h3 className="project-title">
-                  <a
-                    href="https://github.com/zainkhatri/mania"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Mania - Digital Journaling App
-                  </a>
-                </h3>
-                <p className="project-description">
-                  A personal digital journaling app that lets you create beautiful journal entries with images, text, and custom styling. 
-                  Features auto-save functionality, smart color extraction from uploaded images, PDF export capabilities, and AI-powered 
-                  journal prompts using OpenAI's GPT-4. Built with React, TypeScript, Firebase, and modern web technologies.
-                </p>
-                <Suspense fallback={<div className="loading-spinner">Loading Mania Journal...</div>}>
-                  <ManiaJournal />
-                </Suspense>
+              {/* ML Game Section */}
+              <div className="project">
+                <div className="project-content">
+                  <h3 className="project-title">
+                    <a
+                      href="https://github.com/zainkhatri/eagle-eye-game"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Eagle Eye
+                    </a>
+                  </h3>
+                  <p className="project-description">
+                    speed based number clicking game from 1 to 50. tracks time, accuracy, and leaderboard position. built in react and deployed as a web app.
+                  </p>
+                  <Suspense fallback={<div className="loading-spinner">Loading Eagle Eye Game...</div>}>
+                    <MLGame />
+                  </Suspense>
+                </div>
               </div>
-            </div>
-            {/* ML Game Section */}
-            <div className="project">
-              <div className="project-content">
-                <h3 className="project-title">
-                  <a
-                    href="https://github.com/zainkhatri/eagle-eye-game"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Eagle Eye
-                  </a>
-                </h3>
-                <Suspense fallback={<div className="loading-spinner">Loading Eagle Eye Game...</div>}>
-                  <MLGame />
-                </Suspense>
+              {/* Exoskeleton Project */}
+              <div className="project">
+                <div className="project-content">
+                  <h3 className="project-title">
+                    <a
+                      href="https://github.com/zainkhatri/exoskeleton-brainwave-algorithm"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      UC Berkeley Exoskeleton Brainwave Algorithm
+                    </a>
+                  </h3>
+                  <p className="project-description">
+                    developed a real time eeg classifier to detect lean direction in under 30ms for stroke/parkinson's movement assistance. built and tuned an svm pipeline with gpu acceleration. achieved 90%+ accuracy. used to control a physical exoskeleton for posture correction and mobility aid.
+                  </p>
+                  <Suspense fallback={<div className="loading-spinner">Loading Brain Activity Chart...</div>}>
+                    <BrainActivityChart />
+                  </Suspense>
+                </div>
               </div>
-            </div>
-            {/* Exoskeleton Project */}
-            <div className="project">
-              <div className="project-content">
-                <h3 className="project-title">
-                  <a
-                    href="https://github.com/zainkhatri/exoskeleton-brainwave-algorithm"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    UC Berkeley Exoskeleton Brainwave Algorithm
-                  </a>
-                </h3>
-                <p className="project-description">
-                  This algorithm uses EEG data and machine learning to control an exoskeleton, helping individuals with stroke or Parkinson's improve mobility
-                  and stability. By detecting left or right leaning in under 30 milliseconds with 90% accuracy, it provides real-time feedback to correct posture, 
-                  prevent falls, and enable six distinct movement commands.
-                </p>
-                <Suspense fallback={<div className="loading-spinner">Loading Brain Activity Chart...</div>}>
-                  <BrainActivityChart />
-                </Suspense>
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
     </section>
   );
 }

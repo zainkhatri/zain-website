@@ -7,7 +7,7 @@ import './hero.css';
 
 function Hero() {
   const [clickCount, setClickCount] = useState(0);
-  const [typewriterText, setTypewriterText] = useState('Zain Khatri');
+  const [typewriterText, setTypewriterText] = useState('zain khatri');
   const [isSpinning, setIsSpinning] = useState(false);
 
   const handleImageClick = useCallback(() => {
@@ -17,10 +17,10 @@ function Hero() {
     // Trigger spin effect and change text after 5 clicks
     if (newClickCount % 10 === 5) {
       setIsSpinning(true); // Start spinning
-      setTypewriterText('Egomaniac');
+      setTypewriterText('egomaniac');
     } else if (newClickCount % 10 === 0) {
       setIsSpinning(false); // Stop spinning after a complete spin
-      setTypewriterText('Zain Khatri');
+      setTypewriterText('zain khatri');
     }
   }, [clickCount]);
 
@@ -61,13 +61,18 @@ function Hero() {
             }}
           />
           </h1>
-          <h2>Cognitive Science & Machine Learning</h2>
-          <p>Creating solutions that merge technology and human cognition. Peace be upon you.</p>
+          <h2>machine learning & software engineer</h2>
+          <div className="description-line">
+            <p>i've built for nasa, uc berkeley, and more.</p>
+          </div>
+          <div className="greeting-line">
+            <p>peace be upon you.</p>
+          </div>
         </div>
         <div className="image-and-contact">
           <motion.img
             src={zainImage}
-            alt="Zain Khatri"
+            alt="zain khatri"
             className="hero-image"
             onClick={handleImageClick}
             animate={isSpinning ? { rotate: 360 } : { rotate: 0 }}

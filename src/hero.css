@@ -1,25 +1,29 @@
 .hero-section {
     display: flex;
     justify-content: center;
-    align-items: center;
-    margin-top: -25px;
+    align-items: flex-start;
+    padding: 40px 0 20px 0;
+    min-height: auto;
 }
 
 .hero-content {
     font-size: 2em;
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
+    align-items: center;
     max-width: 1200px;
     width: 100%;
     text-align: left;
-    margin-bottom: -80px;
     color: #ffffff;
+    gap: 50px;
+    margin: 0 auto;
+    padding: 0 20px;
+    box-sizing: border-box;
 }
 
 .text-content {
     flex: 1;
-    margin-right: 60px;
+    max-width: 600px;
 }
 
 .image-and-contact {
@@ -27,21 +31,29 @@
     flex-direction: column;
     align-items: center;
     flex-shrink: 0;
+    position: relative;
+    margin-top: 0;
 }
 
 .hero-image {
-    width: 315px;
-    height: 315px;
-    border-radius: 60%;
+    width: 320px;
+    height: 320px;
+    border-radius: 50%;
     object-fit: cover;
-    margin-top: 60px;
-    margin-bottom: 20px;
-    box-shadow: 0px 4px 300px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.hero-image:hover {
+    transform: scale(1.02);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
 }
 
 .hero-content h1 {
     font-size: 1.8em;
     margin-bottom: 20px;
+    line-height: 1.2;
 }
 
 .hero-content h2 {
@@ -49,12 +61,24 @@
     font-size: 1em;
     margin-top: 10px;
     margin-bottom: 10px;
+    opacity: 0.9;
+    white-space: nowrap;
 }
 
 .hero-content p {
     font-size: 0.8em;
-    margin-top: 30px;
-    margin-bottom: 120px;
+    margin-top: 15px;
+    margin-bottom: 20px;
+    opacity: 0.8;
+    line-height: 1.4;
+}
+
+.description-line {
+    margin-bottom: 0px; /* Reduced from 10px to bring lines closer together */
+}
+
+.greeting-line {
+    margin-top: 15px; /* Added space above "peace be upon you" */
 }
 
 .contact-section {
@@ -62,19 +86,23 @@
     justify-content: center;
     align-items: center;
     gap: 30px;
+    margin-top: 20px;
 }
 
 .contact-section a {
     color: #ffffff;
-    transition: color 0.3s ease;
+    transition: all 0.3s ease;
+    opacity: 0.8;
 }
 
 .contact-section a:hover {
-    color: #cccccc;
+    color: #ffffff;
+    opacity: 1;
+    transform: translateY(-2px);
 }
 
 .contact-section i {
-    font-size: 34px;
+    font-size: 28px;
 }
 
 /* Ensure expandable titles in hero section don't change size */
@@ -88,63 +116,99 @@
 }
 
 @media screen and (max-width: 1020px) {
-
-  .hero-content {
-    margin-bottom: -60px;
-  }
+    .hero-content {
+        gap: 40px;
+    }
+    
+    .hero-image {
+        width: 280px;
+        height: 280px;
+    }
 }
 
 @media screen and (max-width: 768px) {
+    .hero-section {
+        padding: 30px 20px 20px 20px;
+    }
+    
     .hero-content {
-      flex-direction: column;
-      align-items: flex-start;
-      text-align: left;
-      margin-top: -40px;
-      margin-bottom: -20px;
-      padding: 50px 20px;
+        flex-direction: column;
+        align-items: flex-start;
+        text-align: left;
+        gap: 30px;
     }
-  
+    
+    .text-content {
+        text-align: left;
+        order: 1;
+    }
+    
+    .image-and-contact {
+        order: 2;
+        align-self: center;
+        margin-top: 0;
+    }
+    
     .hero-image {
-      width: 140px !important;
-      height: 140px !important;
-      margin: 20px 0;
+        width: 220px;
+        height: 220px;
+        margin-bottom: 20px;
     }
-  
+    
     .hero-content h1 {
-      margin: 30px 0 20px 0;
-      font-size: 40px !important;
-      text-align: left;
+        margin: 0 0 20px 0;
+        font-size: 2.2em;
     }
-  
+    
     .hero-content h2 {
-      font-size: 20px;
-      margin: 10px -30px 0 0;
-      text-align: left;
+        font-size: 1.1em;
+        margin: 10px 0;
     }
-  
+    
     .hero-content p {
-      font-size: 18px;
-      margin-top: 20px;
-      margin-bottom: 0;
+        font-size: 0.9em;
+        margin-top: 20px;
+        margin-bottom: 0;
+    }
+    
+    .contact-section {
+        margin-top: 20px;
     }
 }
 
 /* For screens up to 480px */
 @media screen and (max-width: 480px) {
+    .hero-section {
+        padding: 20px 15px 15px 15px;
+    }
+    
+    .hero-content {
+        gap: 25px;
+    }
+    
+    .hero-image {
+        width: 200px;
+        height: 200px;
+    }
+    
     .hero-content h1 {
-      font-size: 44px !important;
+        font-size: 2em;
     }
-  
+    
     .hero-content h2 {
-      font-size: 18px;
+        font-size: 1em;
     }
-  
+    
     .hero-content p {
-      font-size: 16px;
+        font-size: 0.85em;
+    }
+    
+    .contact-section i {
+        font-size: 24px;
     }
 }
 
-  body.ego-mode {
+body.ego-mode {
     min-height: 100vh;
     background-size: cover;
-  }
+}

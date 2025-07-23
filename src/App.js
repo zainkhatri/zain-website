@@ -35,7 +35,7 @@ function App() {
       
       <section id="resume" className="content-section resume">
         <h2 onClick={() => window.open('/Zain_Khatri_Resume.pdf', '_blank')} className="expandable-title">
-          Resume +
+          resume +
         </h2>
       </section>
       

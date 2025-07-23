@@ -26,7 +26,7 @@ function Gallery() {
   return (
     <section id="gallery" className={`content-section gallery ${isGalleryVisible ? 'expanded-margin' : ''}`}>
       <h2 onClick={toggleGallery} className="expandable-title">
-        Photo Gallery {isGalleryVisible ? '-' : '+'}
+        photo gallery {isGalleryVisible ? '-' : '+'}
       </h2>
       <AnimatePresence>
         {isGalleryVisible && (
