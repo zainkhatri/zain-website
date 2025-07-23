@@ -9,7 +9,6 @@ function Hero() {
   const [clickCount, setClickCount] = useState(0);
   const [typewriterText, setTypewriterText] = useState('zain khatri');
   const [isSpinning, setIsSpinning] = useState(false);
-  const [showGreeting, setShowGreeting] = useState(false);
 
   const handleImageClick = useCallback(() => {
     const newClickCount = clickCount + 1;
@@ -19,11 +18,9 @@ function Hero() {
     if (newClickCount % 10 === 5) {
       setIsSpinning(true); // Start spinning
       setTypewriterText('egomaniac');
-      setShowGreeting(false);
     } else if (newClickCount % 10 === 0) {
       setIsSpinning(false); // Stop spinning after a complete spin
       setTypewriterText('zain khatri');
-      setShowGreeting(false);
     }
   }, [clickCount]);
 
@@ -56,12 +53,9 @@ function Hero() {
             onInit={(typewriter) => {
               typewriter
                 .typeString(typewriterText)
+                .pauseFor(2500) // Pause for a bit after typing
                 .callFunction(() => {
                   typewriter.stop();
-                  // Start the greeting typewriter after the main one finishes
-                  if (typewriterText === 'zain khatri') {
-                    setShowGreeting(true);
-                  }
                 })
                 .start();
             }}
@@ -72,23 +66,7 @@ function Hero() {
             <p>i've built for nasa, uc berkeley, and more.</p>
           </div>
           <div className="greeting-line">
-            {showGreeting && (
-              <Typewriter
-                options={{
-                  loop: false,
-                  cursor: '',
-                  delay: 30,
-                }}
-                onInit={(typewriter) => {
-                  typewriter
-                    .typeString('peace be upon you.')
-                    .callFunction(() => {
-                      typewriter.stop();
-                    })
-                    .start();
-                }}
-              />
-            )}
+            <p>peace be upon you.</p>
           </div>
         </div>
         <div className="image-and-contact">

@@ -47,6 +47,19 @@ function App() {
         <Albums onToggle={handleToggle} />
       </Suspense>
 
+      {/* Mobile social icons - positioned below music gallery */}
+      <div className="mobile-social-icons">
+        <a href="mailto:zainnkhatri@gmail.com" aria-label="Email">
+          <i className="fas fa-envelope"></i>
+        </a>
+        <a href="https://www.linkedin.com/in/zainkhatri2560" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+          <i className="fab fa-linkedin"></i>
+        </a>
+        <a href="https://github.com/zainkhatri" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+          <i className="fab fa-github"></i>
+        </a>
+      </div>
+
       <footer className="footer">
         <p>©2024 Zain Khatri. All Rights Reserved.</p>
       </footer>

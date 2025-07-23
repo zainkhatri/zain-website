@@ -2,7 +2,7 @@
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    padding: 40px 0 20px 0;
+    padding: 60px 0 20px 0; /* Increased top padding from 40px to 60px */
     min-height: auto;
 }
 
@@ -10,7 +10,7 @@
     font-size: 2em;
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: center; /* Changed back to center for proper alignment */
     max-width: 1200px;
     width: 100%;
     text-align: left;
@@ -24,6 +24,9 @@
 .text-content {
     flex: 1;
     max-width: 600px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center the text content vertically */
 }
 
 .image-and-contact {
@@ -33,6 +36,7 @@
     flex-shrink: 0;
     position: relative;
     margin-top: 0;
+    justify-content: center; /* Center the image vertically */
 }
 
 .hero-image {
@@ -51,14 +55,14 @@
 }
 
 .hero-content h1 {
-    font-size: 1.6em;
+    font-size: 2em; /* Increased from 1.6em */
     margin-bottom: 20px;
     line-height: 1.2;
 }
 
 .hero-content h2 {
     font-weight: 400;
-    font-size: 0.9em;
+    font-size: 1.125em; /* Increased from 0.9em */
     margin-top: 10px;
     margin-bottom: 10px;
     opacity: 0.9;
@@ -66,7 +70,7 @@
 }
 
 .hero-content p {
-    font-size: 0.7em;
+    font-size: 0.875em; /* Increased from 0.7em */
     margin-top: 15px;
     margin-bottom: 20px;
     opacity: 0.8;
@@ -84,9 +88,12 @@
 
 .greeting-line {
     margin-top: 10px;
-    font-size: 0.7em;
+    font-size: 0.875em; /* Increased from 0.7em */
     opacity: 0.8;
     min-height: 1.4em; /* Reserve space to prevent layout shift */
+    color: #ffffff; /* Changed back to white */
+    text-shadow: none; /* Remove the cyan glow */
+    font-weight: 500; /* Slightly bolder for emphasis */
 }
 
 .greeting-typewriter {
@@ -162,12 +169,16 @@
         order: 1;
         width: 100%;
         padding: 0 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
     
     .image-and-contact {
         order: 2;
         align-self: center;
         margin-top: 0;
+        flex-direction: column;
     }
     
     .hero-image {
@@ -178,13 +189,13 @@
     
     .hero-content h1 {
         margin: 0 0 20px 0;
-        font-size: 1.6em;
+        font-size: 2em; /* Increased from 1.6em */
         text-align: center;
         word-wrap: break-word;
     }
     
     .hero-content h2 {
-        font-size: 0.85em;
+        font-size: 1.0625em; /* Increased from 0.85em */
         margin: 10px 0;
         text-align: center;
         white-space: normal;
@@ -193,7 +204,7 @@
     }
     
     .hero-content p {
-        font-size: 0.75em;
+        font-size: 0.9375em; /* Increased from 0.75em */
         margin-top: 20px;
         margin-bottom: 0;
         text-align: center;
@@ -206,8 +217,14 @@
         text-align: center;
     }
     
+    .greeting-line {
+        display: none; /* Hide greeting on mobile to avoid funeral-like appearance */
+    }
+    
     .contact-section {
         margin-top: 20px;
+        order: 1; /* Move social icons to top, right after title */
+        display: none; /* Hide original social icons on mobile since they're moved below music gallery */
     }
 }
 
@@ -231,13 +248,18 @@
     }
     
     .hero-content h1 {
-        font-size: 1.4em;
+        font-size: 1.75em; /* Increased from 1.4em */
         text-align: center;
         word-wrap: break-word;
     }
     
+    .hero-content h1 .Typewriter {
+        white-space: nowrap; /* Ensure main typewriter stays on one line */
+        display: inline-block;
+    }
+    
     .hero-content h2 {
-        font-size: 0.75em;
+        font-size: 0.9375em; /* Increased from 0.75em */
         text-align: center;
         white-space: normal;
         word-wrap: break-word;
@@ -245,7 +267,7 @@
     }
     
     .hero-content p {
-        font-size: 0.65em;
+        font-size: 0.8125em; /* Increased from 0.65em */
         text-align: center;
         word-wrap: break-word;
         line-height: 1.4;
@@ -254,6 +276,14 @@
     .description-line {
         margin-bottom: 0px;
         text-align: center;
+    }
+    
+    .greeting-line {
+        display: none; /* Hide greeting on mobile to avoid funeral-like appearance */
+    }
+    
+    .contact-section {
+        display: none; /* Hide original social icons on mobile since they're moved below music gallery */
     }
     
     .contact-section i {
