@@ -24,10 +24,16 @@
   overflow: hidden;
 }
 
-/* Hide on mobile devices (screens smaller than 850px) */
+/* Responsive design for mobile devices */
 @media (max-width: 849px) {
   .mania-journal-container {
-    display: none;
+    height: 80vh;
+  }
+  
+  .mania-journal-iframe-wrapper {
+    height: 75vh;
+    margin: 10px;
+    width: calc(100% - 20px);
   }
 }
 
