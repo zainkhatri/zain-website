@@ -10,99 +10,25 @@
   max-width: 1200px; 
   height: 50vh;      
   position: relative;
-  touch-action: manipulation; /* Allow scrolling but prevent other gestures */
+  touch-action: none; /* Prevent default touch actions */
   border: 10px solid white; /* White border for classic arcade look */
   box-sizing: border-box;
   overflow: hidden;
-  pointer-events: auto; /* Ensure proper event handling */
-  isolation: isolate; /* Prevent interference with other elements */
 }
 
 .controls {
-  display: grid;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
   gap: 10px;
   margin-top: 10px;
-  max-width: 400px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-/* Desktop/1080p+ layout - horizontal */
-@media screen and (min-width: 1080px) {
-  .controls {
-    grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: 1fr;
-    max-width: 800px;
-    gap: 15px;
-  }
-}
-
-/* Tablet layout - 2x2 grid */
-@media screen and (min-width: 768px) and (max-width: 1079px) {
-  .controls {
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(2, 1fr);
-    max-width: 500px;
-  }
-}
-
-/* Mobile layout - 2x2 grid (stacked) */
-@media screen and (max-width: 767px) {
-  .controls {
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(2, 1fr);
-    max-width: 320px;
-  }
 }
 
 .controls button {
-  padding: 12px 16px;
-  font-size: 14px;
-  font-family: 'Fahkwang', sans-serif;
-  font-weight: 600;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  outline: none;
-  touch-action: manipulation;
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  border: 2px solid white;
-  background: white;
-  color: black;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  position: relative;
-  overflow: hidden;
-}
-
-.controls button:hover {
-  background: #f0f0f0;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  border-color: #e0e0e0;
-}
-
-.controls button:active {
-  transform: translateY(0);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  background: #e0e0e0;
-}
-
-/* Mobile-specific button feedback */
-@media (max-width: 768px) {
-  .controls button:active {
-    background: #d0d0d0;
-    transform: scale(0.98);
-  }
+  padding: 8px 12px;
+  font-size: 16px;
+  font-family: 'Fahkwang', sans-serif; /* Ensure buttons use Fahkwang font */
 }
 
 /* Ensure the canvas fits the container */
@@ -110,18 +36,9 @@ canvas {
   position: absolute;
   top: 0;
   left: 0;
-  touch-action: manipulation; /* Allow scrolling but prevent other gestures */
+  touch-action: none; /* Prevent default touch actions */
   width: 100% !important;
   height: 100% !important;
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  -webkit-tap-highlight-color: transparent;
-  pointer-events: auto; /* Ensure canvas can receive events */
-  z-index: 1; /* Keep canvas below other interactive elements */
 }
 
 /* Media query for mobile devices */
@@ -132,38 +49,5 @@ canvas {
   
   .sketch-container {
     border-width: 5px;
-    height: 40vh; /* Smaller height on mobile */
-  }
-  
-  .controls {
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-    max-width: 320px;
-  }
-  
-  .controls button {
-    padding: 14px 18px; /* Larger touch targets on mobile */
-    font-size: 12px;
-    min-width: 120px;
-    min-height: 48px;
-    touch-action: manipulation;
-    -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
-  }
-}
-
-/* Additional mobile-specific styles */
-@media (pointer: coarse) {
-  .controls button {
-    padding: 16px 20px;
-    min-height: 52px;
-    font-size: 13px;
-    touch-action: manipulation;
-  }
-}
-
-/* Prevent zoom on double tap */
-@media (max-width: 768px) {
-  .simulation-container * {
-    touch-action: manipulation;
   }
 }

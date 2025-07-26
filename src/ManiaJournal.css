@@ -1,6 +1,6 @@
 .mania-journal-container {
   width: 100%;
-  height: 101vh;
+  height: 82vh;
   margin: 0;
   padding: 0;
 }
@@ -8,12 +8,12 @@
 .mania-journal-iframe-wrapper {
   position: relative;
   width: 105%;
-  height: 101vh;
+  height: 82vh;
   overflow: hidden;
   border-radius: 16px;
   margin: 20px;
   width: calc(100% - 20px);
-  height: calc(102h - 40px);
+  height: calc(82vh - 40px);
 }
 
 .mania-journal-iframe {
@@ -27,11 +27,11 @@
 /* Responsive design for mobile devices */
 @media (max-width: 849px) {
   .mania-journal-container {
-    height: 80vh;
+    height: 72vh;
   }
   
   .mania-journal-iframe-wrapper {
-    height: 75vh;
+    height: 67vh;
     margin: 10px;
     width: calc(100% - 20px);
   }
@@ -42,7 +42,7 @@
   .mania-journal-iframe-wrapper {
     margin: 15px;
     width: calc(100% - 10px);
-    height: calc(101vh - 30px);
+    height: calc(72vh - 30px);
   }
 }
 
@@ -50,6 +50,6 @@
   .mania-journal-iframe-wrapper {
     margin: 10px;
     width: calc(100% - 0px);
-    height: calc(101vh - 20px);
+    height: calc(72vh - 20px);
   }
 } 
