@@ -32,7 +32,7 @@ The website is currently hosted on [Vercel](https://vercel.com/). To deploy any 
 ## Contact
 
 If you have questions or would like to connect, you can reach me via:
-- **Email**: [hello@zainkhatri.com](mailto:hello@zainkhatri.com)
+- **Email**: [zainnkhatri@gmail.com](mailto:hello@zainkhatri.com)
 - **LinkedIn**: [linkedin.com/in/zainkhatri](https://linkedin.com/in/zainkhatri)
 
 Thank you for visiting my personal website repository. I hope you find something here that inspires or helps you on your own journey.
