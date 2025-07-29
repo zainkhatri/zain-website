@@ -13,6 +13,7 @@ const Albums = lazy(() => import('./Albums'));
 function App() {
   const [isContentExpanded, setIsContentExpanded] = useState(false);
   const [showNavigation, setShowNavigation] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     if (isContentExpanded) {
@@ -22,14 +23,31 @@ function App() {
     }
   }, [isContentExpanded]);
 
-  // Start navigation animation after typewriter finishes
+  // Check if device is mobile
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowNavigation(true);
-    }, 2000); // Increased to 2 seconds to start right when typewriter finishes
-
-    return () => clearTimeout(timer);
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
   }, []);
+
+  // Start navigation animation after typewriter finishes (desktop only)
+  useEffect(() => {
+    if (!isMobile) {
+      const timer = setTimeout(() => {
+        setShowNavigation(true);
+      }, 2000); // Increased to 2 seconds to start right when typewriter finishes
+
+      return () => clearTimeout(timer);
+    } else {
+      // On mobile, show navigation instantly
+      setShowNavigation(true);
+    }
+  }, [isMobile]);
 
   const handleToggle = () => {
     setIsContentExpanded(!isContentExpanded);
