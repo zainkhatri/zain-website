@@ -104,14 +104,6 @@ function App() {
           </motion.div>
           
           <motion.div variants={itemVariants}>
-            <section id="resume" className="content-section resume">
-              <h2 onClick={() => window.open('/Zain_Khatri_Resume.pdf', '_blank')} className="expandable-title">
-                resume +
-              </h2>
-            </section>
-          </motion.div>
-        
-          <motion.div variants={itemVariants}>
             <Suspense fallback={<div className="loading-spinner">Loading Gallery...</div>}>
               <Gallery />
             </Suspense>
