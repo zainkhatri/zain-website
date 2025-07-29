@@ -23,6 +23,7 @@ html, body {
   margin: 0 auto;
   box-sizing: border-box;
   padding: 10px;
+  padding-bottom: 80px; /* Add space for fixed footer */
 }
 
 /* Global content section alignment to match hero */
@@ -116,10 +117,12 @@ button, a {
   color: #ffffff;
   text-align: center;
   padding: 20px 0;
-  position: relative; 
+  position: fixed; /* Changed back to fixed */
   width: 100%;
   bottom: 0;
-  margin-top: 240px; /* Add top margin to push it down */
+  left: 0;
+  z-index: 100; /* Ensure it stays on top */
+  margin-top: 0; /* Remove margin since it's fixed */
 }
 
 .footer p {
@@ -131,6 +134,10 @@ button, a {
 @media screen and (max-width: 768px) {
   .footer {
     display: none; /* Hide footer on mobile */
+  }
+  
+  .App {
+    padding-bottom: 10px; /* Remove extra padding on mobile since footer is hidden */
   }
   
   .mobile-social-icons {
@@ -170,6 +177,10 @@ button, a {
 @media screen and (max-width: 480px) {
   .footer {
     display: none; /* Hide footer on very small screens */
+  }
+  
+  .App {
+    padding-bottom: 10px; /* Remove extra padding on mobile since footer is hidden */
   }
   
   .mobile-social-icons i {
@@ -219,4 +230,12 @@ button, a {
 
 body.ego-mode {
   background-image: url('/egogradient.jpeg');
+}
+
+/* Navigation sections container */
+.navigation-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 30px; /* Reduced from 40px to 30px for balanced spacing */
+  margin-top: 20px; /* Reduced from 60px to 40px to move sections up by 20px */
 }

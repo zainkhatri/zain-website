@@ -1,6 +1,6 @@
 /* Albums Section */
 .albums {
-  margin-bottom: 20px;
+  margin-bottom: 0; /* Remove extra margin to match other sections */
 }
 
 .albums-grid {

@@ -48,7 +48,8 @@ function Hero() {
             key={typewriterText}
             options={{
               loop: false, 
-              cursor: '|', 
+              cursor: '|',
+              delay: 100, // Reduced from 150ms to 100ms for faster typing
             }}
             onInit={(typewriter) => {
               typewriter
@@ -75,20 +76,79 @@ function Hero() {
             alt="zain khatri"
             className="hero-image"
             onClick={handleImageClick}
-            animate={isSpinning ? { rotate: 360 } : { rotate: 0 }}
-            transition={{ duration: 1, ease: 'easeInOut' }}
+            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            animate={{ 
+              opacity: 1, 
+              scale: 1, 
+              y: 0,
+              rotate: isSpinning ? 360 : 0
+            }}
+            transition={{ 
+              duration: 1, 
+              ease: [0.25, 0.46, 0.45, 0.94],
+              rotate: { duration: 1, ease: 'easeInOut' }
+            }}
+            whileHover={{ 
+              scale: 1.02,
+              transition: { duration: 0.3 }
+            }}
           />
-          <div className="contact-section">
-            <a href="mailto:zainnkhatri@gmail.com" aria-label="Email">
+          <motion.div 
+            className="contact-section"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
+          >
+            <motion.a 
+              href="mailto:zainnkhatri@gmail.com" 
+              aria-label="Email"
+              initial={{ opacity: 0, scale: 0, rotate: -90 }}
+              animate={{ opacity: 1, scale: 1, rotate: 0 }}
+              transition={{ duration: 0.6, delay: 1.2, ease: [0.68, -0.55, 0.265, 1.55] }}
+              whileHover={{ 
+                scale: 1.2, 
+                rotate: 360,
+                transition: { duration: 0.4 }
+              }}
+              whileTap={{ scale: 0.8 }}
+            >
               <i className="fas fa-envelope"></i>
-            </a>
-            <a href="https://www.linkedin.com/in/zainkhatri2560" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+            </motion.a>
+            <motion.a 
+              href="https://www.linkedin.com/in/zainkhatri2560" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              aria-label="LinkedIn"
+              initial={{ opacity: 0, scale: 0, rotate: -90 }}
+              animate={{ opacity: 1, scale: 1, rotate: 0 }}
+              transition={{ duration: 0.6, delay: 1.4, ease: [0.68, -0.55, 0.265, 1.55] }}
+              whileHover={{ 
+                scale: 1.2, 
+                rotate: 360,
+                transition: { duration: 0.4 }
+              }}
+              whileTap={{ scale: 0.8 }}
+            >
               <i className="fab fa-linkedin"></i>
-            </a>
-            <a href="https://github.com/zainkhatri" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+            </motion.a>
+            <motion.a 
+              href="https://github.com/zainkhatri" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              aria-label="GitHub"
+              initial={{ opacity: 0, scale: 0, rotate: -90 }}
+              animate={{ opacity: 1, scale: 1, rotate: 0 }}
+              transition={{ duration: 0.6, delay: 1.6, ease: [0.68, -0.55, 0.265, 1.55] }}
+              whileHover={{ 
+                scale: 1.2, 
+                rotate: 360,
+                transition: { duration: 0.4 }
+              }}
+              whileTap={{ scale: 0.8 }}
+            >
               <i className="fab fa-github"></i>
-            </a>
-          </div>
+            </motion.a>
+          </motion.div>
         </div>
       </motion.div>
     </header>

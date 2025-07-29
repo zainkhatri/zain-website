@@ -2,7 +2,7 @@
   font-size: 2.3em; /* Adjusted font size */
   font-weight: 700;
   margin-top: 5px;
-  margin-bottom: 20px; /* Increased bottom margin */
+  margin-bottom: 0; /* Remove extra margin to match other sections */
   color: #ffffff;
   cursor: pointer;
   transition: font-size 0.2s ease, transform 0.2s ease;
