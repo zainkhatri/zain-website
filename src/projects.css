@@ -315,6 +315,11 @@
   .exoskeleton-image {
     display: none;
   }
+  
+  /* Hide Mania project on mobile devices */
+  .mania-project {
+    display: none;
+  }
 }
 
 @media screen and (max-width: 480px) {
@@ -394,6 +399,11 @@
       margin: 10px auto;
       padding: 10px;
       text-align: center;
+  }
+  
+  /* Hide Mania project on mobile devices */
+  .mania-project {
+    display: none;
   }
 }
 

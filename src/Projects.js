@@ -91,7 +91,7 @@ function Projects() {
               </div>
 
               {/* Mania Journal Project */}
-              <div className="project">
+              <div className="project mania-project">
                 <div className="project-content">
                   <h3 className="project-title">
                     <a
