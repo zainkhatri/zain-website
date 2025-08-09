@@ -131,7 +131,7 @@ function App() {
       </div>
 
       <footer className="footer">
-        <p>©2024 Zain Khatri. All Rights Reserved.</p>
+        <p>©2025 Zain Khatri. All Rights Reserved.</p>
       </footer>
 
       <Analytics />
