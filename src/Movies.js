@@ -66,17 +66,17 @@ const movieData = [
   }
 ];
 
-// Import movie poster images
-import backtothefuture from './images/movies/backtothefuture.png';
-import darkknight from './images/movies/darkknight.png';
-import starwars from './images/movies/starwars.webp';
-import ap from './images/movies/ap.jpg';
-import nap from './images/movies/nap.jpg';
-import pulp from './images/movies/pulp.jpg';
-import rat from './images/movies/rat.webp';
-import scarface from './images/movies/scarface.jpg';
-import walle from './images/movies/walle.webp';
-import whiplash from './images/movies/whiplash.webp';
+// Import optimized movie poster images
+import backtothefuture from './images/movies/optimized/backtothefuture.webp';
+import darkknight from './images/movies/optimized/darkknight.webp';
+import starwars from './images/movies/optimized/starwars.webp';
+import ap from './images/movies/optimized/ap.webp';
+import nap from './images/movies/optimized/nap.webp';
+import pulp from './images/movies/optimized/pulp.webp';
+import rat from './images/movies/optimized/rat.webp';
+import scarface from './images/movies/optimized/scarface.webp';
+import walle from './images/movies/optimized/walle.webp';
+import whiplash from './images/movies/optimized/whiplash.webp';
 
 function Movies() {
   const [isMoviesVisible, setIsMoviesVisible] = useState(false);
