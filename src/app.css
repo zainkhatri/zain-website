@@ -236,6 +236,15 @@ body.ego-mode {
 .navigation-sections {
   display: flex;
   flex-direction: column;
-  gap: 30px; /* Reduced from 40px to 30px for balanced spacing */
-  margin-top: 20px; /* Reduced from 60px to 40px to move sections up by 20px */
+  gap: 40px; /* Increased gap for better separation between sections */
+  margin-top: 20px;
+}
+
+/* Ensure expanded sections have proper spacing */
+.navigation-sections > section {
+  transition: margin 0.3s ease;
+}
+
+.navigation-sections > section.expanded-margin {
+  margin-bottom: 40px; /* Add more space when expanded */
 }

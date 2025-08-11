@@ -9,6 +9,7 @@ import { motion } from 'framer-motion';
 const Projects = lazy(() => import('./Projects'));
 const Gallery = lazy(() => import('./Gallery'));
 const Albums = lazy(() => import('./Albums'));
+const Movies = lazy(() => import('./Movies'));
 
 function App() {
   const [isContentExpanded, setIsContentExpanded] = useState(false);
@@ -112,6 +113,12 @@ function App() {
           <motion.div variants={itemVariants}>
             <Suspense fallback={<div className="loading-spinner">Loading Albums...</div>}>
               <Albums onToggle={handleToggle} />
+            </Suspense>
+          </motion.div>
+          
+          <motion.div variants={itemVariants}>
+            <Suspense fallback={<div className="loading-spinner">Loading Movies...</div>}>
+              <Movies />
             </Suspense>
           </motion.div>
         </motion.div>

@@ -1,0 +1,137 @@
+/* Movies Section */
+.movies {
+  margin-bottom: 0; /* Remove extra margin to match other sections */
+  position: relative;
+  z-index: 3; /* Higher z-index since it comes after albums */
+}
+
+.movies.expanded-margin {
+  margin-bottom: 20px; /* Add space below when expanded */
+}
+
+.movies-grid {
+  display: grid;
+  gap: 20px; /* Default gap for the grid */
+  padding: 10px 0;
+  width: 100%; /* Full width like albums */
+  margin: 0 auto; /* Center the grid */
+}
+
+.movies-item {
+  aspect-ratio: 2 / 3; /* Movie poster aspect ratio (portrait) */
+  overflow: hidden;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border: 3px solid white; /* Added border */
+  box-sizing: border-box; /* Include border in width and height */
+  position: relative; /* For overlay positioning */
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.movies-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block; /* Prevents any unexpected margins */
+  transform: scale(1.01); /* Slightly scale up to prevent potential hairline gaps */
+  will-change: transform; /* Optimize performance for hover animations */
+}
+
+/* Movie title overlay */
+.movie-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.9));
+  padding: 25px 10px 10px;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  backdrop-filter: blur(2px); /* Add slight blur effect */
+  -webkit-backdrop-filter: blur(2px); /* For Safari */
+}
+
+.movie-title {
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+  display: block;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.movies.expanded-margin {
+  margin-top: 20px; /* Reduced from 40px */
+}  
+
+/* Large screens: 5x2 layout for 10 movies */
+@media screen and (min-width: 1024px) {
+  .movies-grid {
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 25px; /* Slightly larger gap for bigger posters */
+  }
+}
+
+/* Medium screens: 4x3 layout */
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+  .movies-grid {
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: 1fr;
+    gap: 20px;
+  }
+}
+
+/* Small screens: 2x5 layout for 10 movies */
+@media screen and (max-width: 767.98px) {
+  .movies {
+    overflow: visible; /* Allow content to flow naturally */
+    margin-bottom: 40px; /* Add more space between sections on mobile */
+  }
+
+  .movies-grid {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(5, 1fr); /* 2x5 layout for 10 movies */
+    gap: 15px;
+    padding: 0 3px;
+    width: 95%; /* Slightly wider than before */
+  }
+  
+  .movies-item {
+    width: 100%;
+    margin: 0;
+    box-sizing: border-box;
+    aspect-ratio: 2/3; /* Maintain poster aspect ratio */
+  }
+
+  /* Ensure expanded content doesn't get cut off */
+  .content.expanded {
+    overflow: visible;
+    height: auto !important; /* Override Framer Motion height */
+    max-height: none !important; /* Remove max-height restriction */
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .movies-item:hover {
+    transform: scale(1.02);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  }
+  
+  .movies-item:hover .movie-overlay {
+    opacity: 1;
+  }
+}
+
+/* Show overlay on mobile for better UX */
+@media screen and (max-width: 767.98px) {
+  .movie-overlay {
+    opacity: 1;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.9));
+  }
+  
+  .movie-title {
+    font-size: 12px;
+    padding: 5px 0;
+  }
+}

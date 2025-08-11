@@ -10,6 +10,25 @@
   padding: 0 20px;
 }
 
+/* Make projects more compact on medium screens */
+@media screen and (max-width: 1070px) {
+  .project {
+    margin-bottom: 25px;
+    gap: 15px;
+    padding: 0 10px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  .content-wrapper {
+    width: 100%;
+    overflow-x: hidden;
+    overflow-y: visible;
+    max-width: 100vw;
+    box-sizing: border-box;
+  }
+}
+
 .project-image {
   width: calc(66.67% - 25px);
   height: auto;
@@ -226,9 +245,9 @@
 }
 
 /* Mobile centering override for projects */
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 1070px) {
   .expandable-title {
-    font-size: 4vw;
+    font-size: 3.2vw;
     margin-left: 20px;
     cursor: pointer;
     transition: none;
@@ -237,15 +256,18 @@
   }
 
   .expandable-title:hover {
-    font-size: 4vw;
+    font-size: 3.2vw;
     transform: none;
   }
 
   .content {
-    font-size: 3.5vw;
+    font-size: 2.8vw;
     transition: max-height 0.6s ease, opacity 0.6s ease;
     margin-left: 20px; /* Match the title alignment */
     text-align: center;
+    width: 100%;
+    box-sizing: border-box;
+    overflow-x: hidden;
   }
   
   .content-section.projects .expandable-title {
@@ -280,35 +302,44 @@
     flex-direction: column;
     align-items: center;
     text-align: center;
-    padding: 0 15px;
-  }
-
-  .project-content {
-    order: -1;
     width: 100%;
-    margin-bottom: 20px;
-    text-align: center;
+    padding: 0 15px;
+    box-sizing: border-box;
+    overflow: hidden;
   }
 
   .project-image {
     width: 100%;
-    max-width: 375px;
-    margin: 0;
-    margin-right: 20px;
+    max-width: 300px;
+    margin: 0 auto;
+  }
+
+  .project-content {
+    width: 100%;
+    text-align: center;
+    padding: 10px 0;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    max-width: 100%;
     box-sizing: border-box;
   }
 
   .project-title {
-    font-size: 4.625vw;
-    margin-bottom: 15px;
-    margin-left: 20px;
+    font-size: 18px;
+    margin: 10px auto;
     text-align: center;
   }
 
   .project-description {
-    font-size: 3.2vw;
-    margin-left: 20px;
+    font-size: 16px;
+    margin: 10px auto;
+    padding: 10px;
     text-align: center;
+    width: 100%;
+    box-sizing: border-box;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    max-width: 100%;
   }
 
   .nasa-rover-image,
@@ -408,7 +439,7 @@
 }
 
 
-@media screen and (min-width: 769px) {
+@media screen and (min-width: 1071px) {
   .project-image {
     width: 222.5px;
   }
@@ -430,6 +461,8 @@
     margin-right: -247.5px;
   }
 }
+
+
 
 .journal-container {
   width: 100%;

@@ -1,6 +1,12 @@
 /* Albums Section */
 .albums {
   margin-bottom: 0; /* Remove extra margin to match other sections */
+  position: relative;
+  z-index: 2; /* Lower z-index since it comes before movies */
+}
+
+.albums.expanded-margin {
+  margin-bottom: 20px; /* Add space below when expanded */
 }
 
 .albums-grid {
@@ -49,18 +55,32 @@
 
 /* Small screens: 2x10 layout for 20 albums */
 @media screen and (max-width: 767.98px) {
+  .albums {
+    overflow: visible; /* Allow content to flow naturally */
+    margin-bottom: 40px; /* Add more space between sections on mobile */
+  }
+
   .albums-grid {
     grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(10, 1fr);
-    gap: 10px;
-    padding: 0 3px; /* Add padding to prevent overflow */
-    overflow: hidden; /* Prevent overflow from the grid */
+    grid-auto-rows: min-content; /* Let rows size to content */
+    gap: 15px;
+    padding: 0 3px;
+    width: 90%;
+    margin: 0 auto;
   }
   
   .albums-item {
     width: 100%;
     margin: 0;
-    box-sizing: border-box; /* Include borders in width calculation */
+    box-sizing: border-box;
+    aspect-ratio: 1/1; /* Maintain album cover aspect ratio */
+  }
+
+  /* Ensure expanded content doesn't get cut off */
+  .content.expanded {
+    overflow: visible;
+    height: auto !important; /* Override Framer Motion height */
+    max-height: none !important; /* Remove max-height restriction */
   }
 }
 
