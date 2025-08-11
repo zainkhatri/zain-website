@@ -65,20 +65,14 @@
 }  
 
 /* Large screens: 5x2 layout for 10 movies */
-@media screen and (min-width: 1024px) {
+@media screen and (min-width: 768px) {
   .movies-grid {
     grid-template-columns: repeat(5, 1fr);
     grid-template-rows: repeat(2, 1fr);
     gap: 25px; /* Slightly larger gap for bigger posters */
-  }
-}
-
-/* Medium screens: 4x3 layout */
-@media screen and (min-width: 768px) and (max-width: 1023px) {
-  .movies-grid {
-    grid-template-columns: repeat(4, 1fr);
-    grid-auto-rows: 1fr;
-    gap: 20px;
+    width: 100%;
+    max-width: 1400px; /* Prevent too wide layout on very large screens */
+    margin: 0 auto;
   }
 }
 
