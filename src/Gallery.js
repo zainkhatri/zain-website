@@ -2,26 +2,52 @@ import React, { useState, useCallback, useEffect, memo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import './gallery.css';
 
-// Import optimized WebP images
-import img1 from './images/optimized/1.webp';
-import img2 from './images/optimized/2.webp';
-import img3 from './images/optimized/3.webp';
-import img4 from './images/optimized/4.webp';
-import img5 from './images/optimized/5.webp';
-import img6 from './images/optimized/6.webp';
-import img7 from './images/optimized/7.webp';
-import img8 from './images/optimized/8.webp';
-import img9 from './images/optimized/9.webp';
-import img10 from './images/optimized/10.webp';
-import img12 from './images/optimized/12.webp';
-import img13 from './images/optimized/13.webp';
+// Import preview images
+import img1Preview from './images/optimized/1.webp';
+import img2Preview from './images/optimized/2.webp';
+import img3Preview from './images/optimized/3.webp';
+import img4Preview from './images/optimized/4.webp';
+import img5Preview from './images/optimized/5.webp';
+import img6Preview from './images/optimized/6.webp';
+import img7Preview from './images/optimized/7.webp';
+import img8Preview from './images/optimized/8.webp';
+import img9Preview from './images/optimized/9.webp';
+import img10Preview from './images/optimized/10.webp';
+import img12Preview from './images/optimized/12.webp';
+import img13Preview from './images/optimized/13.webp';
+
+// Import full-size images
+import img1Full from './images/fullsize/1.webp';
+import img2Full from './images/fullsize/2.webp';
+import img3Full from './images/fullsize/3.webp';
+import img4Full from './images/fullsize/4.webp';
+import img5Full from './images/fullsize/5.webp';
+import img6Full from './images/fullsize/6.webp';
+import img7Full from './images/fullsize/7.webp';
+import img8Full from './images/fullsize/8.webp';
+import img9Full from './images/fullsize/9.webp';
+import img10Full from './images/fullsize/10.webp';
+import img12Full from './images/fullsize/12.webp';
+import img13Full from './images/fullsize/13.webp';
 
 function Gallery() {
   const [isGalleryVisible, setIsGalleryVisible] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const images = [img1, img8, img3, img6, img5, img4, img7, img2, img9, img10, img12, img13];
+  // Array of preview images for the grid
+  const previewImages = [
+    img1Preview, img8Preview, img3Preview, img6Preview, img5Preview, 
+    img4Preview, img7Preview, img2Preview, img9Preview, img10Preview, 
+    img12Preview, img13Preview
+  ];
+
+  // Array of full-size images for the modal
+  const fullImages = [
+    img1Full, img8Full, img3Full, img6Full, img5Full, 
+    img4Full, img7Full, img2Full, img9Full, img10Full, 
+    img12Full, img13Full
+  ];
 
   const toggleGallery = useCallback(() => {
     setIsGalleryVisible(!isGalleryVisible);
@@ -29,8 +55,8 @@ function Gallery() {
 
   const openImageViewer = useCallback((index) => {
     setCurrentIndex(index);
-    setSelectedImage(images[index]);
-  }, [images]);
+    setSelectedImage(fullImages[index]); // Use full-size image in modal
+  }, [fullImages]);
 
   const closeImageViewer = useCallback(() => {
     setSelectedImage(null);
@@ -38,19 +64,19 @@ function Gallery() {
 
   const goToNextImage = useCallback(() => {
     setCurrentIndex((prevIndex) => {
-      const nextIndex = (prevIndex + 1) % images.length;
-      setSelectedImage(images[nextIndex]);
+      const nextIndex = (prevIndex + 1) % fullImages.length;
+      setSelectedImage(fullImages[nextIndex]); // Use full-size image
       return nextIndex;
     });
-  }, [images]);
+  }, [fullImages]);
 
   const goToPrevImage = useCallback(() => {
     setCurrentIndex((prevIndex) => {
-      const nextIndex = (prevIndex - 1 + images.length) % images.length;
-      setSelectedImage(images[nextIndex]);
+      const nextIndex = (prevIndex - 1 + fullImages.length) % fullImages.length;
+      setSelectedImage(fullImages[nextIndex]); // Use full-size image
       return nextIndex;
     });
-  }, [images]);
+  }, [fullImages]);
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -93,14 +119,14 @@ function Gallery() {
             }}
           >
             <div className="gallery-grid">
-              {images.map((img, index) => (
+              {previewImages.map((img, index) => (
                 <motion.div 
                   key={index} 
                   className="gallery-item"
                   whileHover={{ scale: 1.02 }}
                   onClick={() => openImageViewer(index)}
                 >
-                  <img src={img} alt={`Gallery ${index + 1}`} />
+                  <img src={img} alt={`Gallery ${index + 1}`} loading="lazy" />
                 </motion.div>
               ))}
             </div>

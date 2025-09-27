@@ -2,8 +2,8 @@ const sharp = require('sharp');
 const fs = require('fs').promises;
 const path = require('path');
 
-const sourceDir = path.join(__dirname, 'src', 'images', 'movies');
-const targetDir = path.join(__dirname, 'src', 'images', 'movies', 'optimized');
+const sourceDir = path.join(__dirname, 'src', 'images');
+const targetDir = path.join(__dirname, 'src', 'images', 'optimized');
 
 async function optimizeImages() {
   try {
@@ -13,12 +13,14 @@ async function optimizeImages() {
     // Get all files from source directory
     const files = await fs.readdir(sourceDir);
 
-    // Filter for image files
+    // Filter for image files and exclude already optimized ones
     const imageFiles = files.filter(file => 
-      /\.(jpg|jpeg|png|webp)$/i.test(file) && !file.includes('optimized')
+      /\.(jpg|jpeg|png|webp)$/i.test(file) && 
+      !file.includes('optimized') &&
+      !file.includes('movies')
     );
 
-    console.log(`Found ${imageFiles.length} images to optimize...`);
+    console.log(`Found ${imageFiles.length} album images to optimize...`);
 
     // Process each image
     for (const file of imageFiles) {
@@ -29,8 +31,8 @@ async function optimizeImages() {
 
       await sharp(sourcePath)
         .resize({
-          width: 400,  // Reduced size
-          height: 600, // Maintain movie poster aspect ratio
+          width: 300,    // Album covers are square
+          height: 300,   // Maintain 1:1 aspect ratio
           fit: 'cover',
           position: 'center'
         })
@@ -46,7 +48,7 @@ async function optimizeImages() {
     }
 
     console.log('\nOptimization complete! You can now:');
-    console.log('1. Update the imports in Movies.js to use the new optimized images');
+    console.log('1. Update the imports in Albums.js to use the new optimized images');
     console.log('2. Delete the original images if you\'re satisfied with the results');
 
   } catch (error) {
