@@ -1,22 +1,22 @@
 .hero-section {
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: flex-start;
-    padding: 60px 0 20px 0; /* Increased top padding from 40px to 60px */
+    padding: 40px 0 0 0; /* Reduced padding to bring sections closer */
     min-height: auto;
 }
 
 .hero-content {
     font-size: 2em;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: space-between;
+    align-items: flex-start;
     max-width: 1200px;
     width: 100%;
-    text-align: center;
+    text-align: left;
     color: #ffffff;
-    gap: 80px;
-    margin: 0 auto;
+    gap: 120px;
+    margin: 0;
     padding: 0 20px;
     box-sizing: border-box;
 }
@@ -26,9 +26,9 @@
     max-width: 600px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
+    justify-content: flex-start;
+    align-items: flex-start;
+    text-align: left;
 }
 
 .image-and-contact {
@@ -38,6 +38,7 @@
     flex-shrink: 0;
     position: relative;
     margin-top: 0;
+    margin-right: 40px;
     justify-content: center; /* Center the image vertically */
 }
 
@@ -62,6 +63,7 @@
     font-size: 2em; /* Increased from 1.6em */
     margin-bottom: 20px;
     line-height: 1.2;
+    text-align: left;
 }
 
 .hero-content h2 {
@@ -71,6 +73,7 @@
     margin-bottom: 10px;
     opacity: 0.9;
     white-space: nowrap;
+    text-align: left;
 }
 
 .hero-content p {
@@ -79,15 +82,18 @@
     margin-bottom: 20px;
     opacity: 0.8;
     line-height: 1.4;
+    text-align: left;
 }
 
 .description-line {
     margin-bottom: 0px; /* Reduced from 10px to bring lines closer together */
+    text-align: left;
 }
 
 .description-line p {
     margin: 0;
     line-height: 1.4;
+    text-align: left;
 }
 
 .greeting-line {
@@ -98,6 +104,7 @@
     color: #ffffff; /* Changed back to white */
     text-shadow: none; /* Remove the cyan glow */
     font-weight: 500; /* Slightly bolder for emphasis */
+    text-align: left;
 }
 
 .greeting-typewriter {

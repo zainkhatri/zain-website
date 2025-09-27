@@ -233,7 +233,7 @@ body.ego-mode {
   display: flex;
   flex-direction: column;
   gap: 40px; /* Increased gap for better separation between sections */
-  margin-top: 20px;
+  margin-top: 0;
 }
 
 /* Ensure expanded sections have proper spacing */
