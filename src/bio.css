@@ -15,7 +15,6 @@
 
 .content-wrapper {
   overflow: hidden;
-  transition: all 0.6s ease;
 }
 
 .content {
@@ -25,6 +24,7 @@
   margin-left: 0; /* Align with hero text */
   padding-left: 0; /* Ensure no left padding */
   text-align: left; /* Ensure left alignment */
+  will-change: opacity, height;
 }
 
 .content.expanded {

@@ -29,12 +29,19 @@ function Projects() {
             <motion.div
               ref={contentRef}
               className="content expanded"
-              initial={{ opacity: 0, maxHeight: 0 }}
-              animate={{ opacity: 1, maxHeight: "6000px" }}
-              exit={{ opacity: 0, maxHeight: 0 }}
+              initial={{ opacity: 0, height: 0, scale: 0.98 }}
+              animate={{ opacity: 1, height: "auto", scale: 1 }}
+              exit={{ opacity: 0, height: 0, scale: 0.98 }}
               transition={{ 
-                duration: 0.6,
-                ease: "easeInOut"
+                duration: 0.4,
+                height: {
+                  duration: 0.4,
+                  ease: [0.32, 0.72, 0, 1]
+                },
+                scale: {
+                  duration: 0.3,
+                  ease: [0.32, 0.72, 0, 1]
+                }
               }}
             >
               {/* NASA Rover Project */}
