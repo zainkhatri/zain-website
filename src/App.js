@@ -1,6 +1,7 @@
 import React, { useState, useEffect, Suspense, lazy } from 'react';
 import './app.css';
 import Hero from './Hero';
+import Iridescence from './Iridescence';
 import Bio from './Bio';
 import { Analytics } from "@vercel/analytics/react";
 import { motion } from 'framer-motion';
@@ -85,6 +86,14 @@ function App() {
 
   return (
     <div className="App">
+      <div style={{ width: '100%', height: '100vh', position: 'fixed', top: 0, left: 0, zIndex: -1 }}>
+        <Iridescence
+          color={[0, 0.2, 0.4]}  // RGB values from sliders
+          mouseReact={false}
+          amplitude={0.1}
+          speed={0.7}
+        />
+      </div>
       <Hero />
       
       {showNavigation && (

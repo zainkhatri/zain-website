@@ -7,11 +7,6 @@ html, body {
   overflow-x: hidden;
   margin: 0;
   padding: 0;
-  background-image: url('/gradient.jpeg');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
   color: #ffffff;
   font-family: 'Fahkwang', sans-serif;
   scroll-behavior: smooth;
@@ -228,8 +223,9 @@ button, a {
   margin-top: 40px; /* Adjust this value as needed */
 }
 
+
 body.ego-mode {
-  background-image: url('/egogradient.jpeg');
+  background: #2B2B30;
 }
 
 /* Navigation sections container */
