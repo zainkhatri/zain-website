@@ -2,7 +2,7 @@
 import React, { useState, useCallback, useEffect, memo } from 'react';
 import Typewriter from 'typewriter-effect';
 import { motion } from 'framer-motion';
-import zainImage from './images/zkhatri.jpeg';
+import zainImage from './images/zkhatri.png';
 import './hero.css';
 
 function Hero() {

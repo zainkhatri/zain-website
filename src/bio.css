@@ -1,34 +1,51 @@
 .expandable-title {
-  font-size: 2.3em; /* Adjusted font size */
+  font-size: 2.3em;
   font-weight: 700;
   margin-top: 5px;
-  margin-bottom: 0; /* Remove extra margin to match other sections */
+  margin-bottom: 20px;
   color: #ffffff;
   cursor: pointer;
   transition: font-size 0.2s ease, transform 0.2s ease;
+  padding: 0;
+  margin-left: 0;
 }
 
 .expandable-title:hover {
-  font-size: 2.6em; /* Adjusted hover font size */
-  transform: scale(1.02); /* Slightly smaller scale effect */
+  font-size: 2.6em;
+  transform: scale(1.02);
+}
+
+/* Content wrapper and animation styles */
+.content-section.bio {
+  position: relative;
 }
 
 .content-wrapper {
+  position: relative;
   overflow: hidden;
+  height: 0;
+  opacity: 0;
+  transform-origin: top;
+  transform: translateY(-20px) scaleY(0.95);
+  transition: height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.expanded .content-wrapper {
+  height: var(--content-height);
+  opacity: 1;
+  transform: translateY(0) scaleY(1);
 }
 
 .content {
+  position: relative;
   font-size: 1.6em;
-  overflow: hidden;
-  margin-top: 5px; /* Reduced top margin */
-  margin-left: 0; /* Align with hero text */
-  padding-left: 0; /* Ensure no left padding */
-  text-align: left; /* Ensure left alignment */
-  will-change: opacity, height;
-}
-
-.content.expanded {
-  overflow: visible;
+  margin-top: 5px;
+  margin-left: 0;
+  padding-left: 0;
+  text-align: left;
+  will-change: transform;
 }
 
 /* Bio content layout */
@@ -80,7 +97,8 @@
     font-size: 4vw;
     margin-left: 20px;
     cursor: pointer;
-    transition: none;
+    transition: font-size 0.2s ease, transform 0.2s ease;
+    padding: 0;
     text-align: center;
   }
 
@@ -91,8 +109,7 @@
 
   .content {
     font-size: 3.5vw;
-    transition: max-height 0.6s ease, opacity 0.6s ease;
-    margin-left: 20px; /* Match the title alignment */
+    margin-left: 20px;
     text-align: center;
   }
   
@@ -109,7 +126,8 @@
     margin-left: 10px;
     font-size: 8vw;
     cursor: pointer;
-    transition: none;
+    transition: font-size 0.2s ease, transform 0.2s ease;
+    padding: 0;
     text-align: center;
   }
 
@@ -120,8 +138,7 @@
 
   .content {
     font-size: 5vw;
-    transition: max-height 0.6s ease, opacity 0.6s ease;
-    margin-left: 10px; /* Match the title alignment */
+    margin-left: 10px;
     margin-right: 10px;
     text-align: center;
   }
