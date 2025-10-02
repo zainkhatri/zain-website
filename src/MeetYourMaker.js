@@ -1,16 +1,44 @@
-import React, { memo } from 'react';
+import React, { memo, useState, useEffect, useRef } from 'react';
 import './MeetYourMaker.css';
 
 const MeetYourMaker = () => {
+  const [isVisible, setIsVisible] = useState(false);
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+        }
+      },
+      {
+        threshold: 0.5,
+        rootMargin: '-50px'
+      }
+    );
+
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
+    }
+
+    return () => {
+      if (containerRef.current) {
+        observer.unobserve(containerRef.current);
+      }
+    };
+  }, []);
+
   return (
-    <div className="meetyourmaker-container">
+    <div ref={containerRef} className="meetyourmaker-container">
       <div className="meetyourmaker-iframe-wrapper">
-        <iframe
-          src="https://meetyourmaker.vercel.app/"
-          className="meetyourmaker-iframe"
-          title="MeetYourMaker"
-          allow="microphone"
-        />
+        {isVisible && (
+          <iframe
+            src="https://meetyourmaker.vercel.app/"
+            className="meetyourmaker-iframe"
+            title="MeetYourMaker"
+          />
+        )}
       </div>
     </div>
   );

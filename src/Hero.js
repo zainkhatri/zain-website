@@ -47,14 +47,18 @@ function Hero() {
           <Typewriter
             key={typewriterText}
             options={{
-              loop: false, 
+              loop: false,
               cursor: '|',
-              delay: 100, // Reduced from 150ms to 100ms for faster typing
+              delay: 75,
+              deleteSpeed: 50,
+              autoStart: true,
+              wrapperClassName: 'typewriter-wrapper',
+              cursorClassName: 'typewriter-cursor',
             }}
             onInit={(typewriter) => {
               typewriter
                 .typeString(typewriterText)
-                .pauseFor(2500) // Pause for a bit after typing
+                .pauseFor(2500)
                 .callFunction(() => {
                   typewriter.stop();
                 })
