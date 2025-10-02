@@ -112,7 +112,7 @@ function App() {
     <div className="App">
       <div style={{ width: '100%', height: '100vh', position: 'fixed', top: 0, left: 0, zIndex: -1 }}>
         <Iridescence
-          color={isEgoMode ? [1, 0, 0.5] : [0, 0.2, 0.4]}
+          color={isEgoMode ? [1, 0, 0.5] : [0.4, 0.4, 0.9]}
           mouseReact={!isMobile}
           amplitude={0.1}
           speed={isEgoMode ? 1 : (isMobile ? 0.5 : 0.7)}

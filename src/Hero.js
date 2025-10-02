@@ -3,24 +3,41 @@ import React, { useState, useCallback, useEffect, memo } from 'react';
 import Typewriter from 'typewriter-effect';
 import { motion } from 'framer-motion';
 import zainImage from './images/zkhatri.png';
+import egomaniacImage from './images/egomaniac.jpeg';
 import './hero.css';
 
 const Hero = memo(function Hero() {
   const [clickCount, setClickCount] = useState(0);
   const [typewriterText, setTypewriterText] = useState('zain khatri');
   const [isSpinning, setIsSpinning] = useState(false);
+  const [isEgomaniacMode, setIsEgomaniacMode] = useState(false);
+  const [isTransforming, setIsTransforming] = useState(false);
 
   const handleImageClick = useCallback(() => {
     setClickCount(prev => {
       const newClickCount = prev + 1;
 
-      // Trigger spin effect and change text after 3 clicks
+      // Trigger transformation effect and change text after 3 clicks
       if (newClickCount % 6 === 3) {
-        setIsSpinning(true);
-        setTypewriterText('egomaniac');
+        setIsTransforming(true);
+        setTimeout(() => {
+          setIsSpinning(true);
+          setTypewriterText('egomaniac');
+          setIsEgomaniacMode(true);
+        }, 400);
+        setTimeout(() => {
+          setIsTransforming(false);
+        }, 800);
       } else if (newClickCount % 6 === 0) {
-        setIsSpinning(false);
-        setTypewriterText('zain khatri');
+        setIsTransforming(true);
+        setTimeout(() => {
+          setIsSpinning(false);
+          setTypewriterText('zain khatri');
+          setIsEgomaniacMode(false);
+        }, 400);
+        setTimeout(() => {
+          setIsTransforming(false);
+        }, 800);
       }
 
       return newClickCount;
@@ -79,26 +96,28 @@ const Hero = memo(function Hero() {
         </div>
         <div className="image-and-contact">
           <motion.img
-            src={zainImage}
-            alt="zain khatri"
-            className="hero-image"
+            src={isEgomaniacMode ? egomaniacImage : zainImage}
+            alt={isEgomaniacMode ? "egomaniac" : "zain khatri"}
+            className={`hero-image ${isEgomaniacMode ? 'egomaniac-mode' : ''} ${isTransforming ? 'transforming' : ''}`}
             onClick={handleImageClick}
             loading="eager"
             decoding="async"
             initial={{ opacity: 0, scale: 0.9, y: 20 }}
-            animate={{ 
-              opacity: 1, 
-              scale: 1, 
+            animate={{
+              opacity: isTransforming ? 0.5 : 1,
+              scale: isTransforming ? 0.85 : (isSpinning ? 1.05 : 1),
               y: 0,
-              rotate: isSpinning ? 360 : 0
+              rotate: isSpinning ? 360 : 0,
+              filter: isEgomaniacMode ? 'brightness(1.2) saturate(1.3) hue-rotate(10deg)' : 'brightness(1) saturate(1) hue-rotate(0deg)'
             }}
-            transition={{ 
-              duration: 1, 
-              ease: [0.25, 0.46, 0.45, 0.94],
-              rotate: { duration: 1, ease: 'easeInOut' }
+            transition={{
+              duration: isTransforming ? 0.5 : 0.8,
+              ease: [0.34, 1.56, 0.64, 1],
+              rotate: { duration: 0.8, ease: [0.34, 1.56, 0.64, 1] },
+              filter: { duration: 0.6, ease: [0.34, 1.56, 0.64, 1] }
             }}
             whileHover={{ 
-              scale: 1.02,
+              scale: isTransforming ? 0.8 : 1.02,
               transition: { duration: 0.3 }
             }}
           />
