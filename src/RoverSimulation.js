@@ -332,7 +332,7 @@ p.draw = () => {
   obstacles.forEach((obstacle, index) => {
     // Skip if this obstacle was destroyed in the Easter egg
     if (easterEggTriggered && destroyedObstacles.includes(index)) return;
-    
+
     p.fill(255, 100, 100);
     p.ellipse(
       obstacle.x * p.width,
@@ -872,21 +872,21 @@ class Rover {
     p.push();
     p.translate(this.x, this.y);
     p.rotate(this.angle);
-    
+
     // Draw the rover body
     p.fill(100, 100, 255);
     p.rectMode(p.CENTER);
     p.rect(0, 0, this.size * 1.5, this.size);
-    
+
     // Draw the cannon
     p.fill(50, 50, 50);
     p.rectMode(p.CENTER);
     p.rect(this.size * 0.75, 0, cannonSize, this.size / 3);
-    
+
     // Draw cannon tip
     p.fill(200, 0, 0);
     p.ellipse(this.size * 0.75 + cannonSize / 2, 0, 8, 8);
-    
+
     // Draw sensors (dimmer during easter egg)
     p.stroke(0, 0, 255, 50);
     for (let sensorAngle of this.sensorAngles) {

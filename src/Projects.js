@@ -6,9 +6,9 @@ import './projects.css';
 // Lazy load heavy project components
 const MLGame = lazy(() => import('./MLGame'));
 const RoverSimulation = lazy(() => import('./RoverSimulation'));
-const BrainActivityChart = lazy(() => import('./BrainActivityChart'));
 const MunchMate = lazy(() => import('./MunchMate'));
 const ManiaJournal = lazy(() => import('./ManiaJournal'));
+const MeetYourMaker = lazy(() => import('./MeetYourMaker'));
 
 function Projects() {
   const [areProjectsVisible, setAreProjectsVisible] = useState(false);
@@ -112,23 +112,23 @@ function Projects() {
             />
           </div>
 
-          {/* MunchMate Project */}
+          {/* MeetYourMaker Project */}
           <div className="project">
             <div className="project-content">
               <h3 className="project-title">
                 <a
-                  href="https://github.com/zainkhatri/munchmate"
+                  href="https://meetyourmaker.vercel.app/"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  MunchMate - AI Recipe Generator
+                  meetyourmaker - Digital Twin Chat
                 </a>
               </h3>
               <p className="project-description">
-                ai powered meal generator that converts leftover ingredients into recipes, macros, and optional workouts. built with react and openai gpt-3.5. added dietary filters, goal-based suggestions, and a lightweight frontend for fast user input/output.
+                built an ai-powered chat app that lets people talk to my digital ghost by training on my actual writing samples. features professional/casual modes, voice interaction, and a word hunt puzzle using my vocabulary; basically turned myself into a chatbot.
               </p>
-              <Suspense fallback={<div className="loading-spinner">Loading MunchMate...</div>}>
-                <MunchMate />
+              <Suspense fallback={<div className="loading-spinner">Loading MeetYourMaker...</div>}>
+                <MeetYourMaker />
               </Suspense>
             </div>
           </div>
@@ -142,7 +142,7 @@ function Projects() {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  Mania - Digital Journaling App
+                  mania - Digital Journaling App
                 </a>
               </h3>
               <p className="project-description">
@@ -175,23 +175,23 @@ function Projects() {
             </div>
           </div>
 
-          {/* Exoskeleton Project */}
+          {/* MunchMate Project */}
           <div className="project">
             <div className="project-content">
               <h3 className="project-title">
                 <a
-                  href="https://github.com/zainkhatri/exoskeleton-brainwave-algorithm"
+                  href="https://github.com/zainkhatri/munchmate"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  UC Berkeley Exoskeleton Brainwave Algorithm
+                  MunchMate - AI Recipe Generator
                 </a>
               </h3>
               <p className="project-description">
-                developed a real time eeg classifier to detect lean direction in under 30ms for stroke/parkinson's movement assistance. built and tuned an svm pipeline with gpu acceleration. achieved 90%+ accuracy. used to control a physical exoskeleton for posture correction and mobility aid.
+                ai powered meal generator that converts leftover ingredients into recipes, macros, and optional workouts. built with react and openai gpt-3.5. added dietary filters, goal-based suggestions, and a lightweight frontend for fast user input/output.
               </p>
-              <Suspense fallback={<div className="loading-spinner">Loading Brain Activity Chart...</div>}>
-                <BrainActivityChart />
+              <Suspense fallback={<div className="loading-spinner">Loading MunchMate...</div>}>
+                <MunchMate />
               </Suspense>
             </div>
           </div>

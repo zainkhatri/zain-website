@@ -1,35 +1,38 @@
-.mania-journal-container {
+.meetyourmaker-container {
   width: 100%;
-  height: calc(82vh + 120px);
+  height: 82vh;
   margin: 0;
   padding: 0;
 }
 
-.mania-journal-iframe-wrapper {
+.meetyourmaker-iframe-wrapper {
   position: relative;
   overflow: hidden;
   border-radius: 16px;
-  margin: 20px;
-  width: calc(100% - 10px);
-  height: calc(82vh + 120px);
+  margin: 20px 0;
+  width: 100%;
+  height: calc(82vh - 40px);
   border: 2px solid white;
+  box-sizing: border-box;
 }
 
-.mania-journal-iframe {
-  width: 100%;
-  height: 100%;
+.meetyourmaker-iframe {
+  width: 133.33%;
+  height: 133.33%;
   border: none;
   border-radius: 16px;
   overflow: hidden;
+  transform: scale(0.75);
+  transform-origin: 0 0;
 }
 
 /* Responsive design for mobile devices */
 @media (max-width: 849px) {
-  .mania-journal-container {
+  .meetyourmaker-container {
     height: 72vh;
   }
-  
-  .mania-journal-iframe-wrapper {
+
+  .meetyourmaker-iframe-wrapper {
     height: 67vh;
     margin: 10px;
     width: calc(100% - 20px);
@@ -38,17 +41,17 @@
 
 /* Responsive design */
 @media (max-width: 768px) {
-  .mania-journal-iframe-wrapper {
+  .meetyourmaker-iframe-wrapper {
     margin: 15px;
-    width: calc(100% - 10px);
+    width: calc(100% - 30px);
     height: calc(72vh - 30px);
   }
 }
 
 @media (max-width: 480px) {
-  .mania-journal-iframe-wrapper {
+  .meetyourmaker-iframe-wrapper {
     margin: 10px;
-    width: calc(100% - 0px);
+    width: calc(100% - 20px);
     height: calc(72vh - 20px);
   }
-} 
+}
