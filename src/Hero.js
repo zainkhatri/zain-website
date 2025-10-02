@@ -14,11 +14,11 @@ const Hero = memo(function Hero() {
     setClickCount(prev => {
       const newClickCount = prev + 1;
 
-      // Trigger spin effect and change text after 5 clicks
-      if (newClickCount % 10 === 5) {
+      // Trigger spin effect and change text after 3 clicks
+      if (newClickCount % 6 === 3) {
         setIsSpinning(true);
         setTypewriterText('egomaniac');
-      } else if (newClickCount % 10 === 0) {
+      } else if (newClickCount % 6 === 0) {
         setIsSpinning(false);
         setTypewriterText('zain khatri');
       }
@@ -29,7 +29,7 @@ const Hero = memo(function Hero() {
 
   // Add useEffect to monitor clickCount and change background
   useEffect(() => {
-    const isEgoPhase = clickCount % 10 >= 5 && clickCount % 10 < 10;
+    const isEgoPhase = clickCount % 6 >= 3 && clickCount % 6 < 6;
     if (isEgoPhase) {
       document.body.classList.add('ego-mode');
     } else {

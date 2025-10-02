@@ -16,6 +16,7 @@ function App() {
   const [isContentExpanded, setIsContentExpanded] = useState(false);
   const [showNavigation, setShowNavigation] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [isEgoMode, setIsEgoMode] = useState(false);
 
   useEffect(() => {
     if (isContentExpanded) {
@@ -44,12 +45,28 @@ function App() {
     };
   }, []);
 
+  // Monitor ego mode from body class
+  useEffect(() => {
+    const checkEgoMode = () => {
+      setIsEgoMode(document.body.classList.contains('ego-mode'));
+    };
+
+    // Check immediately
+    checkEgoMode();
+
+    // Create observer to watch for class changes
+    const observer = new MutationObserver(checkEgoMode);
+    observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+
+    return () => observer.disconnect();
+  }, []);
+
   // Start navigation animation after typewriter finishes (desktop only)
   useEffect(() => {
     if (!isMobile) {
       const timer = setTimeout(() => {
         setShowNavigation(true);
-      }, 2000); // Increased to 2 seconds to start right when typewriter finishes
+      }, 2000);
 
       return () => clearTimeout(timer);
     } else {
@@ -95,10 +112,10 @@ function App() {
     <div className="App">
       <div style={{ width: '100%', height: '100vh', position: 'fixed', top: 0, left: 0, zIndex: -1 }}>
         <Iridescence
-          color={[0, 0.2, 0.4]}
+          color={isEgoMode ? [1, 0, 0.5] : [0, 0.2, 0.4]}
           mouseReact={!isMobile}
           amplitude={0.1}
-          speed={isMobile ? 0.5 : 0.7}
+          speed={isEgoMode ? 1 : (isMobile ? 0.5 : 0.7)}
         />
       </div>
       <Hero />
