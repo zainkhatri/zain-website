@@ -20,7 +20,6 @@ function Projects() {
   useEffect(() => {
     if (contentRef.current) {
       const height = contentRef.current.scrollHeight;
-      console.log('Content height:', height);
       setContentHeight(height);
     }
   }, [areProjectsVisible]);
@@ -31,10 +30,6 @@ function Projects() {
 
     const observer = new ResizeObserver(entries => {
       for (let entry of entries) {
-        console.log('Content size changed:', {
-          height: entry.contentRect.height,
-          scrollHeight: entry.target.scrollHeight
-        });
         setContentHeight(entry.target.scrollHeight);
       }
     });
@@ -44,27 +39,7 @@ function Projects() {
   }, []);
 
   const toggleProjects = useCallback(() => {
-    console.log('Toggle clicked, current state:', areProjectsVisible);
-    if (contentRef.current) {
-      console.log('Pre-toggle content height:', contentRef.current.scrollHeight);
-    }
     setAreProjectsVisible(prev => !prev);
-  }, [areProjectsVisible]);
-
-  // Add transition end logging
-  useEffect(() => {
-    const wrapper = wrapperRef.current;
-    if (!wrapper) return;
-
-    const handleTransitionEnd = (e) => {
-      console.log('Transition ended:', e.propertyName);
-      if (contentRef.current) {
-        console.log('Final content height:', contentRef.current.scrollHeight);
-      }
-    };
-
-    wrapper.addEventListener('transitionend', handleTransitionEnd);
-    return () => wrapper.removeEventListener('transitionend', handleTransitionEnd);
   }, []);
 
   return (

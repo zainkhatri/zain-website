@@ -12,7 +12,6 @@ function Bio() {
   useEffect(() => {
     if (contentRef.current) {
       const height = contentRef.current.scrollHeight;
-      console.log('Bio content height:', height);
       setContentHeight(height);
     }
   }, [isBioVisible]);
@@ -23,10 +22,6 @@ function Bio() {
 
     const observer = new ResizeObserver(entries => {
       for (let entry of entries) {
-        console.log('Bio content size changed:', {
-          height: entry.contentRect.height,
-          scrollHeight: entry.target.scrollHeight
-        });
         setContentHeight(entry.target.scrollHeight);
       }
     });
@@ -36,10 +31,6 @@ function Bio() {
   }, []);
 
   const toggleBio = () => {
-    console.log('Bio toggle clicked, current state:', isBioVisible);
-    if (contentRef.current) {
-      console.log('Pre-toggle bio content height:', contentRef.current.scrollHeight);
-    }
     setIsBioVisible(!isBioVisible);
   };
 

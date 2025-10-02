@@ -60,7 +60,9 @@ export default function Iridescence({ color = [1, 1, 1], speed = 1.0, amplitude 
     let program;
 
     function resize() {
-      const scale = 1;
+      // Use lower resolution on mobile for better performance
+      const isMobile = window.innerWidth <= 768;
+      const scale = isMobile ? 0.5 : 1;
       renderer.setSize(ctn.offsetWidth * scale, ctn.offsetHeight * scale);
       if (program) {
         program.uniforms.uResolution.value = new Color(

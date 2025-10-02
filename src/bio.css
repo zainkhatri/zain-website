@@ -27,9 +27,10 @@
   opacity: 0;
   transform-origin: top;
   transform: translateY(-20px) scaleY(0.95);
-  transition: height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
-              opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-              transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: height 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: height, opacity, transform;
 }
 
 .expanded .content-wrapper {

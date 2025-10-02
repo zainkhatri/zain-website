@@ -25,16 +25,23 @@ function App() {
     }
   }, [isContentExpanded]);
 
-  // Check if device is mobile
+  // Check if device is mobile with debouncing
   useEffect(() => {
+    let timeoutId;
     const checkMobile = () => {
-      setIsMobile(window.innerWidth <= 768);
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        setIsMobile(window.innerWidth <= 768);
+      }, 150);
     };
-    
+
     checkMobile();
     window.addEventListener('resize', checkMobile);
-    
-    return () => window.removeEventListener('resize', checkMobile);
+
+    return () => {
+      window.removeEventListener('resize', checkMobile);
+      clearTimeout(timeoutId);
+    };
   }, []);
 
   // Start navigation animation after typewriter finishes (desktop only)
@@ -88,10 +95,10 @@ function App() {
     <div className="App">
       <div style={{ width: '100%', height: '100vh', position: 'fixed', top: 0, left: 0, zIndex: -1 }}>
         <Iridescence
-          color={[0, 0.2, 0.4]}  // RGB values from sliders
-          mouseReact={false}
+          color={[0, 0.2, 0.4]}
+          mouseReact={!isMobile}
           amplitude={0.1}
-          speed={0.7}
+          speed={isMobile ? 0.5 : 0.7}
         />
       </div>
       <Hero />

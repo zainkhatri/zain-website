@@ -11,6 +11,42 @@ html, body {
   font-family: 'Fahkwang', sans-serif;
   scroll-behavior: smooth;
   scroll-padding-top: 20px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeSpeed;
+}
+
+/* Disable smooth scroll on mobile for better performance */
+@media (max-width: 768px) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Hardware acceleration for better performance */
+.hero-image,
+.project-image,
+.content-wrapper,
+.expandable-title {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Use will-change sparingly only when animating */
+.content-wrapper.animating,
+.hero-image:hover,
+.expandable-title:hover {
+  will-change: transform;
+}
+
+/* Optimize image rendering */
+img {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
 }
 
 .App {

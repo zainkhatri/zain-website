@@ -5,24 +5,27 @@ import { motion } from 'framer-motion';
 import zainImage from './images/zkhatri.png';
 import './hero.css';
 
-function Hero() {
+const Hero = memo(function Hero() {
   const [clickCount, setClickCount] = useState(0);
   const [typewriterText, setTypewriterText] = useState('zain khatri');
   const [isSpinning, setIsSpinning] = useState(false);
 
   const handleImageClick = useCallback(() => {
-    const newClickCount = clickCount + 1;
-    setClickCount(newClickCount);
+    setClickCount(prev => {
+      const newClickCount = prev + 1;
 
-    // Trigger spin effect and change text after 5 clicks
-    if (newClickCount % 10 === 5) {
-      setIsSpinning(true); // Start spinning
-      setTypewriterText('egomaniac');
-    } else if (newClickCount % 10 === 0) {
-      setIsSpinning(false); // Stop spinning after a complete spin
-      setTypewriterText('zain khatri');
-    }
-  }, [clickCount]);
+      // Trigger spin effect and change text after 5 clicks
+      if (newClickCount % 10 === 5) {
+        setIsSpinning(true);
+        setTypewriterText('egomaniac');
+      } else if (newClickCount % 10 === 0) {
+        setIsSpinning(false);
+        setTypewriterText('zain khatri');
+      }
+
+      return newClickCount;
+    });
+  }, []);
 
   // Add useEffect to monitor clickCount and change background
   useEffect(() => {
@@ -80,6 +83,8 @@ function Hero() {
             alt="zain khatri"
             className="hero-image"
             onClick={handleImageClick}
+            loading="eager"
+            decoding="async"
             initial={{ opacity: 0, scale: 0.9, y: 20 }}
             animate={{ 
               opacity: 1, 
@@ -157,6 +162,6 @@ function Hero() {
       </motion.div>
     </header>
   );
-}
+});
 
-export default memo(Hero);
+export default Hero;
