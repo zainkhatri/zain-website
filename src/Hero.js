@@ -108,7 +108,7 @@ const Hero = memo(function Hero() {
               scale: isTransforming ? 0.85 : (isSpinning ? 1.05 : 1),
               y: 0,
               rotate: isSpinning ? 360 : 0,
-              filter: isEgomaniacMode ? 'brightness(1.2) saturate(1.3) hue-rotate(10deg)' : 'brightness(1) saturate(1) hue-rotate(0deg)'
+              filter: isEgomaniacMode ? 'brightness(1) saturate(1.3) hue-rotate(10deg)' : 'brightness(1) saturate(1) hue-rotate(0deg)'
             }}
             transition={{
               duration: isTransforming ? 0.5 : 0.8,
