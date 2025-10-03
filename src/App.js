@@ -17,6 +17,7 @@ function App() {
   const [showNavigation, setShowNavigation] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [isEgoMode, setIsEgoMode] = useState(false);
+  const [backgroundColor, setBackgroundColor] = useState([0.4, 0.4, 0.9]);
 
   useEffect(() => {
     if (isContentExpanded) {
@@ -59,6 +60,16 @@ function App() {
     observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
 
     return () => observer.disconnect();
+  }, []);
+
+  // Listen for color mode changes from Bio component
+  useEffect(() => {
+    const handleColorChange = (event) => {
+      setBackgroundColor(event.detail.color);
+    };
+
+    window.addEventListener('colorModeChange', handleColorChange);
+    return () => window.removeEventListener('colorModeChange', handleColorChange);
   }, []);
 
   // Start navigation animation after typewriter finishes (desktop only)
@@ -112,7 +123,7 @@ function App() {
     <div className="App">
       <div style={{ width: '100%', height: '100vh', position: 'fixed', top: 0, left: 0, zIndex: -1 }}>
         <Iridescence
-          color={isEgoMode ? [1, 0, 0.5] : [0.4, 0.4, 0.9]}
+          color={isEgoMode ? [1, 0, 0.5] : backgroundColor}
           mouseReact={!isMobile}
           amplitude={0.1}
           speed={isEgoMode ? 1 : (isMobile ? 0.5 : 0.7)}

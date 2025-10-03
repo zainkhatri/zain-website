@@ -153,8 +153,75 @@
   }
 }
 
+/* Mystery button - Mario style */
+.mystery-button {
+  margin: 0 0 3px 4px;
+  padding: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 3px;
+  background: #E89C2E;
+  border: none;
+  color: #000000;
+  font-size: 18px;
+  font-weight: 900;
+  font-family: 'Arial Black', 'Arial', sans-serif;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow:
+    inset 3px 3px 0 0 #FFD966,
+    inset -3px -3px 0 0 #B87A1F,
+    0 4px 0 0 #8B5A00,
+    0 6px 10px rgba(0, 0, 0, 0.4);
+  position: relative;
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.2);
+  flex-shrink: 0;
+  vertical-align: middle;
+  line-height: 1;
+}
+
+.mystery-button::before {
+  content: '';
+  display: none;
+}
+
+.mystery-button:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow:
+    inset 3px 3px 0 0 #FFE680,
+    inset -3px -3px 0 0 #B87A1F,
+    0 6px 0 0 #8B5A00,
+    0 8px 15px rgba(0, 0, 0, 0.5);
+  animation: blockBounce 0.5s ease infinite;
+}
+
+.mystery-button:active {
+  transform: translateY(2px) scale(0.95);
+  box-shadow:
+    inset 3px 3px 0 0 #B87A1F,
+    inset -3px -3px 0 0 #FFD966,
+    0 2px 0 0 #8B5A00,
+    0 3px 6px rgba(0, 0, 0, 0.3);
+}
+
+@keyframes blockBounce {
+  0%, 100% {
+    transform: translateY(-2px) scale(1.05);
+  }
+  50% {
+    transform: translateY(-5px) scale(1.05);
+  }
+}
+
 @media (max-width: 768px) {
   #resume {
     display: none;
+  }
+
+  .mystery-button {
+    margin: 20px auto 0;
   }
 }

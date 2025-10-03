@@ -5,6 +5,7 @@ import './bio.css';
 function Bio() {
   const [isBioVisible, setIsBioVisible] = useState(false);
   const [contentHeight, setContentHeight] = useState(0);
+  const [colorMode, setColorMode] = useState('normal'); // 'normal' or 'mystery'
   const contentRef = useRef(null);
   const wrapperRef = useRef(null);
 
@@ -34,6 +35,15 @@ function Bio() {
     setIsBioVisible(!isBioVisible);
   };
 
+  const toggleColorMode = () => {
+    const newMode = colorMode === 'normal' ? 'mystery' : 'normal';
+    setColorMode(newMode);
+
+    // Update the Iridescence background color via custom event
+    const color = newMode === 'mystery' ? [1, 0, 0.5] : [0.4, 0.4, 0.9];
+    window.dispatchEvent(new CustomEvent('colorModeChange', { detail: { color } }));
+  };
+
   return (
     <section id="bio" className={`content-section bio ${isBioVisible ? 'expanded' : ''}`}>
       <h2 onClick={toggleBio} className="expandable-title">
@@ -56,13 +66,19 @@ function Bio() {
                 before that, i worked on real time brainwave classification at berkeley, and built things like autonomous rovers, agent based ai apps, and fast data systems.
               </p>
               <p>
-               outside of code, i'm usually playing basketball, learning new songs on the guitar, or playing chess.
+               outside of code, i'm usually playing basketball, learning new songs on the guitar, or playing chess<button
+                onClick={toggleColorMode}
+                className="mystery-button"
+                aria-label="Toggle color mode"
+              >
+                ?
+              </button>
               </p>
             </div>
             <div className="bio-image desktop-only">
-              <img 
-                src={piperImage} 
-                alt="Air" 
+              <img
+                src={piperImage}
+                alt="Air"
                 className="air-image"
               />
             </div>
