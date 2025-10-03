@@ -58,9 +58,9 @@
 
 /* Add expandable title styles to match other sections */
 .expandable-title {
-  font-size: 2.3em;
+  font-size: 2.6em;
   font-weight: 700;
-  margin-top: 5px;
+  margin-top: -15px;
   margin-bottom: 20px;
   color: #ffffff;
   cursor: pointer;
@@ -85,7 +85,7 @@
 }
 
 .expandable-title:hover {
-  font-size: 2.6em;
+  font-size: 2.9em;
   transform: scale(1.02);
 }
 

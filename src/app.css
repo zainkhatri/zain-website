@@ -82,9 +82,9 @@ img {
 /* Push expandable titles up by 20px on desktop */
 @media screen and (min-width: 769px) {
   .content-section {
-    margin-top: -20px; /* Changed from -60px to +60px to push down */
+    margin-top: -40px; /* Moved up by 20px more (was -20px) */
   }
-  
+
   .content-section + .content-section {
     margin-top: 30px; /* Changed from -30px to +30px for consistent spacing */
   }
@@ -161,12 +161,9 @@ button, a {
   color: #ffffff;
   text-align: center;
   padding: 20px 0;
-  position: fixed; /* Changed back to fixed */
+  position: relative; /* Changed to relative */
   width: 100%;
-  bottom: 0;
-  left: 0;
-  z-index: 100; /* Ensure it stays on top */
-  margin-top: 0; /* Remove margin since it's fixed */
+  margin-top: 60px; /* Add margin for spacing */
 }
 
 .footer p {
@@ -272,8 +269,8 @@ body.ego-mode {
 .navigation-sections {
   display: flex;
   flex-direction: column;
-  gap: 40px; /* Increased gap for better separation between sections */
-  margin-top: 0;
+  gap: 75px; /* Increased gap for better separation between sections */
+  margin-top: -30px; /* Move sections up by 30px */
 }
 
 /* Ensure expanded sections have proper spacing */

@@ -59,6 +59,8 @@ let destroyedObstacles = [];
 let cannonSize = 0;
 let laserBeamLength = 0;
 let danceAngle = 0;
+let turboActive = false;
+let turboSpeed = 0;
 
 p.setup = () => {
   p.createCanvas(containerSize.width, containerSize.height).parent(sketchRef.current);
@@ -165,12 +167,22 @@ const getPathToB = () => {
   
   // If we get here, no complete path was found
   // Return the closest point we can reach
-  return {
-    complete: false,
-    x: bestPath ? bestPath.x * gridSize + gridSize / 2 : rover.x,
-    y: bestPath ? bestPath.y * gridSize + gridSize / 2 : rover.y,
-    path: bestPath ? bestPath.path : []
-  };
+  if (bestPath) {
+    return {
+      complete: false,
+      x: bestPath.x * gridSize + gridSize / 2,
+      y: bestPath.y * gridSize + gridSize / 2,
+      path: bestPath.path || []
+    };
+  } else {
+    // No path found at all - return rover's current position
+    return {
+      complete: false,
+      x: rover.x,
+      y: rover.y,
+      path: []
+    };
+  }
 };
 
 p.windowResized = () => {
@@ -397,7 +409,17 @@ p.draw = () => {
       
       // Get the closest reachable point to B
       const closestPoint = getPathToB();
-      
+
+      // Safety check - if pathfinding failed, trigger easter egg
+      if (!closestPoint || closestPoint.x === undefined || closestPoint.y === undefined) {
+        console.log("Pathfinding failed - triggering easter egg");
+        easterEggTriggered = true;
+        easterEggPhase = 1;
+        isMoving = false;
+        rover.obstacleStuckCounter = 0;
+        return;
+      }
+
       // If we're already at or very close to the closest possible point to B
       const distToClosestPossible = p.dist(rover.x, rover.y, closestPoint.x, closestPoint.y);
       console.log(`Distance to closest possible point: ${distToClosestPossible}`);
@@ -422,15 +444,10 @@ p.draw = () => {
           y: closestPoint.y / p.height,
           label: 'B'
         };
-        
+
         // Temporarily replace waypoint B with this closest reachable point
         const originalB = waypoints[1];
         waypoints[1] = tempWaypoint;
-        
-        // After a timeout, restore the original B waypoint
-        setTimeout(() => {
-          waypoints[1] = originalB;
-        }, 5000);
         
         // Help the rover by giving it a small "nudge" toward the closest point
         const angleToClosest = p.atan2(closestPoint.y - rover.y, closestPoint.x - rover.x);
@@ -599,23 +616,74 @@ const handleEasterEggAnimation = () => {
         easterEggPhase = 4; // Move to B
         easterEggTimer = 0;
         isMoving = true;
+        turboActive = true; // Activate turbo mode!
+        turboSpeed = 0;
         currentWaypointIndex = 1; // Target waypoint B
         destroyedObstacles = Array.from(Array(obstacles.length).keys()); // Mark all obstacles as destroyed
       }
       break;
       
-    case 4: // Moving to B
-      // Navigate to B (using normal update logic but with no obstacles)
-      rover.update(
-        { x: waypoints[1].x * p.width, y: waypoints[1].y * p.height },
-        [] // No obstacles
-      );
-      
+    case 4: // Moving to B with TURBO!
+      if (turboActive) {
+        // Accelerate to max speed
+        turboSpeed = Math.min(20, turboSpeed + 1);
+
+        // Point directly at B
+        const targetX = waypoints[1].x * p.width;
+        const targetY = waypoints[1].y * p.height;
+        const angleToB = p.atan2(targetY - rover.y, targetX - rover.x);
+        rover.angle = angleToB;
+
+        // ZOOM toward B
+        rover.x += p.cos(rover.angle) * turboSpeed;
+        rover.y += p.sin(rover.angle) * turboSpeed;
+
+        // Draw turbo flames behind rover
+        p.push();
+        p.translate(rover.x, rover.y);
+        p.rotate(rover.angle);
+
+        // Multiple flame particles
+        for (let i = 0; i < 8; i++) {
+          const flameLength = p.random(20, 40) + turboSpeed * 2;
+          const flameWidth = p.random(5, 15);
+          const offsetY = p.random(-10, 10);
+
+          p.fill(255, p.random(100, 200), 0, p.random(150, 255));
+          p.noStroke();
+          p.ellipse(
+            -flameLength / 2 - rover.size,
+            offsetY,
+            flameLength,
+            flameWidth
+          );
+        }
+
+        // Speed lines
+        p.stroke(255, 255, 255, 100);
+        p.strokeWeight(2);
+        for (let i = 0; i < 5; i++) {
+          const lineLength = p.random(30, 60);
+          const offsetY = p.random(-15, 15);
+          p.line(-rover.size - lineLength, offsetY, -rover.size, offsetY);
+        }
+
+        p.pop();
+      } else {
+        // Normal movement (shouldn't happen but fallback)
+        rover.update(
+          { x: waypoints[1].x * p.width, y: waypoints[1].y * p.height },
+          [] // No obstacles
+        );
+      }
+
       // Check if reached B
       if (rover.reachedWaypoint({ x: waypoints[1].x * p.width, y: waypoints[1].y * p.height })) {
         easterEggPhase = 5; // Start dancing
         easterEggTimer = 0;
         danceAngle = 0;
+        turboActive = false;
+        turboSpeed = 0;
       }
       break;
       
@@ -722,8 +790,13 @@ p.start = () => {
     // Route is possible - proceed with smart navigation
     console.log("A route to B is possible - navigating smart path");
     
-    // Store the path for the rover to follow
-    rover.pathToFollow = pathResult.path;
+    // Store the path for the rover to follow (only if path exists)
+    if (pathResult.path && pathResult.path.length > 0) {
+      rover.pathToFollow = pathResult.path;
+    } else {
+      rover.pathToFollow = [];
+    }
+    rover.currentPathIndex = 0;
     
     // Normal movement with path following
     isMoving = true;
@@ -783,6 +856,8 @@ p.stop = () => {
   destroyedObstacles = [];
   easterEggPhase = 0;
   cannonSize = 0;
+  turboActive = false;
+  turboSpeed = 0;
 };
 
 p.setEditMode = (mode) => {
@@ -915,27 +990,37 @@ class Rover {
 
   update(target, obstacles) {
     // If we have a path to follow from pathfinding
-    if (this.pathToFollow && this.pathToFollow.length > 0) {
-      const currentTarget = this.pathToFollow[this.currentPathIndex];
-      const distToPathPoint = p.dist(this.x, this.y, currentTarget.x, currentTarget.y);
-      
+    if (this.pathToFollow && this.pathToFollow.length > 0 && this.currentPathIndex < this.pathToFollow.length) {
+      const gridSize = 25; // Same as in getPathToB
+      const currentGridPoint = this.pathToFollow[this.currentPathIndex];
+
+      // Convert grid coordinates to pixel coordinates properly
+      const currentTargetX = currentGridPoint.x * gridSize + gridSize / 2;
+      const currentTargetY = currentGridPoint.y * gridSize + gridSize / 2;
+
+      const distToPathPoint = p.dist(this.x, this.y, currentTargetX, currentTargetY);
+
       // If close enough to current path point, move to next point
-      if (distToPathPoint < this.size) {
+      if (distToPathPoint < this.size * 1.5) {
         this.currentPathIndex++;
-        
+
         // If we've reached the end of the path, switch to normal target (waypoint B)
         if (this.currentPathIndex >= this.pathToFollow.length) {
           this.pathToFollow = []; // Clear path
           this.currentPathIndex = 0;
         }
       }
-      
+
       // If we still have path points to follow, target the current one
       if (this.currentPathIndex < this.pathToFollow.length) {
+        const nextGridPoint = this.pathToFollow[this.currentPathIndex];
+        const nextTargetX = nextGridPoint.x * gridSize + gridSize / 2;
+        const nextTargetY = nextGridPoint.y * gridSize + gridSize / 2;
+
         // Create a temporary target for the current path point
         target = {
-          x: this.pathToFollow[this.currentPathIndex].x,
-          y: this.pathToFollow[this.currentPathIndex].y
+          x: nextTargetX,
+          y: nextTargetY
         };
       }
     }
@@ -977,26 +1062,35 @@ class Rover {
     this.angle += angleDifference;
 
     // Check if the rover is stuck in one place
-    if (Math.min(...Object.values(sensorReadings)) < this.dangerZone) {
+    const minSensorReading = Math.min(...sensorReadings);
+    if (minSensorReading < this.dangerZone) {
       this.obstacleStuckCounter++;
     } else {
-      this.obstacleStuckCounter = 0;
+      this.obstacleStuckCounter = Math.max(0, this.obstacleStuckCounter - 1); // Gradually decrease
     }
 
     // Reverse and choose an alternate path if stuck for too long
     if (this.obstacleStuckCounter > this.maxStuckThreshold) {
       this.reverse();
-      this.obstacleStuckCounter = 0; // Reset the counter after reversing
-      
+      this.obstacleStuckCounter = Math.floor(this.maxStuckThreshold / 2); // Reset but not to zero
+
       // If following a path and getting stuck, try skipping ahead in the path
-      if (this.pathToFollow && this.pathToFollow.length > 0) {
+      if (this.pathToFollow && this.pathToFollow.length > 0 && this.currentPathIndex < this.pathToFollow.length - 1) {
         this.currentPathIndex = Math.min(this.currentPathIndex + 2, this.pathToFollow.length - 1);
       }
     } else {
       // Move forward only if not in immediate danger
-      if (Math.min(...Object.values(sensorReadings)) > this.dangerZone / 2) {
-        this.x += p.cos(this.angle) * this.speed;
-        this.y += p.sin(this.angle) * this.speed;
+      if (minSensorReading > this.dangerZone / 2) {
+        const newX = this.x + p.cos(this.angle) * this.speed;
+        const newY = this.y + p.sin(this.angle) * this.speed;
+
+        // Only move if within bounds
+        if (newX >= this.size / 2 && newX <= p.width - this.size / 2) {
+          this.x = newX;
+        }
+        if (newY >= this.size / 2 && newY <= p.height - this.size / 2) {
+          this.y = newY;
+        }
       }
     }
 
@@ -1007,8 +1101,18 @@ class Rover {
 
   reverse() {
     // Reverse a small distance and change direction slightly to get unstuck
-    this.x -= p.cos(this.angle) * this.speed * 2;
-    this.y -= p.sin(this.angle) * this.speed * 2;
+    const reverseDistance = this.speed * 2;
+    const newX = this.x - p.cos(this.angle) * reverseDistance;
+    const newY = this.y - p.sin(this.angle) * reverseDistance;
+
+    // Only update position if it's within valid bounds
+    if (newX >= this.size / 2 && newX <= p.width - this.size / 2) {
+      this.x = newX;
+    }
+    if (newY >= this.size / 2 && newY <= p.height - this.size / 2) {
+      this.y = newY;
+    }
+
     this.angle += p.radians(90); // Change direction
   }
 
