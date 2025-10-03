@@ -54,7 +54,10 @@ img {
   margin: 0 auto;
   box-sizing: border-box;
   padding: 10px;
-  padding-bottom: 80px; /* Add space for fixed footer */
+  padding-bottom: 80px; /* Add space for footer */
+  min-height: 100vh; /* Ensure App takes full viewport height */
+  display: flex;
+  flex-direction: column;
 }
 
 @media screen and (max-width: 768px) {
@@ -161,9 +164,9 @@ button, a {
   color: #ffffff;
   text-align: center;
   padding: 20px 0;
-  position: relative; /* Changed to relative */
+  position: relative;
   width: 100%;
-  margin-top: 60px; /* Add margin for spacing */
+  margin-top: auto; /* Push footer to bottom */
 }
 
 .footer p {
