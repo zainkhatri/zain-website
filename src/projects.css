@@ -98,17 +98,14 @@
   position: relative;
   overflow: hidden;
   height: 0;
-  opacity: 0;
   transform-origin: top;
   transform: translateY(-20px) scaleY(0.95);
   transition: height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
-              opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1),
               transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .expanded .content-wrapper {
   height: var(--content-height);
-  opacity: 1;
   transform: translateY(0) scaleY(1);
 }
 
@@ -119,7 +116,13 @@
   margin-left: 0;
   padding-left: 0;
   text-align: left;
+  opacity: 0;
+  transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0.1s;
   will-change: transform;
+}
+
+.expanded .content {
+  opacity: 1;
 }
 
 /* Mobile styles */

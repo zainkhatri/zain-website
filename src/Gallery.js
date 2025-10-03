@@ -3,32 +3,32 @@ import { motion, AnimatePresence } from 'framer-motion';
 import './gallery.css';
 
 // Import preview images
-import img1Preview from './images/optimized/1.webp';
-import img2Preview from './images/optimized/2.webp';
-import img3Preview from './images/optimized/3.webp';
 import img4Preview from './images/optimized/4.webp';
 import img5Preview from './images/optimized/5.webp';
-import img6Preview from './images/optimized/6.webp';
-import img7Preview from './images/optimized/7.webp';
-import img8Preview from './images/optimized/8.webp';
-import img9Preview from './images/optimized/9.webp';
-import img10Preview from './images/optimized/10.webp';
 import img12Preview from './images/optimized/12.webp';
 import img13Preview from './images/optimized/13.webp';
+import z1Preview from './images/optimized/z1.webp';
+import z2Preview from './images/optimized/z2.webp';
+import z3Preview from './images/optimized/z3.webp';
+import z4Preview from './images/optimized/z4.webp';
+import z5Preview from './images/optimized/z5.webp';
+import z6Preview from './images/optimized/z6.webp';
+import z9Preview from './images/optimized/z9.webp';
+import z10Preview from './images/optimized/z10.webp';
 
 // Import full-size images
-import img1Full from './images/fullsize/1.webp';
-import img2Full from './images/fullsize/2.webp';
-import img3Full from './images/fullsize/3.webp';
 import img4Full from './images/fullsize/4.webp';
 import img5Full from './images/fullsize/5.webp';
-import img6Full from './images/fullsize/6.webp';
-import img7Full from './images/fullsize/7.webp';
-import img8Full from './images/fullsize/8.webp';
-import img9Full from './images/fullsize/9.webp';
-import img10Full from './images/fullsize/10.webp';
 import img12Full from './images/fullsize/12.webp';
 import img13Full from './images/fullsize/13.webp';
+import z1Full from './images/fullsize/z1.webp';
+import z2Full from './images/fullsize/z2.webp';
+import z3Full from './images/fullsize/z3.webp';
+import z4Full from './images/fullsize/z4.webp';
+import z5Full from './images/fullsize/z5.webp';
+import z6Full from './images/fullsize/z6.webp';
+import z9Full from './images/fullsize/z9.webp';
+import z10Full from './images/fullsize/z10.webp';
 
 function Gallery() {
   const [isGalleryVisible, setIsGalleryVisible] = useState(false);
@@ -40,16 +40,16 @@ function Gallery() {
 
   // Array of preview images for the grid
   const previewImages = [
-    img1Preview, img8Preview, img3Preview, img6Preview, img5Preview, 
-    img4Preview, img7Preview, img2Preview, img9Preview, img10Preview, 
-    img12Preview, img13Preview
+    z4Preview, z3Preview, img5Preview, img4Preview,
+    img12Preview, img13Preview, z1Preview, z2Preview,
+    z5Preview, z6Preview, z9Preview, z10Preview
   ];
 
   // Array of full-size images for the modal
   const fullImages = [
-    img1Full, img8Full, img3Full, img6Full, img5Full, 
-    img4Full, img7Full, img2Full, img9Full, img10Full, 
-    img12Full, img13Full
+    z4Full, z3Full, img5Full, img4Full,
+    img12Full, img13Full, z1Full, z2Full,
+    z5Full, z6Full, z9Full, z10Full
   ];
 
   // Measure content height when visibility changes

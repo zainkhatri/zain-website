@@ -5,6 +5,32 @@
   z-index: 2; /* Lower z-index since it comes before movies */
 }
 
+/* Content wrapper and animation styles */
+.content-wrapper {
+  position: relative;
+  overflow: hidden;
+  height: 0;
+  transform-origin: top;
+  transform: translateY(-20px) scaleY(0.95);
+  transition: height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.expanded .content-wrapper {
+  height: var(--content-height);
+  transform: translateY(0) scaleY(1);
+}
+
+.content {
+  position: relative;
+  opacity: 0;
+  transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0.1s;
+}
+
+.expanded .content {
+  opacity: 1;
+}
+
 .albums.expanded-margin {
   margin-bottom: 20px; /* Add space below when expanded */
 }
