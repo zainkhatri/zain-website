@@ -1,4 +1,4 @@
-import React, { useState, useCallback, memo } from 'react';
+import React, { useState, useCallback, memo, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import './movies.css';
 
@@ -80,6 +80,31 @@ import whiplash from './images/movies/optimized/whiplash.webp';
 
 function Movies() {
   const [isMoviesVisible, setIsMoviesVisible] = useState(false);
+  const [contentHeight, setContentHeight] = useState(0);
+  const contentRef = useRef(null);
+  const wrapperRef = useRef(null);
+
+  // Measure content height when visibility changes
+  useEffect(() => {
+    if (contentRef.current) {
+      const height = contentRef.current.scrollHeight;
+      setContentHeight(height);
+    }
+  }, [isMoviesVisible]);
+
+  // Add resize observer to update height on content changes
+  useEffect(() => {
+    if (!contentRef.current) return;
+
+    const observer = new ResizeObserver(entries => {
+      for (let entry of entries) {
+        setContentHeight(entry.target.scrollHeight);
+      }
+    });
+
+    observer.observe(contentRef.current);
+    return () => observer.disconnect();
+  }, []);
 
   const toggleMovies = useCallback(() => {
     setIsMoviesVisible(!isMoviesVisible);
@@ -100,42 +125,30 @@ function Movies() {
   ];
 
   return (
-    <section id="movies" className={`content-section movies ${isMoviesVisible ? 'expanded-margin' : ''}`}>
+    <section id="movies" className={`content-section movies ${isMoviesVisible ? 'expanded' : ''}`}>
       <h2 onClick={toggleMovies} className="expandable-title">
         movie library {isMoviesVisible ? '-' : '+'}
       </h2>
-      <AnimatePresence>
-        {isMoviesVisible && (
-          <motion.div
-            className="content expanded"
-            initial={{ opacity: 0, height: 0, scale: 0.98 }}
-            animate={{ opacity: 1, height: "auto", scale: 1 }}
-            exit={{ opacity: 0, height: 0, scale: 0.98 }}
-            transition={{ 
-              duration: 0.4,
-              height: {
-                duration: 0.4,
-                ease: [0.32, 0.72, 0, 1]
-              },
-              scale: {
-                duration: 0.3,
-                ease: [0.32, 0.72, 0, 1]
-              }
-            }}
-          >
-            <div className="movies-grid">
-              {movieImages.map((img, index) => (
-                <a key={index} href={movieData[index].link} target="_blank" rel="noopener noreferrer" className="movies-item">
-                  <img src={img} alt={movieData[index].title} />
-                  <div className="movie-overlay">
-                    <span className="movie-title">{movieData[index].title}</span>
-                  </div>
-                </a>
-              ))}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <div
+        ref={wrapperRef}
+        className="content-wrapper"
+        style={{
+          '--content-height': `${contentHeight}px`
+        }}
+      >
+        <div ref={contentRef} className="content">
+          <div className="movies-grid">
+            {movieImages.map((img, index) => (
+              <a key={index} href={movieData[index].link} target="_blank" rel="noopener noreferrer" className="movies-item">
+                <img src={img} alt={movieData[index].title} />
+                <div className="movie-overlay">
+                  <span className="movie-title">{movieData[index].title}</span>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+      </div>
     </section>
   );
 }

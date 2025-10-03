@@ -1,4 +1,4 @@
-import React, { useState, useCallback, memo } from 'react';
+import React, { useState, useCallback, memo, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import './albums.css';
 
@@ -50,6 +50,31 @@ const spotifyLinks = [
 
 function Albums() {
   const [isAlbumsVisible, setIsAlbumsVisible] = useState(false);
+  const [contentHeight, setContentHeight] = useState(0);
+  const contentRef = useRef(null);
+  const wrapperRef = useRef(null);
+
+  // Measure content height when visibility changes
+  useEffect(() => {
+    if (contentRef.current) {
+      const height = contentRef.current.scrollHeight;
+      setContentHeight(height);
+    }
+  }, [isAlbumsVisible]);
+
+  // Add resize observer to update height on content changes
+  useEffect(() => {
+    if (!contentRef.current) return;
+
+    const observer = new ResizeObserver(entries => {
+      for (let entry of entries) {
+        setContentHeight(entry.target.scrollHeight);
+      }
+    });
+
+    observer.observe(contentRef.current);
+    return () => observer.disconnect();
+  }, []);
 
   const toggleAlbums = useCallback(() => {
     setIsAlbumsVisible(!isAlbumsVisible);
@@ -63,39 +88,27 @@ function Albums() {
   ];
 
   return (
-    <section id="albums" className={`content-section albums ${isAlbumsVisible ? 'expanded-margin' : ''}`}>
+    <section id="albums" className={`content-section albums ${isAlbumsVisible ? 'expanded' : ''}`}>
       <h2 onClick={toggleAlbums} className="expandable-title">
         music library {isAlbumsVisible ? '-' : '+'}
       </h2>
-      <AnimatePresence>
-        {isAlbumsVisible && (
-          <motion.div
-            className="content expanded"
-            initial={{ opacity: 0, height: 0, scale: 0.98 }}
-            animate={{ opacity: 1, height: "auto", scale: 1 }}
-            exit={{ opacity: 0, height: 0, scale: 0.98 }}
-            transition={{ 
-              duration: 0.4,
-              height: {
-                duration: 0.4,
-                ease: [0.32, 0.72, 0, 1]
-              },
-              scale: {
-                duration: 0.3,
-                ease: [0.32, 0.72, 0, 1]
-              }
-            }}
-          >
-            <div className="albums-grid">
-              {albumImages.map((img, index) => (
-                <a key={index} href={spotifyLinks[index]} target="_blank" rel="noopener noreferrer" className="albums-item">
-                  <img src={img} alt={`Album ${index + 1}`} />
-                </a>
-              ))}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <div
+        ref={wrapperRef}
+        className="content-wrapper"
+        style={{
+          '--content-height': `${contentHeight}px`
+        }}
+      >
+        <div ref={contentRef} className="content">
+          <div className="albums-grid">
+            {albumImages.map((img, index) => (
+              <a key={index} href={spotifyLinks[index]} target="_blank" rel="noopener noreferrer" className="albums-item">
+                <img src={img} alt={`Album ${index + 1}`} />
+              </a>
+            ))}
+          </div>
+        </div>
+      </div>
     </section>
   );
 }

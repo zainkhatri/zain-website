@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect, memo } from 'react';
+import React, { useState, useCallback, useEffect, memo, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import './gallery.css';
 
@@ -34,6 +34,9 @@ function Gallery() {
   const [isGalleryVisible, setIsGalleryVisible] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [contentHeight, setContentHeight] = useState(0);
+  const contentRef = useRef(null);
+  const wrapperRef = useRef(null);
 
   // Array of preview images for the grid
   const previewImages = [
@@ -48,6 +51,28 @@ function Gallery() {
     img4Full, img7Full, img2Full, img9Full, img10Full, 
     img12Full, img13Full
   ];
+
+  // Measure content height when visibility changes
+  useEffect(() => {
+    if (contentRef.current) {
+      const height = contentRef.current.scrollHeight;
+      setContentHeight(height);
+    }
+  }, [isGalleryVisible]);
+
+  // Add resize observer to update height on content changes
+  useEffect(() => {
+    if (!contentRef.current) return;
+
+    const observer = new ResizeObserver(entries => {
+      for (let entry of entries) {
+        setContentHeight(entry.target.scrollHeight);
+      }
+    });
+
+    observer.observe(contentRef.current);
+    return () => observer.disconnect();
+  }, []);
 
   const toggleGallery = useCallback(() => {
     setIsGalleryVisible(!isGalleryVisible);
@@ -102,44 +127,31 @@ function Gallery() {
   }, [selectedImage, goToNextImage, goToPrevImage, closeImageViewer]);
 
   return (
-    <section id="gallery" className={`content-section gallery ${isGalleryVisible ? 'expanded-margin' : ''}`}>
+    <section id="gallery" className={`content-section gallery ${isGalleryVisible ? 'expanded' : ''}`}>
       <h2 onClick={toggleGallery} className="expandable-title">
         photo gallery {isGalleryVisible ? '-' : '+'}
       </h2>
-      <AnimatePresence>
-        {isGalleryVisible && (
-          <motion.div
-            className="content expanded"
-            initial={{ opacity: 0, height: 0, scale: 0.98 }}
-            animate={{ opacity: 1, height: "auto", scale: 1 }}
-            exit={{ opacity: 0, height: 0, scale: 0.98 }}
-            transition={{ 
-              duration: 0.4,
-              height: {
-                duration: 0.4,
-                ease: [0.32, 0.72, 0, 1]
-              },
-              scale: {
-                duration: 0.3,
-                ease: [0.32, 0.72, 0, 1]
-              }
-            }}
-          >
-            <div className="gallery-grid">
-              {previewImages.map((img, index) => (
-                <motion.div 
-                  key={index} 
-                  className="gallery-item"
-                  whileHover={{ scale: 1.02 }}
-                  onClick={() => openImageViewer(index)}
-                >
-                  <img src={img} alt={`Gallery ${index + 1}`} loading="lazy" />
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <div
+        ref={wrapperRef}
+        className="content-wrapper"
+        style={{
+          '--content-height': `${contentHeight}px`
+        }}
+      >
+        <div ref={contentRef} className="content">
+          <div className="gallery-grid">
+            {previewImages.map((img, index) => (
+              <div
+                key={index}
+                className="gallery-item"
+                onClick={() => openImageViewer(index)}
+              >
+                <img src={img} alt={`Gallery ${index + 1}`} loading="lazy" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
 
       {/* Image Viewer Modal */}
       <AnimatePresence>
