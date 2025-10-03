@@ -44,10 +44,17 @@ canvas {
 /* Media query for mobile devices */
 @media (max-width: 768px) {
   .simulation-container {
-    padding: 5px;
+    padding: 0;
   }
-  
+
   .sketch-container {
-    border-width: 5px;
+    border-width: 3px;
+    height: 60vh;
+    max-width: 100%;
+  }
+
+  .controls button {
+    padding: 10px 16px;
+    font-size: 14px;
   }
 }

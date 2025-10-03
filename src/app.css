@@ -57,6 +57,12 @@ img {
   padding-bottom: 80px; /* Add space for fixed footer */
 }
 
+@media screen and (max-width: 768px) {
+  .App {
+    padding: 5px;
+  }
+}
+
 /* Global content section alignment to match hero */
 .content-section {
   max-width: 1200px;
@@ -64,6 +70,13 @@ img {
   padding: 0 20px;
   box-sizing: border-box;
   transition: all 0.6s ease;
+}
+
+/* Reduce margins on mobile */
+@media screen and (max-width: 768px) {
+  .content-section {
+    padding: 0 8px;
+  }
 }
 
 /* Push expandable titles up by 20px on desktop */
