@@ -403,9 +403,10 @@
 /* Responsive Styling for Smaller Screens */
 @media screen and (max-width: 599px) {
   .ml-game {
-    max-width: 100%;
+    max-width: calc(100% - 20px);
     padding: 15px;
-    margin-left: 0px;
+    margin-left: auto;
+    margin-right: auto;
     touch-action: manipulation;
   }
 

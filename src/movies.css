@@ -106,7 +106,7 @@
 @media screen and (max-width: 767.98px) {
   .movies {
     overflow: visible; /* Allow content to flow naturally */
-    margin-bottom: 40px; /* Add more space between sections on mobile */
+    margin-bottom: 0; /* Remove extra margin - spacing controlled by parent gap */
   }
 
   .movies-grid {

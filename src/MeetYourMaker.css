@@ -34,31 +34,40 @@
 @media (max-width: 849px) {
   .meetyourmaker-container {
     height: 72vh;
+    padding: 0 10px;
   }
 
   .meetyourmaker-iframe-wrapper {
     height: 67vh;
     margin: 10px auto;
-    width: calc(100% - 20px);
-    max-width: calc(100% - 20px);
+    width: calc(100% - 24px);
+    max-width: calc(100% - 24px);
   }
 }
 
 /* Responsive design */
 @media (max-width: 768px) {
+  .meetyourmaker-container {
+    padding: 0 10px;
+  }
+
   .meetyourmaker-iframe-wrapper {
     margin: 10px auto;
-    width: calc(100% - 20px);
-    max-width: calc(100% - 20px);
+    width: calc(100% - 24px);
+    max-width: calc(100% - 24px);
     height: calc(72vh - 20px);
   }
 }
 
 @media (max-width: 480px) {
+  .meetyourmaker-container {
+    padding: 0 5px;
+  }
+
   .meetyourmaker-iframe-wrapper {
     margin: 5px auto;
-    width: calc(100% - 10px);
-    max-width: calc(100% - 10px);
+    width: calc(100% - 14px);
+    max-width: calc(100% - 14px);
     height: calc(72vh - 10px);
   }
 }

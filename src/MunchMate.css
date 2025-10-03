@@ -457,10 +457,11 @@
 
 @media screen and (max-width: 768px) {
   .munchmate-container {
-    margin: 0 auto; /* Center the entire container */
+    margin: 0 10px; /* Add horizontal margin to prevent border cutoff */
     padding: 1rem;
     border-radius: 0.75rem;
     text-align: center; /* Center-align the content */
+    max-width: calc(100% - 20px);
   }
 
   .munchmate-title {
@@ -533,10 +534,11 @@
 
 @media screen and (max-width: 480px) {
   .munchmate-container {
-    margin: 0 auto; /* Center the entire container */
+    margin: 0 10px; /* Add horizontal margin to prevent border cutoff */
     padding: 0.75rem;
     border-radius: 0.5rem;
     text-align: center; /* Center-align the content */
+    max-width: calc(100% - 20px);
   }
 
   .munchmate-container::before {

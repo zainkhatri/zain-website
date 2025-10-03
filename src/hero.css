@@ -1,6 +1,6 @@
 .hero-section {
     display: flex;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: flex-start;
     padding: 40px 0 0 0; /* Reduced padding to bring sections closer */
     min-height: auto;
@@ -16,7 +16,7 @@
     text-align: left;
     color: #ffffff;
     gap: 120px;
-    margin: 0;
+    margin: 0 auto;
     padding: 0 20px;
     box-sizing: border-box;
 }
@@ -67,11 +67,13 @@
         0 8px 32px rgba(0, 0, 0, 0.4),
         inset 0 0 25px rgba(255, 0, 0, 0.15);
     animation: egomaniacGlow 3s ease-in-out infinite alternate;
+    animation-play-state: running;
+    will-change: box-shadow, border-color;
     transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .hero-image.transforming {
-    animation: none;
+    animation-play-state: paused;
 }
 
 @keyframes egomaniacGlow {
@@ -156,6 +158,7 @@
     align-items: center;
     gap: 30px;
     margin-top: 20px;
+    margin-bottom: 60px;
 }
 
 .contact-section a {
@@ -207,7 +210,18 @@
         order: 2;
         align-self: center;
         margin-top: 0;
+        margin-left: 0;
+        margin-right: 0;
         flex-direction: column;
+        align-items: center;
+    }
+
+    .hero-image {
+        margin: 0 auto;
+    }
+
+    .contact-section {
+        justify-content: center;
     }
     
     .hero-content h1 {
@@ -361,6 +375,7 @@
 
     .contact-section {
         margin-top: 15px;
+        margin-bottom: 40px;
         display: flex;
         gap: 25px;
     }
@@ -470,6 +485,7 @@
     display: flex;
     gap: 22px;
     margin-top: 12px;
+    margin-bottom: 40px;
     animation: none !important;
     transform: none !important;
     transition: none !important;

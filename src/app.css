@@ -264,15 +264,6 @@ button, a {
   }
 }
 
-.Gallery {
-  margin-bottom: 40px; /* Adjust this value as needed */
-}
-
-.Albums {
-  margin-top: 40px; /* Adjust this value as needed */
-}
-
-
 body.ego-mode {
   background: #2B2B30;
 }
