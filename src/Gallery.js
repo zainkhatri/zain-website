@@ -24,7 +24,7 @@ import img13Full from './images/fullsize/13.webp';
 import z1Full from './images/fullsize/z1.webp';
 import z2Full from './images/fullsize/z2.webp';
 import z3Full from './images/fullsize/z3.webp';
-import z4Full from './images/fullsize/z4.webp';
+import z4FullHQ from './images/z4.JPG';
 import z5Full from './images/fullsize/z5.webp';
 import z6Full from './images/fullsize/z6.webp';
 import z9Full from './images/fullsize/z9.webp';
@@ -47,7 +47,7 @@ function Gallery() {
 
   // Array of full-size images for the modal
   const fullImages = [
-    z4Full, z3Full, img5Full, img4Full,
+    z4FullHQ, z3Full, img5Full, img4Full,
     img12Full, img13Full, z1Full, z2Full,
     z5Full, z6Full, z9Full, z10Full
   ];
