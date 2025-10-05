@@ -72,7 +72,7 @@ function Projects() {
               </p>
               {/* Rover Simulation */}
               <div className="rover-simulation">
-                <Suspense fallback={<div className="loading-spinner">Loading Rover Simulation...</div>}>
+                <Suspense fallback={null}>
                   <RoverSimulation />
                 </Suspense>
               </div>
@@ -121,7 +121,7 @@ function Projects() {
               <p className="project-description">
                 built for myself to make journaling feel less like typing into a google doc and more like keeping a real notebook. implemented features to upload photos, write freely, auto save entries, and export everything to pdf. it pulls colors from images to theme the page, and uses gpt-4 to suggest prompts when people get stuck.
               </p>
-              <Suspense fallback={<div className="loading-spinner">Loading Mania Journal...</div>}>
+              <Suspense fallback={null}>
                 <ManiaJournal />
               </Suspense>
             </div>
@@ -142,7 +142,7 @@ function Projects() {
               <p className="project-description">
                 speed based number clicking game from 1 to 50. tracks time, accuracy, and leaderboard position. built in react and deployed as a web app.
               </p>
-              <Suspense fallback={<div className="loading-spinner">Loading Eagle Eye Game...</div>}>
+              <Suspense fallback={null}>
                 <MLGame />
               </Suspense>
             </div>
@@ -163,7 +163,7 @@ function Projects() {
               <p className="project-description">
                 ai powered meal generator that converts leftover ingredients into recipes, macros, and optional workouts. built with react and openai gpt-3.5. added dietary filters, goal-based suggestions, and a lightweight frontend for fast user input/output.
               </p>
-              <Suspense fallback={<div className="loading-spinner">Loading MunchMate...</div>}>
+              <Suspense fallback={null}>
                 <MunchMate />
               </Suspense>
             </div>

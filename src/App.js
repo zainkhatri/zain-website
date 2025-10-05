@@ -143,25 +143,25 @@ function App() {
           </motion.div>
           
           <motion.div variants={itemVariants}>
-            <Suspense fallback={<div className="loading-spinner">Loading...</div>}>
+            <Suspense fallback={null}>
               <Projects />
             </Suspense>
           </motion.div>
-          
+
           <motion.div variants={itemVariants}>
-            <Suspense fallback={<div className="loading-spinner">Loading Gallery...</div>}>
+            <Suspense fallback={null}>
               <Gallery />
             </Suspense>
           </motion.div>
-          
+
           <motion.div variants={itemVariants}>
-            <Suspense fallback={<div className="loading-spinner">Loading Albums...</div>}>
+            <Suspense fallback={null}>
               <Albums onToggle={handleToggle} />
             </Suspense>
           </motion.div>
-          
+
           <motion.div variants={itemVariants}>
-            <Suspense fallback={<div className="loading-spinner">Loading Movies...</div>}>
+            <Suspense fallback={null}>
               <Movies />
             </Suspense>
           </motion.div>

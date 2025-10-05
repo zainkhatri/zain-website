@@ -22,7 +22,7 @@
 
 .content-wrapper {
   position: relative;
-  overflow: hidden;
+  overflow: visible;
   height: 0;
   transform-origin: top;
   transform: translateY(-20px) scaleY(0.95);
@@ -56,7 +56,8 @@
 .bio-content {
   display: flex;
   gap: 20px;
-  align-items: flex-start;
+  align-items: center;
+  overflow: visible;
 }
 
 .bio-text {
@@ -82,8 +83,8 @@
 
 .bio-image {
   flex-shrink: 0;
-  margin-top: 20px;
   display: none; /* Hidden by default */
+  padding-right: 10px;
 }
 
 .air-image {
@@ -91,15 +92,13 @@
   height: auto;
   border-radius: 12px;
   border: 3px solid white;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.3s ease;
   object-fit: cover;
   box-sizing: border-box;
 }
 
 .air-image:hover {
   transform: scale(1.02);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
 }
 
 /* Show image on desktop only */
