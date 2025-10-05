@@ -1,6 +1,7 @@
 import React, { useState, useCallback, lazy, Suspense, memo, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import roverImage from './rover.jpeg';
+import MeetYourMaker from './MeetYourMaker';
 import './projects.css';
 
 // Lazy load heavy project components
@@ -8,7 +9,6 @@ const MLGame = lazy(() => import('./MLGame'));
 const RoverSimulation = lazy(() => import('./RoverSimulation'));
 const MunchMate = lazy(() => import('./MunchMate'));
 const ManiaJournal = lazy(() => import('./ManiaJournal'));
-const MeetYourMaker = lazy(() => import('./MeetYourMaker'));
 
 function Projects() {
   const [areProjectsVisible, setAreProjectsVisible] = useState(false);
@@ -102,9 +102,7 @@ function Projects() {
               <p className="project-description">
                 built an ai-powered chat app that lets people talk to my digital ghost by training on my actual writing samples. features professional/casual modes, voice interaction, and a word hunt puzzle using my vocabulary; basically turned myself into a chatbot.
               </p>
-              <Suspense fallback={<div className="loading-spinner">Loading MeetYourMaker...</div>}>
-                <MeetYourMaker />
-              </Suspense>
+              <MeetYourMaker />
             </div>
           </div>
 

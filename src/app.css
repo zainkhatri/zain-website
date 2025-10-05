@@ -85,11 +85,11 @@ img {
 /* Push expandable titles up by 20px on desktop */
 @media screen and (min-width: 769px) {
   .content-section {
-    margin-top: -40px; /* Moved up by 20px more (was -20px) */
+    margin-top: -60px; /* Moved up by 20px more */
   }
 
   .content-section + .content-section {
-    margin-top: 30px; /* Changed from -30px to +30px for consistent spacing */
+    margin-top: 50px; /* Increased by 20px to maintain gap */
   }
 }
 

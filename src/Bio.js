@@ -60,20 +60,37 @@ function Bio() {
           <div className="bio-content">
             <div className="bio-text">
               <p>
-                i'm zain! i just graduated from uc san diego with a focus in cognitive science & machine learning. right now, i'm at nasa building tools that turn system diagrams into live simulations. i'm helping engineers test how things might fail before they're even built. 
+                i'm zain! i just graduated from uc san diego with a focus in cognitive science & machine learning. right now, i'm at nasa building tools that turn system diagrams into live simulations. i'm helping engineers test how things might fail before they're even built.
               </p>
               <p>
                 before that, i worked on real time brainwave classification at berkeley, and built things like autonomous rovers, agent based ai apps, and fast data systems.
               </p>
               <p>
-               outside of code, i'm usually playing basketball, learning new songs on the guitar, or playing chess<button
+               outside of code, i'm usually playing basketball, learning new songs on the guitar, or playing chess.
+              </p>
+              <button
                 onClick={toggleColorMode}
                 className="mystery-button"
-                aria-label="Toggle color mode"
+                aria-label="Toggle day/night mode"
               >
-                ?
+                <svg className="sun-moon-icon" viewBox="0 0 24 24" width="20" height="20">
+                  <mask id="moon-mask">
+                    <rect x="0" y="0" width="24" height="24" fill="white" />
+                    <circle className={`cutout ${colorMode === 'mystery' ? 'dark' : ''}`} cx="30" cy="10" r="3.5" fill="black" />
+                  </mask>
+                  <circle className="sun-circle" cx="12" cy="12" r="5" mask="url(#moon-mask)" fill="currentColor" />
+                  <g className={`sun-rays ${colorMode === 'mystery' ? 'dark' : ''}`}>
+                    <line x1="12" y1="1" x2="12" y2="3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                    <line x1="12" y1="21" x2="12" y2="23" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                    <line x1="1" y1="12" x2="3" y2="12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                    <line x1="21" y1="12" x2="23" y2="12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                  </g>
+                </svg>
               </button>
-              </p>
             </div>
             <div className="bio-image desktop-only">
               <img

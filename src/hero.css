@@ -131,7 +131,7 @@
 }
 
 .greeting-line {
-    margin-top: 10px;
+    margin-top: 5px;
     font-size: 0.875em; /* Increased from 0.7em */
     opacity: 0.8;
     min-height: 1.4em; /* Reserve space to prevent layout shift */

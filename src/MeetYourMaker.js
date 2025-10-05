@@ -13,8 +13,8 @@ const MeetYourMaker = () => {
         }
       },
       {
-        threshold: 0.5,
-        rootMargin: '-50px'
+        threshold: 0.1,
+        rootMargin: '200px'
       }
     );
 

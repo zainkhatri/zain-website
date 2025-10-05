@@ -7,7 +7,11 @@
   gap: 25px;
   width: 100%;
   box-sizing: border-box;
-  padding: 0 20px;
+  padding: 24px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .project-image {
