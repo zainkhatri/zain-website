@@ -14,23 +14,21 @@ const Hero = memo(function Hero() {
   const [isEgomaniacMode, setIsEgomaniacMode] = useState(false);
   const [isTransforming, setIsTransforming] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [showPasswordPrompt, setShowPasswordPrompt] = useState(false);
+  const [passwordInput, setPasswordInput] = useState('');
+  const [passwordError, setPasswordError] = useState(false);
 
   const handleImageClick = useCallback(() => {
     setClickCount(prev => {
       const newClickCount = prev + 1;
 
-      // Trigger transformation effect and change text after 3 clicks
+      // Show password prompt after 3 clicks
       if (newClickCount % 6 === 3) {
-        setIsTransforming(true);
-        setTimeout(() => {
-          setIsSpinning(true);
-          setTypewriterText('egomaniac');
-          setIsEgomaniacMode(true);
-        }, 400);
-        setTimeout(() => {
-          setIsTransforming(false);
-        }, 800);
+        setShowPasswordPrompt(true);
+        setPasswordInput('');
+        setPasswordError(false);
       } else if (newClickCount % 6 === 0) {
+        // Exit ego mode
         setIsTransforming(true);
         setTimeout(() => {
           setIsSpinning(false);
@@ -46,6 +44,35 @@ const Hero = memo(function Hero() {
     });
   }, []);
 
+  const handlePasswordSubmit = useCallback((e) => {
+    e.preventDefault();
+    const correctPassword = 'egomaniac';
+
+    if (passwordInput.toLowerCase() === correctPassword) {
+      setShowPasswordPrompt(false);
+      setPasswordError(false);
+      setIsTransforming(true);
+      setTimeout(() => {
+        setIsSpinning(true);
+        setTypewriterText('egomaniac');
+        setIsEgomaniacMode(true);
+      }, 400);
+      setTimeout(() => {
+        setIsTransforming(false);
+      }, 800);
+    } else {
+      setPasswordError(true);
+      setTimeout(() => setPasswordError(false), 2000);
+    }
+  }, [passwordInput]);
+
+  const handlePasswordCancel = useCallback(() => {
+    setShowPasswordPrompt(false);
+    setPasswordInput('');
+    setPasswordError(false);
+    setClickCount(prev => prev - 3); // Reset click count back
+  }, []);
+
   // Detect mobile devices
   useEffect(() => {
     const checkMobile = () => {
@@ -58,18 +85,56 @@ const Hero = memo(function Hero() {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // Add useEffect to monitor clickCount and change background
+  // Add useEffect to monitor ego mode and change background
   useEffect(() => {
-    const isEgoPhase = clickCount % 6 >= 3 && clickCount % 6 < 6;
-    if (isEgoPhase) {
+    if (isEgomaniacMode) {
       document.body.classList.add('ego-mode');
     } else {
       document.body.classList.remove('ego-mode');
     }
-  }, [clickCount]);
+  }, [isEgomaniacMode]);
 
   return (
     <header className="hero-section">
+      {showPasswordPrompt && (
+        <div className="password-overlay">
+          <motion.div
+            className="password-modal"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.3 }}
+          >
+            <h3>Enter Password</h3>
+            <p className="password-hint">Hint: What's Zain's nickname?</p>
+            <form onSubmit={handlePasswordSubmit}>
+              <div
+                className={`password-display ${passwordError ? 'error' : ''}`}
+                onClick={() => document.querySelector('.password-input-hidden').focus()}
+              >
+                {Array.from({ length: 9 }).map((_, index) => (
+                  <span key={index} className="password-char">
+                    {passwordInput[index] || '_'}
+                    {index === passwordInput.length && <span className="cursor-blink">|</span>}
+                  </span>
+                ))}
+              </div>
+              <input
+                type="text"
+                value={passwordInput}
+                onChange={(e) => setPasswordInput(e.target.value)}
+                maxLength="9"
+                className="password-input-hidden"
+                autoFocus
+              />
+              {passwordError && <p className="error-message">Incorrect password!</p>}
+              <div className="password-buttons">
+                <button type="submit" className="submit-btn">Enter</button>
+                <button type="button" onClick={handlePasswordCancel} className="cancel-btn">Cancel</button>
+              </div>
+            </form>
+          </motion.div>
+        </div>
+      )}
       <motion.div
         className="hero-content"
         initial={{ opacity: 0 }}

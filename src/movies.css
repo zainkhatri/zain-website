@@ -111,12 +111,12 @@
 
   .movies-grid {
     grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(5, 1fr); /* 2x5 layout for 10 movies */
+    grid-auto-rows: 1fr; /* Use auto rows instead of fixed */
     gap: 15px;
-    padding: 0 3px;
+    padding: 0 3px 15px 3px; /* Add bottom padding to prevent cutoff */
     width: 95%; /* Slightly wider than before */
   }
-  
+
   .movies-item {
     width: 100%;
     margin: 0;
