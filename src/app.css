@@ -276,6 +276,14 @@ body.ego-mode {
   margin-top: -30px; /* Move sections up by 30px */
 }
 
+/* Add spacing on mobile and tablets */
+@media screen and (max-width: 1100px) {
+  .navigation-sections {
+    margin-top: 0;
+    gap: 80px;
+  }
+}
+
 /* Ensure expanded sections have proper spacing */
 .navigation-sections > section {
   transition: margin 0.3s ease;

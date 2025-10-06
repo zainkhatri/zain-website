@@ -13,6 +13,7 @@ const Hero = memo(function Hero() {
   const [isSpinning, setIsSpinning] = useState(false);
   const [isEgomaniacMode, setIsEgomaniacMode] = useState(false);
   const [isTransforming, setIsTransforming] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   const handleImageClick = useCallback(() => {
     setClickCount(prev => {
@@ -43,6 +44,18 @@ const Hero = memo(function Hero() {
 
       return newClickCount;
     });
+  }, []);
+
+  // Detect mobile devices
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+
+    return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
   // Add useEffect to monitor clickCount and change background
@@ -129,13 +142,7 @@ const Hero = memo(function Hero() {
               }}
             >
               {isEgomaniacMode ? (
-                <ElectricBorder
-                  color="#ffffff"
-                  speed={1}
-                  chaos={0.1}
-                  thickness={6}
-                  style={{ borderRadius: '50%' }}
-                >
+                isMobile ? (
                   <img
                     src={egomaniacImage}
                     alt="egomaniac"
@@ -144,7 +151,24 @@ const Hero = memo(function Hero() {
                     loading="eager"
                     decoding="async"
                   />
-                </ElectricBorder>
+                ) : (
+                  <ElectricBorder
+                    color="#ffffff"
+                    speed={1}
+                    chaos={0.1}
+                    thickness={6}
+                    style={{ borderRadius: '50%' }}
+                  >
+                    <img
+                      src={egomaniacImage}
+                      alt="egomaniac"
+                      className="hero-image egomaniac-mode"
+                      onClick={handleImageClick}
+                      loading="eager"
+                      decoding="async"
+                    />
+                  </ElectricBorder>
+                )
               ) : (
                 <img
                   src={zainImage}

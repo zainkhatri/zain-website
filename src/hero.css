@@ -136,7 +136,7 @@
     justify-content: center;
     align-items: center;
     gap: 30px;
-    margin-top: 20px;
+    margin-top: 30px;
     margin-bottom: 60px;
     position: relative;
     z-index: 10;
@@ -355,8 +355,8 @@
     }
 
     .contact-section {
-        margin-top: 15px;
-        margin-bottom: 40px;
+        margin-top: 10px;
+        margin-bottom: 60px;
         display: flex;
         gap: 25px;
     }
@@ -465,8 +465,8 @@
   .contact-section {
     display: flex;
     gap: 22px;
-    margin-top: 12px;
-    margin-bottom: 40px;
+    margin-top: 10px;
+    margin-bottom: 60px;
     animation: none !important;
     transform: none !important;
     transition: none !important;

@@ -187,7 +187,9 @@ const getPathToB = () => {
 
 p.windowResized = () => {
   p.resizeCanvas(containerSize.width, containerSize.height);
-  rover.reset(waypoints[0].x * p.width, waypoints[0].y * p.height);
+  if (rover) {
+    rover.reset(waypoints[0].x * p.width, waypoints[0].y * p.height);
+  }
   updateObstacles();
 };
 
