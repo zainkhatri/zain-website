@@ -1,9 +1,10 @@
 // Hero.js
 import React, { useState, useCallback, useEffect, memo } from 'react';
 import Typewriter from 'typewriter-effect';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import zainImage from './images/zkhatri.png';
 import egomaniacImage from './images/egomaniac.jpeg';
+import ElectricBorder from './ElectricBorder';
 import './hero.css';
 
 const Hero = memo(function Hero() {
@@ -95,82 +96,114 @@ const Hero = memo(function Hero() {
           </div>
         </div>
         <div className="image-and-contact">
-          <motion.img
-            src={isEgomaniacMode ? egomaniacImage : zainImage}
-            alt={isEgomaniacMode ? "egomaniac" : "zain khatri"}
-            className={`hero-image ${isEgomaniacMode ? 'egomaniac-mode' : ''} ${isTransforming ? 'transforming' : ''}`}
-            onClick={handleImageClick}
-            loading="eager"
-            decoding="async"
-            initial={{ opacity: 0, scale: 0.9, y: 20 }}
-            animate={{
-              opacity: isTransforming ? 0.5 : 1,
-              scale: isTransforming ? 0.85 : (isSpinning ? 1.05 : 1),
-              y: 0,
-              rotate: isSpinning ? 360 : 0,
-              filter: isEgomaniacMode ? 'brightness(1) saturate(1.3) hue-rotate(10deg)' : 'brightness(1) saturate(1) hue-rotate(0deg)'
-            }}
-            transition={{
-              duration: isTransforming ? 0.5 : 0.8,
-              ease: [0.34, 1.56, 0.64, 1],
-              rotate: { duration: 0.8, ease: [0.34, 1.56, 0.64, 1] },
-              filter: { duration: 0.6, ease: [0.34, 1.56, 0.64, 1] }
-            }}
-            whileHover={{ 
-              scale: isTransforming ? 0.8 : 1.02,
-              transition: { duration: 0.3 }
-            }}
-          />
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={isEgomaniacMode ? 'egomaniac' : 'zain'}
+              className="hero-image-wrapper"
+              initial={{
+                opacity: 0,
+                scale: 0.5,
+                filter: "blur(20px) brightness(3)"
+              }}
+              animate={{
+                opacity: 1,
+                scale: 1,
+                filter: "blur(0px) brightness(1)"
+              }}
+              exit={{
+                opacity: 0,
+                scale: 1.3,
+                filter: "blur(15px) brightness(0.3)"
+              }}
+              transition={{
+                duration: 0.6,
+                ease: [0.16, 1, 0.3, 1]
+              }}
+              whileHover={{
+                scale: 1.05,
+                transition: { duration: 0.3, ease: "easeOut" }
+              }}
+              whileTap={{
+                scale: 0.95,
+                transition: { duration: 0.1 }
+              }}
+            >
+              {isEgomaniacMode ? (
+                <ElectricBorder
+                  color="#ffffff"
+                  speed={1}
+                  chaos={0.1}
+                  thickness={6}
+                  style={{ borderRadius: '50%' }}
+                >
+                  <img
+                    src={egomaniacImage}
+                    alt="egomaniac"
+                    className="hero-image egomaniac-mode"
+                    onClick={handleImageClick}
+                    loading="eager"
+                    decoding="async"
+                  />
+                </ElectricBorder>
+              ) : (
+                <img
+                  src={zainImage}
+                  alt="zain khatri"
+                  className="hero-image"
+                  onClick={handleImageClick}
+                  loading="eager"
+                  decoding="async"
+                />
+              )}
+            </motion.div>
+          </AnimatePresence>
           <motion.div 
             className="contact-section"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
           >
-            <motion.a 
-              href="mailto:zainnkhatri@gmail.com" 
+            <motion.a
+              href="mailto:zainnkhatri@gmail.com"
               aria-label="Email"
-              initial={{ opacity: 0, scale: 0, rotate: -90 }}
-              animate={{ opacity: 1, scale: 1, rotate: 0 }}
+              initial={{ opacity: 0, scale: 0 }}
+              animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.6, delay: 1.2, ease: [0.68, -0.55, 0.265, 1.55] }}
-              whileHover={{ 
-                scale: 1.2, 
-                rotate: 360,
-                transition: { duration: 0.4 }
+              whileHover={{
+                scale: 1.2,
+                transition: { duration: 0.3 }
               }}
               whileTap={{ scale: 0.8 }}
             >
               <i className="fas fa-envelope"></i>
             </motion.a>
-            <motion.a 
-              href="https://www.linkedin.com/in/zainkhatri2560" 
-              target="_blank" 
-              rel="noopener noreferrer" 
+            <motion.a
+              href="https://www.linkedin.com/in/zainkhatri2560"
+              target="_blank"
+              rel="noopener noreferrer"
               aria-label="LinkedIn"
-              initial={{ opacity: 0, scale: 0, rotate: -90 }}
-              animate={{ opacity: 1, scale: 1, rotate: 0 }}
+              initial={{ opacity: 0, scale: 0 }}
+              animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.6, delay: 1.4, ease: [0.68, -0.55, 0.265, 1.55] }}
-              whileHover={{ 
-                scale: 1.2, 
-                rotate: 360,
-                transition: { duration: 0.4 }
+              whileHover={{
+                scale: 1.2,
+                transition: { duration: 0.3 }
               }}
               whileTap={{ scale: 0.8 }}
             >
               <i className="fab fa-linkedin"></i>
             </motion.a>
-            <motion.a 
-              href="https://github.com/zainkhatri" 
-              target="_blank" 
-              rel="noopener noreferrer" 
+            <motion.a
+              href="https://github.com/zainkhatri"
+              target="_blank"
+              rel="noopener noreferrer"
               aria-label="GitHub"
-              initial={{ opacity: 0, scale: 0, rotate: -90 }}
-              animate={{ opacity: 1, scale: 1, rotate: 0 }}
+              initial={{ opacity: 0, scale: 0 }}
+              animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.6, delay: 1.6, ease: [0.68, -0.55, 0.265, 1.55] }}
-              whileHover={{ 
-                scale: 1.2, 
-                rotate: 360,
-                transition: { duration: 0.4 }
+              whileHover={{
+                scale: 1.2,
+                transition: { duration: 0.3 }
               }}
               whileTap={{ scale: 0.8 }}
             >

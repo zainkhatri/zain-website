@@ -272,7 +272,7 @@ body.ego-mode {
 .navigation-sections {
   display: flex;
   flex-direction: column;
-  gap: 75px; /* Increased gap for better separation between sections */
+  gap: 100px; /* Increased gap for better separation between sections */
   margin-top: -30px; /* Move sections up by 30px */
 }
 
