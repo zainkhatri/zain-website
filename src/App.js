@@ -138,15 +138,19 @@ function App() {
           animate="visible"
           className="navigation-sections"
         >
-          <motion.div variants={itemVariants}>
-            <Bio onToggle={handleToggle} />
-          </motion.div>
-          
-          <motion.div variants={itemVariants}>
-            <Suspense fallback={null}>
-              <Projects />
-            </Suspense>
-          </motion.div>
+          {!isEgoMode && (
+            <>
+              <motion.div variants={itemVariants}>
+                <Bio onToggle={handleToggle} />
+              </motion.div>
+
+              <motion.div variants={itemVariants}>
+                <Suspense fallback={null}>
+                  <Projects />
+                </Suspense>
+              </motion.div>
+            </>
+          )}
 
           <motion.div variants={itemVariants}>
             <Suspense fallback={null}>
@@ -154,17 +158,21 @@ function App() {
             </Suspense>
           </motion.div>
 
-          <motion.div variants={itemVariants}>
-            <Suspense fallback={null}>
-              <Albums onToggle={handleToggle} />
-            </Suspense>
-          </motion.div>
+          {!isEgoMode && (
+            <>
+              <motion.div variants={itemVariants}>
+                <Suspense fallback={null}>
+                  <Albums onToggle={handleToggle} />
+                </Suspense>
+              </motion.div>
 
-          <motion.div variants={itemVariants}>
-            <Suspense fallback={null}>
-              <Movies />
-            </Suspense>
-          </motion.div>
+              <motion.div variants={itemVariants}>
+                <Suspense fallback={null}>
+                  <Movies />
+                </Suspense>
+              </motion.div>
+            </>
+          )}
         </motion.div>
       )}
 

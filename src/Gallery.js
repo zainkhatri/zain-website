@@ -30,7 +30,22 @@ import z6Full from './images/fullsize/z6.webp';
 import z9Full from './images/fullsize/z9.webp';
 import z10Full from './images/fullsize/z10.webp';
 
+// Import ego images
+import ego1 from './images/ego-optimized/ego1.jpg';
+import ego2 from './images/ego-optimized/ego2.jpg';
+import ego3 from './images/ego-optimized/ego3.jpg';
+import ego4 from './images/ego-optimized/ego4.jpg';
+import ego5 from './images/ego-optimized/ego5.jpg';
+import ego6 from './images/ego-optimized/ego6.jpg';
+import ego7 from './images/ego-optimized/ego7.jpg';
+import ego8 from './images/ego-optimized/ego8.jpg';
+import ego9 from './images/ego-optimized/ego9.jpg';
+import ego10 from './images/ego-optimized/ego10.jpg';
+import ego11 from './images/ego-optimized/ego11.jpg';
+import ego12 from './images/ego-optimized/ego12.jpg';
+
 function Gallery() {
+  const [isEgoMode, setIsEgoMode] = useState(false);
   const [isGalleryVisible, setIsGalleryVisible] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -39,18 +54,41 @@ function Gallery() {
   const wrapperRef = useRef(null);
 
   // Array of preview images for the grid
-  const previewImages = [
+  const normalPreviewImages = [
     z4Preview, z3Preview, img5Preview, img4Preview,
     img12Preview, img13Preview, z1Preview, z2Preview,
     z5Preview, z6Preview, z9Preview, z10Preview
   ];
 
   // Array of full-size images for the modal
-  const fullImages = [
+  const normalFullImages = [
     z4FullHQ, z3Full, img5Full, img4Full,
     img12Full, img13Full, z1Full, z2Full,
     z5Full, z6Full, z9Full, z10Full
   ];
+
+  // Ego mode images
+  const egoImages = [
+    ego1, ego2, ego3, ego4, ego5, ego6,
+    ego7, ego8, ego9, ego10, ego11, ego12
+  ];
+
+  const previewImages = isEgoMode ? egoImages : normalPreviewImages;
+  const fullImages = isEgoMode ? egoImages : normalFullImages;
+
+  // Monitor ego mode from body class
+  useEffect(() => {
+    const checkEgoMode = () => {
+      setIsEgoMode(document.body.classList.contains('ego-mode'));
+    };
+
+    checkEgoMode();
+
+    const observer = new MutationObserver(checkEgoMode);
+    observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+
+    return () => observer.disconnect();
+  }, []);
 
   // Measure content height when visibility changes
   useEffect(() => {
