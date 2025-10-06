@@ -89,10 +89,10 @@ const Hero = memo(function Hero() {
           </h1>
           <h2>machine learning & software engineer</h2>
           <div className="description-line">
-            <p>i've built for nasa, uc berkeley, and more.</p>
+            <p>{isEgomaniacMode ? "prezzy state of mind, and mohsin's father." : "i've built for nasa, uc berkeley, and more."}</p>
           </div>
           <div className="greeting-line">
-            <p>peace be upon you.</p>
+            <p>{isEgomaniacMode ? "I AM THE EGO" : "peace be upon you."}</p>
           </div>
         </div>
         <div className="image-and-contact">
