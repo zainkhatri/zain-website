@@ -8,6 +8,7 @@ import { motion } from 'framer-motion';
 
 // Lazy load heavy components
 const Projects = lazy(() => import('./Projects'));
+const Playlists = lazy(() => import('./Playlists'));
 const Gallery = lazy(() => import('./Gallery'));
 const Albums = lazy(() => import('./Albums'));
 const Movies = lazy(() => import('./Movies'));
@@ -138,7 +139,13 @@ function App() {
           animate="visible"
           className="navigation-sections"
         >
-          {!isEgoMode && (
+          {isEgoMode ? (
+            <motion.div variants={itemVariants}>
+              <Suspense fallback={null}>
+                <Gallery />
+              </Suspense>
+            </motion.div>
+          ) : (
             <>
               <motion.div variants={itemVariants}>
                 <Bio onToggle={handleToggle} />
@@ -149,17 +156,13 @@ function App() {
                   <Projects />
                 </Suspense>
               </motion.div>
-            </>
-          )}
 
-          <motion.div variants={itemVariants}>
-            <Suspense fallback={null}>
-              <Gallery />
-            </Suspense>
-          </motion.div>
+              <motion.div variants={itemVariants}>
+                <Suspense fallback={null}>
+                  <Gallery />
+                </Suspense>
+              </motion.div>
 
-          {!isEgoMode && (
-            <>
               <motion.div variants={itemVariants}>
                 <Suspense fallback={null}>
                   <Albums onToggle={handleToggle} />

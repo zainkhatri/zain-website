@@ -87,6 +87,12 @@ function Albums() {
     img17, img18, img19, img20
   ];
 
+  const playlists = [
+    'https://open.spotify.com/playlist/3VKZujEzSQn2p7cen4HZz3?si=a7bf393b7cdd4f4d',
+    'https://open.spotify.com/playlist/2ANaMbTYEsfoCIWrUaBmyt?si=592b364e8f1d446a',
+    'https://open.spotify.com/playlist/23X2L6z1ycUdSqs8KzvHs5?si=b1f4eb1026ee4d6c'
+  ];
+
   return (
     <section id="albums" className={`content-section albums ${isAlbumsVisible ? 'expanded' : ''}`}>
       <h2 onClick={toggleAlbums} className="expandable-title">
@@ -100,12 +106,40 @@ function Albums() {
         }}
       >
         <div ref={contentRef} className="content">
-          <div className="albums-grid">
-            {albumImages.map((img, index) => (
-              <a key={index} href={spotifyLinks[index]} target="_blank" rel="noopener noreferrer" className="albums-item">
-                <img src={img} alt={`Album ${index + 1}`} />
-              </a>
-            ))}
+          {/* Playlists Section */}
+          <div className="playlists-section">
+            <div className="playlists-grid">
+              {playlists.map((playlistUrl, index) => {
+                const playlistId = playlistUrl.match(/playlist\/([^?]+)/)?.[1];
+                const embedUrl = `https://open.spotify.com/embed/playlist/${playlistId}`;
+
+                return (
+                  <div key={index} className="playlist-item">
+                    <iframe
+                      src={embedUrl}
+                      width="100%"
+                      height="380"
+                      frameBorder="0"
+                      allowFullScreen=""
+                      allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                      loading="lazy"
+                      title={`Spotify Playlist ${index + 1}`}
+                    ></iframe>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Albums Grid */}
+          <div className="albums-section">
+            <div className="albums-grid">
+              {albumImages.map((img, index) => (
+                <a key={index} href={spotifyLinks[index]} target="_blank" rel="noopener noreferrer" className="albums-item">
+                  <img src={img} alt={`Album ${index + 1}`} />
+                </a>
+              ))}
+            </div>
           </div>
         </div>
       </div>

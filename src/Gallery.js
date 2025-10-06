@@ -79,7 +79,8 @@ function Gallery() {
   // Monitor ego mode from body class
   useEffect(() => {
     const checkEgoMode = () => {
-      setIsEgoMode(document.body.classList.contains('ego-mode'));
+      const egoModeActive = document.body.classList.contains('ego-mode');
+      setIsEgoMode(egoModeActive);
     };
 
     checkEgoMode();
@@ -167,7 +168,7 @@ function Gallery() {
   return (
     <section id="gallery" className={`content-section gallery ${isGalleryVisible ? 'expanded' : ''}`}>
       <h2 onClick={toggleGallery} className="expandable-title">
-        photo gallery {isGalleryVisible ? '-' : '+'}
+        {isEgoMode ? 'flicks' : 'photo gallery'} {isGalleryVisible ? '-' : '+'}
       </h2>
       <div
         ref={wrapperRef}

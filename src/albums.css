@@ -5,6 +5,36 @@
   z-index: 2; /* Lower z-index since it comes before movies */
 }
 
+/* Playlists Section */
+.playlists-section {
+  margin-bottom: 40px;
+}
+
+.playlists-grid {
+  display: grid;
+  gap: 20px;
+  padding: 10px 0;
+}
+
+.playlist-item {
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border: 3px solid white;
+  box-sizing: border-box;
+}
+
+.playlist-item iframe {
+  display: block;
+  border-radius: 9px;
+}
+
+/* Albums Section */
+.albums-section {
+  margin-top: 20px;
+}
+
 /* Content wrapper and animation styles */
 .content-wrapper {
   position: relative;
@@ -66,8 +96,13 @@
   margin-top: 20px; /* Reduced from 40px */
 }  
 
-/* Large screens: 5x4 layout for 20 albums */
+/* Large screens: 5x4 layout for 20 albums and 3 columns for playlists */
 @media screen and (min-width: 1024px) {
+  .playlists-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+  }
+
   .albums-grid {
     grid-template-columns: repeat(5, 1fr);
     grid-template-rows: repeat(4, 1fr);
@@ -75,8 +110,13 @@
   }
 }
 
-/* Medium screens: 4x5 layout for 20 albums */
+/* Medium screens: 4x5 layout for 20 albums and 2 columns for playlists */
 @media screen and (min-width: 768px) and (max-width: 1023px) {
+  .playlists-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
   .albums-grid {
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(5, 1fr);
@@ -84,11 +124,21 @@
   }
 }
 
-/* Small screens: 2x10 layout for 20 albums */
+/* Small screens: 2x10 layout for 20 albums and 1 column for playlists */
 @media screen and (max-width: 767.98px) {
   .albums {
     overflow: visible; /* Allow content to flow naturally */
     margin-bottom: 0; /* Remove extra margin - spacing controlled by parent gap */
+  }
+
+  .playlists-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 0 10px;
+  }
+
+  .playlist-item iframe {
+    height: 380px;
   }
 
   .albums-grid {

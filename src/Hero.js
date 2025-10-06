@@ -165,9 +165,9 @@ const Hero = memo(function Hero() {
             }}
           />
           </h1>
-          <h2>machine learning & software engineer</h2>
+          <h2>{isEgomaniacMode ? "vprezzy, mcfoot, humblemaniac, etc" : "machine learning & software engineer"}</h2>
           <div className="description-line">
-            <p>{isEgomaniacMode ? "prezzy state of mind, and mohsin's father." : "i've built for nasa, uc berkeley, and more."}</p>
+            <p>{isEgomaniacMode ? "i built nasa, uc berkeley, and mohsin." : "i've built for nasa, uc berkeley, and more."}</p>
           </div>
           <div className="greeting-line">
             <p>{isEgomaniacMode ? "I AM THE EGO" : "peace be upon you."}</p>
@@ -246,58 +246,97 @@ const Hero = memo(function Hero() {
               )}
             </motion.div>
           </AnimatePresence>
-          <motion.div 
+          <motion.div
             className="contact-section"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
           >
-            <motion.a
-              href="mailto:zainnkhatri@gmail.com"
-              aria-label="Email"
-              initial={{ opacity: 0, scale: 0 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6, delay: 1.2, ease: [0.68, -0.55, 0.265, 1.55] }}
-              whileHover={{
-                scale: 1.2,
-                transition: { duration: 0.3 }
-              }}
-              whileTap={{ scale: 0.8 }}
-            >
-              <i className="fas fa-envelope"></i>
-            </motion.a>
-            <motion.a
-              href="https://www.linkedin.com/in/zainkhatri2560"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="LinkedIn"
-              initial={{ opacity: 0, scale: 0 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6, delay: 1.4, ease: [0.68, -0.55, 0.265, 1.55] }}
-              whileHover={{
-                scale: 1.2,
-                transition: { duration: 0.3 }
-              }}
-              whileTap={{ scale: 0.8 }}
-            >
-              <i className="fab fa-linkedin"></i>
-            </motion.a>
-            <motion.a
-              href="https://github.com/zainkhatri"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="GitHub"
-              initial={{ opacity: 0, scale: 0 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6, delay: 1.6, ease: [0.68, -0.55, 0.265, 1.55] }}
-              whileHover={{
-                scale: 1.2,
-                transition: { duration: 0.3 }
-              }}
-              whileTap={{ scale: 0.8 }}
-            >
-              <i className="fab fa-github"></i>
-            </motion.a>
+            {isEgomaniacMode ? (
+              <>
+                <motion.a
+                  href="https://www.instagram.com/zainkhatrii/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Instagram"
+                  initial={{ opacity: 0, scale: 0 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.6, delay: 1.2, ease: [0.68, -0.55, 0.265, 1.55] }}
+                  whileHover={{
+                    scale: 1.2,
+                    transition: { duration: 0.3 }
+                  }}
+                  whileTap={{ scale: 0.8 }}
+                >
+                  <i className="fab fa-instagram"></i>
+                </motion.a>
+                <motion.a
+                  href="https://open.spotify.com/user/khansarehere?si=4cf0f73fb48f44ab"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Spotify"
+                  initial={{ opacity: 0, scale: 0 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.6, delay: 1.4, ease: [0.68, -0.55, 0.265, 1.55] }}
+                  whileHover={{
+                    scale: 1.2,
+                    transition: { duration: 0.3 }
+                  }}
+                  whileTap={{ scale: 0.8 }}
+                >
+                  <i className="fab fa-spotify"></i>
+                </motion.a>
+              </>
+            ) : (
+              <>
+                <motion.a
+                  href="mailto:zainnkhatri@gmail.com"
+                  aria-label="Email"
+                  initial={{ opacity: 0, scale: 0 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.6, delay: 1.2, ease: [0.68, -0.55, 0.265, 1.55] }}
+                  whileHover={{
+                    scale: 1.2,
+                    transition: { duration: 0.3 }
+                  }}
+                  whileTap={{ scale: 0.8 }}
+                >
+                  <i className="fas fa-envelope"></i>
+                </motion.a>
+                <motion.a
+                  href="https://www.linkedin.com/in/zainkhatri2560"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="LinkedIn"
+                  initial={{ opacity: 0, scale: 0 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.6, delay: 1.4, ease: [0.68, -0.55, 0.265, 1.55] }}
+                  whileHover={{
+                    scale: 1.2,
+                    transition: { duration: 0.3 }
+                  }}
+                  whileTap={{ scale: 0.8 }}
+                >
+                  <i className="fab fa-linkedin"></i>
+                </motion.a>
+                <motion.a
+                  href="https://github.com/zainkhatri"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="GitHub"
+                  initial={{ opacity: 0, scale: 0 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.6, delay: 1.6, ease: [0.68, -0.55, 0.265, 1.55] }}
+                  whileHover={{
+                    scale: 1.2,
+                    transition: { duration: 0.3 }
+                  }}
+                  whileTap={{ scale: 0.8 }}
+                >
+                  <i className="fab fa-github"></i>
+                </motion.a>
+              </>
+            )}
           </motion.div>
         </div>
       </motion.div>
