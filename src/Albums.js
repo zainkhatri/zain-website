@@ -88,9 +88,9 @@ function Albums() {
   ];
 
   const playlists = [
-    'https://open.spotify.com/playlist/3VKZujEzSQn2p7cen4HZz3?si=a7bf393b7cdd4f4d',
-    'https://open.spotify.com/playlist/2ANaMbTYEsfoCIWrUaBmyt?si=592b364e8f1d446a',
-    'https://open.spotify.com/playlist/23X2L6z1ycUdSqs8KzvHs5?si=b1f4eb1026ee4d6c'
+    'https://open.spotify.com/playlist/3VKZujEzSQn2p7cen4HZz3?si=a7bf393b7cdd4f4d', // time
+    'https://open.spotify.com/playlist/2ANaMbTYEsfoCIWrUaBmyt?si=592b364e8f1d446a', // solo
+    'https://open.spotify.com/playlist/0ZpGQrqy5BWiQiBrZKlO9o?si=27d30a5374e8472b'  // z
   ];
 
   return (
