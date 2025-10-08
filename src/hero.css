@@ -576,6 +576,11 @@ body.ego-mode {
     50%, 100% { opacity: 0; }
 }
 
+/* Typewriter cursor blink animation */
+.typewriter-cursor {
+    animation: blink 1s infinite;
+}
+
 .password-input-hidden {
     position: absolute;
     opacity: 0;
