@@ -3,6 +3,15 @@
   margin-bottom: 0; /* Remove extra margin to match other sections */
 }
 
+/* Ego mode custom font styles for Gallery */
+body.ego-mode .gallery .expandable-title {
+    font-family: 'titles', sans-serif !important;
+    font-weight: normal !important;
+    color: #ff6b9d !important;
+    text-shadow: 2px 2px 8px rgba(255, 107, 157, 0.4) !important;
+    letter-spacing: 0.05em !important;
+}
+
 /* Content wrapper and animation styles */
 .content-wrapper {
   position: relative;

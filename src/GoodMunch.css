@@ -1,0 +1,330 @@
+/* GoodMunch Section Styles */
+.good-munch {
+  margin: 2rem 0;
+  padding: 0 2rem;
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* GoodMunch expandable title styling - only for ego mode */
+body.ego-mode .good-munch .expandable-title {
+  font-family: 'zain', sans-serif !important;
+  font-size: 2.6em !important;
+  font-weight: 700 !important;
+  color: #ffffff !important;
+  cursor: pointer;
+  margin-bottom: 1rem;
+  transition: all 0.3s ease;
+  text-align: center;
+  letter-spacing: 0.05em;
+}
+
+body.ego-mode .good-munch .expandable-title:hover {
+  font-size: 2.9em !important;
+  color: #ff6b6b !important;
+  transform: scale(1.02);
+}
+
+.good-munch .content-wrapper {
+  overflow: hidden;
+  transition: height 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  height: 0;
+}
+
+.good-munch.expanded .content-wrapper {
+  height: var(--content-height);
+}
+
+.good-munch .content {
+  padding: 2rem 0;
+}
+
+.good-munch-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+
+/* Restaurants List */
+.restaurants-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.restaurant-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.restaurant-card:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 107, 107, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(255, 107, 107, 0.1);
+}
+
+.restaurant-card.selected {
+  background: rgba(255, 107, 107, 0.1);
+  border-color: #ff6b6b;
+  box-shadow: 0 8px 32px rgba(255, 107, 107, 0.2);
+}
+
+.restaurant-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.restaurant-name {
+  font-family: 'zain', sans-serif;
+  font-size: 1.4rem;
+  font-weight: 400;
+  color: #ffffff;
+  margin: 0;
+  letter-spacing: 0.02em;
+}
+
+.restaurant-rating {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.3rem;
+}
+
+.rating-number {
+  font-family: 'zain', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #ff6b6b;
+}
+
+.stars {
+  display: flex;
+  gap: 1px;
+}
+
+.star {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.3);
+  transition: color 0.2s ease;
+}
+
+.star.filled {
+  color: #ff6b6b;
+}
+
+.restaurant-description {
+  font-family: 'Arial', sans-serif;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 1rem;
+}
+
+.restaurant-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.detail-item {
+  font-family: 'Arial', sans-serif;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.4;
+}
+
+.detail-item strong {
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 600;
+}
+
+/* Map Container */
+.map-container {
+  position: relative;
+  height: 500px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.map {
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+}
+
+.selected-restaurant-info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+  padding: 2rem 1.5rem 1.5rem;
+  color: white;
+}
+
+.selected-restaurant-info h4 {
+  font-family: 'zain', sans-serif;
+  font-size: 1.3rem;
+  font-weight: 400;
+  margin: 0 0 0.5rem 0;
+  color: #ffffff;
+}
+
+.selected-restaurant-info p {
+  font-family: 'Arial', sans-serif;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0 0 1rem 0;
+}
+
+.rating-display {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.rating-display .rating-number {
+  font-family: 'zain', sans-serif;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #ff6b6b;
+}
+
+.rating-display .stars {
+  display: flex;
+  gap: 1px;
+}
+
+/* Ego mode custom font styles for GoodMunch */
+body.ego-mode .good-munch .expandable-title {
+    font-family: 'titles', sans-serif !important;
+    font-weight: normal !important;
+    color: #ff6b9d !important;
+    text-shadow: 2px 2px 8px rgba(255, 107, 157, 0.4) !important;
+    letter-spacing: 0.05em !important;
+}
+
+body.ego-mode .good-munch .restaurant-name {
+    font-family: 'titles', sans-serif !important;
+    font-weight: normal !important;
+    color: #ffb3ba !important;
+    text-shadow: 1px 1px 4px rgba(255, 179, 186, 0.3) !important;
+}
+
+body.ego-mode .good-munch .restaurant-description {
+    font-family: 'zain', sans-serif !important;
+    font-weight: normal !important;
+    color: #ffdfba !important;
+    text-shadow: 1px 1px 4px rgba(255, 223, 186, 0.3) !important;
+}
+
+body.ego-mode .good-munch .detail-item {
+    font-family: 'zain', sans-serif !important;
+    font-weight: normal !important;
+    color: #baffc9 !important;
+    text-shadow: 1px 1px 4px rgba(186, 255, 201, 0.3) !important;
+}
+
+body.ego-mode .good-munch .rating-number {
+    font-family: 'titles', sans-serif !important;
+    font-weight: normal !important;
+    color: #ff6b9d !important;
+    text-shadow: 1px 1px 4px rgba(255, 107, 157, 0.4) !important;
+}
+
+body.ego-mode .good-munch .selected-restaurant-info h4 {
+    font-family: 'titles', sans-serif !important;
+    font-weight: normal !important;
+    color: #ffb3ba !important;
+    text-shadow: 1px 1px 4px rgba(255, 179, 186, 0.3) !important;
+}
+
+body.ego-mode .good-munch .selected-restaurant-info p {
+    font-family: 'zain', sans-serif !important;
+    font-weight: normal !important;
+    color: #ffdfba !important;
+    text-shadow: 1px 1px 4px rgba(255, 223, 186, 0.3) !important;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .good-munch {
+    padding: 0 1rem;
+  }
+  
+  body.ego-mode .good-munch .expandable-title {
+    font-size: 3.2vw !important;
+  }
+  
+  body.ego-mode .good-munch .expandable-title:hover {
+    font-size: 3.2vw !important;
+    transform: none;
+  }
+  
+  .good-munch-content {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  
+  .map-container {
+    height: 300px;
+  }
+  
+  .restaurant-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  
+  .restaurant-rating {
+    align-items: flex-start;
+  }
+  
+  .restaurant-card {
+    padding: 1rem;
+  }
+  
+  .restaurant-name {
+    font-size: 1.2rem;
+  }
+  
+  .selected-restaurant-info {
+    padding: 1.5rem 1rem 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  body.ego-mode .good-munch .expandable-title {
+    font-size: 8vw !important;
+  }
+  
+  body.ego-mode .good-munch .expandable-title:hover {
+    font-size: 10vw !important;
+    transform: none;
+  }
+  
+  .restaurant-name {
+    font-size: 1.1rem;
+  }
+  
+  .restaurant-description {
+    font-size: 0.9rem;
+  }
+  
+  .detail-item {
+    font-size: 0.85rem;
+  }
+}

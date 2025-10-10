@@ -5,6 +5,24 @@
   z-index: 3; /* Higher z-index since it comes after albums */
 }
 
+/* Movies expandable title styling - only for ego mode */
+body.ego-mode .movies .expandable-title {
+  font-size: 2.6em !important;
+  font-weight: 700 !important;
+  color: #ffffff !important;
+  cursor: pointer;
+  margin-bottom: 1rem;
+  transition: all 0.3s ease;
+  text-align: center;
+  letter-spacing: 0.05em;
+}
+
+body.ego-mode .movies .expandable-title:hover {
+  font-size: 2.9em !important;
+  color: #ff6b6b !important;
+  transform: scale(1.02);
+}
+
 /* Content wrapper and animation styles */
 .content-wrapper {
   position: relative;
@@ -99,6 +117,29 @@
     width: 100%;
     max-width: 1400px; /* Prevent too wide layout on very large screens */
     margin: 0 auto;
+  }
+}
+
+/* Mobile responsive styling for expandable title - only for ego mode */
+@media screen and (max-width: 768px) {
+  body.ego-mode .movies .expandable-title {
+    font-size: 3.2vw !important;
+  }
+  
+  body.ego-mode .movies .expandable-title:hover {
+    font-size: 3.2vw !important;
+    transform: none;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  body.ego-mode .movies .expandable-title {
+    font-size: 8vw !important;
+  }
+  
+  body.ego-mode .movies .expandable-title:hover {
+    font-size: 10vw !important;
+    transform: none;
   }
 }
 

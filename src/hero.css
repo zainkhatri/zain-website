@@ -120,12 +120,15 @@
 .greeting-line {
     margin-top: 5px;
     font-size: 0.875em; /* Increased from 0.7em */
-    opacity: 0.8;
     min-height: 1.4em; /* Reserve space to prevent layout shift */
     color: #ffffff; /* Changed back to white */
     text-shadow: none; /* Remove the cyan glow */
     font-weight: 500; /* Slightly bolder for emphasis */
     text-align: left;
+}
+
+.greeting-line p {
+    opacity: 0.8;
 }
 
 .greeting-typewriter {
@@ -493,6 +496,98 @@ body.ego-mode {
     background-size: cover;
 }
 
+/* Ego mode custom font styles */
+body.ego-mode .typewriter-text,
+body.ego-mode .typewriter-wrapper,
+body.ego-mode .typewriter-wrapper *,
+body.ego-mode h1,
+body.ego-mode .Typewriter,
+body.ego-mode .Typewriter * {
+    font-family: 'titles', sans-serif !important;
+    font-weight: normal !important;
+    letter-spacing: 0.05em !important;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3) !important;
+}
+
+body.ego-mode .typewriter-text {
+    font-family: 'titles', sans-serif !important;
+    font-size: 2.5em !important;
+    color: #ff3333 !important;
+    text-shadow: 2px 2px 8px rgba(255, 50, 50, 0.6) !important;
+    font-weight: normal !important;
+}
+
+body.ego-mode h2 {
+    font-family: 'titles', sans-serif !important;
+    font-size: 1.3em !important;
+    color: #ffffff !important;
+    text-shadow: 1px 1px 4px rgba(255, 255, 255, 0.3) !important;
+    font-weight: normal !important;
+}
+
+body.ego-mode .description-line p {
+    font-family: 'zain', sans-serif !important;
+    font-size: 1.1em !important;
+    color: #ffffff !important;
+    text-shadow: 1px 1px 4px rgba(255, 255, 255, 0.3) !important;
+    font-weight: normal !important;
+}
+
+body.ego-mode .greeting-line,
+body.ego-mode .greeting-line p {
+    font-family: 'titles', sans-serif !important;
+    font-size: 1.2em !important;
+    color: #ffffff !important;
+    opacity: 1 !important;
+    text-shadow: 1px 1px 4px rgba(255, 255, 255, 0.3) !important;
+    font-weight: normal !important;
+}
+
+/* Mobile ego mode handwriting adjustments */
+@media screen and (max-width: 768px) {
+    body.ego-mode .typewriter-text {
+        font-size: 2.2em !important;
+        color: #ff3333 !important;
+    }
+    
+    body.ego-mode h2 {
+        font-size: 1.2em !important;
+    }
+    
+    body.ego-mode .description-line p {
+        font-size: 1em !important;
+    }
+    
+    body.ego-mode .greeting-line,
+    body.ego-mode .greeting-line p {
+        font-size: 1.1em !important;
+        color: #ffffff !important;
+        opacity: 1 !important;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    body.ego-mode .typewriter-text {
+        font-size: 2em !important;
+        color: #ff3333 !important;
+    }
+    
+    body.ego-mode h2 {
+        font-size: 1.1em !important;
+    }
+    
+    body.ego-mode .description-line p {
+        font-size: 0.95em !important;
+    }
+    
+    body.ego-mode .greeting-line,
+    body.ego-mode .greeting-line p {
+        font-size: 1em !important;
+        color: #ffffff !important;
+        opacity: 1 !important;
+    }
+}
+
 /* Password prompt styles */
 .password-overlay {
     position: fixed;
@@ -506,6 +601,10 @@ body.ego-mode {
     justify-content: center;
     align-items: center;
     z-index: 9999;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
 }
 
 .password-modal {
@@ -517,18 +616,30 @@ body.ego-mode {
     width: 90%;
     text-align: center;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
 }
 
 .password-modal h3 {
     margin: 0 0 10px 0;
     font-size: 1.8em;
     color: #ffffff;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
 }
 
 .password-hint {
     margin: 0 0 25px 0;
     font-size: 1em;
     color: rgba(255, 255, 255, 0.7);
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
 }
 
 .password-display {
@@ -651,4 +762,16 @@ body.ego-mode {
         font-size: 1em;
         padding: 12px;
     }
+}
+
+/* Ego Mode Transition Veil */
+.ego-transition-veil {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #000000;
+    z-index: 99999;
+    will-change: opacity;
 }

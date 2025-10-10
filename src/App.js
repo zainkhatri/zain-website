@@ -12,6 +12,8 @@ const Playlists = lazy(() => import('./Playlists'));
 const Gallery = lazy(() => import('./Gallery'));
 const Albums = lazy(() => import('./Albums'));
 const Movies = lazy(() => import('./Movies'));
+const GoodMunch = lazy(() => import('./GoodMunch'));
+const Egomaniac = lazy(() => import('./Egomaniac'));
 
 function App() {
   const [isContentExpanded, setIsContentExpanded] = useState(false);
@@ -142,7 +144,7 @@ function App() {
           {isEgoMode ? (
             <motion.div variants={itemVariants}>
               <Suspense fallback={null}>
-                <Gallery />
+                <Egomaniac />
               </Suspense>
             </motion.div>
           ) : (

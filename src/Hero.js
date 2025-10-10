@@ -17,6 +17,7 @@ const Hero = memo(function Hero() {
   const [showPasswordPrompt, setShowPasswordPrompt] = useState(false);
   const [passwordInput, setPasswordInput] = useState('');
   const [passwordError, setPasswordError] = useState(false);
+  const [showTransition, setShowTransition] = useState(false);
 
   const handleImageClick = useCallback(() => {
     setClickCount(prev => {
@@ -44,33 +45,73 @@ const Hero = memo(function Hero() {
     });
   }, []);
 
-  const handlePasswordSubmit = useCallback((e) => {
-    e.preventDefault();
+  const checkPassword = useCallback(() => {
     const correctPassword = 'egomaniac';
 
     if (passwordInput.toLowerCase() === correctPassword) {
       setShowPasswordPrompt(false);
       setPasswordError(false);
-      setIsTransforming(true);
+      setShowTransition(true);
+
       setTimeout(() => {
+        setIsTransforming(true);
         setIsSpinning(true);
         setTypewriterText('egomaniac');
         setIsEgomaniacMode(true);
-      }, 400);
+      }, 200);
+
       setTimeout(() => {
         setIsTransforming(false);
-      }, 800);
+        setShowTransition(false);
+      }, 600);
     } else {
       setPasswordError(true);
       setTimeout(() => setPasswordError(false), 2000);
     }
   }, [passwordInput]);
 
+  const handlePasswordSubmit = useCallback((e) => {
+    e.preventDefault();
+    checkPassword();
+  }, [checkPassword]);
+
   const handlePasswordCancel = useCallback(() => {
     setShowPasswordPrompt(false);
     setPasswordInput('');
     setPasswordError(false);
     setClickCount(prev => prev - 3); // Reset click count back
+  }, []);
+
+  const handlePasswordInputChange = useCallback((e) => {
+    const newValue = e.target.value;
+    setPasswordInput(newValue);
+    
+    // Auto-check password when 9 characters are typed
+    if (newValue.length === 9) {
+      setTimeout(() => {
+        const correctPassword = 'egomaniac';
+        if (newValue.toLowerCase() === correctPassword) {
+          setShowPasswordPrompt(false);
+          setPasswordError(false);
+          setShowTransition(true);
+
+          setTimeout(() => {
+            setIsTransforming(true);
+            setIsSpinning(true);
+            setTypewriterText('egomaniac');
+            setIsEgomaniacMode(true);
+          }, 200);
+
+          setTimeout(() => {
+            setIsTransforming(false);
+            setShowTransition(false);
+          }, 600);
+        } else {
+          setPasswordError(true);
+          setTimeout(() => setPasswordError(false), 2000);
+        }
+      }, 100); // Small delay to ensure state is updated
+    }
   }, []);
 
   // Detect mobile devices
@@ -94,8 +135,34 @@ const Hero = memo(function Hero() {
     }
   }, [isEgomaniacMode]);
 
+  // Auto-focus password input when prompt appears
+  useEffect(() => {
+    if (showPasswordPrompt) {
+      setTimeout(() => {
+        const input = document.querySelector('.password-input-hidden');
+        if (input) {
+          input.focus();
+        }
+      }, 100);
+    }
+  }, [showPasswordPrompt]);
+
   return (
     <header className="hero-section">
+      <AnimatePresence>
+        {showTransition && (
+          <motion.div
+            className="ego-transition-veil"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{
+              duration: 0.3,
+              ease: [0.2, 0, 0.2, 1]
+            }}
+          />
+        )}
+      </AnimatePresence>
       {showPasswordPrompt && (
         <div className="password-overlay">
           <motion.div
@@ -121,14 +188,13 @@ const Hero = memo(function Hero() {
               <input
                 type="text"
                 value={passwordInput}
-                onChange={(e) => setPasswordInput(e.target.value)}
+                onChange={handlePasswordInputChange}
                 maxLength="9"
                 className="password-input-hidden"
                 autoFocus
               />
               {passwordError && <p className="error-message">Incorrect password!</p>}
               <div className="password-buttons">
-                <button type="submit" className="submit-btn">Enter</button>
                 <button type="button" onClick={handlePasswordCancel} className="cancel-btn">Cancel</button>
               </div>
             </form>

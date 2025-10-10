@@ -1,3 +1,18 @@
+/* Custom Fonts for Ego Mode */
+@font-face {
+  font-family: 'zain';
+  src: url('/fonts/zain.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'titles';
+  src: url('/fonts/titles.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 /* Existing Global Styles */
 @import url('https://fonts.googleapis.com/css2?family=Fahkwang:wght@300;400;500;600;700&display=swap');
 
@@ -266,6 +281,18 @@ button, a {
 
 body.ego-mode {
   background: #2B2B30;
+  color: #ffffff !important;
+}
+
+/* Make all text white in ego mode */
+body.ego-mode * {
+  color: #ffffff !important;
+}
+
+/* Ego mode footer using zain font */
+body.ego-mode .footer p {
+  font-family: 'zain', sans-serif !important;
+  color: #ffffff !important;
 }
 
 /* Navigation sections container */
