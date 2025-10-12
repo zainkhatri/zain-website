@@ -8,11 +8,9 @@ import { motion } from 'framer-motion';
 
 // Lazy load heavy components
 const Projects = lazy(() => import('./Projects'));
-const Playlists = lazy(() => import('./Playlists'));
 const Gallery = lazy(() => import('./Gallery'));
 const Albums = lazy(() => import('./Albums'));
 const Movies = lazy(() => import('./Movies'));
-const GoodMunch = lazy(() => import('./GoodMunch'));
 const Egomaniac = lazy(() => import('./Egomaniac'));
 
 function App() {
