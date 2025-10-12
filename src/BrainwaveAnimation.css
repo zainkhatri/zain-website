@@ -306,40 +306,129 @@
 @media screen and (max-width: 768px) {
   .demo-container {
     flex-direction: column;
+    gap: 12px;
+  }
+
+  .demo-section {
+    padding: 15px;
+  }
+
+  .section-title {
+    font-size: 14px;
+  }
+
+  .section-subtitle {
+    font-size: 11px;
   }
 
   .brainwave-canvas {
-    height: 300px;
+    height: 200px;
   }
 
   .balance-grid {
-    max-width: 280px;
+    max-width: 100%;
+    aspect-ratio: 1;
   }
 
   .lean-indicator {
-    font-size: 16px;
-    padding: 16px 32px;
+    font-size: 14px;
+    padding: 12px 24px;
+    max-width: 100%;
+  }
+
+  .lean-display {
+    margin-top: 12px;
   }
 
   .wave-legend {
-    font-size: 10px;
-    gap: 10px;
+    font-size: 9px;
+    gap: 8px;
+    padding: 10px 0;
+    margin-top: 8px;
   }
 
   .legend-color {
-    width: 16px;
+    width: 14px;
     height: 2px;
+  }
+
+  .axis-label {
+    font-size: 8px;
+  }
+
+  .balance-label {
+    font-size: 8px;
   }
 }
 
 @media screen and (max-width: 480px) {
   .brainwave-container {
-    height: 350px;
+    gap: 10px;
+  }
+
+  .demo-section {
+    padding: 12px;
+  }
+
+  .section-header {
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+  }
+
+  .section-title {
+    font-size: 12px;
+  }
+
+  .section-subtitle {
+    font-size: 10px;
+  }
+
+  .brainwave-canvas {
+    height: 150px;
+  }
+
+  .balance-grid {
+    max-width: 100%;
+  }
+
+  .balance-dot {
+    width: 20px;
+    height: 20px;
+  }
+
+  .lean-indicator {
+    font-size: 12px;
+    padding: 10px 20px;
+    letter-spacing: 1px;
+  }
+
+  .lean-display {
+    margin-top: 10px;
   }
 
   .wave-legend {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 6px;
+    font-size: 8px;
+    padding: 8px 0;
+  }
+
+  .legend-color {
+    width: 12px;
+    height: 2px;
+  }
+
+  .axis-label {
+    font-size: 7px;
+  }
+
+  .balance-label {
+    font-size: 7px;
+  }
+
+  .balance-center-zone {
+    width: 40%;
+    height: 40%;
   }
 }
