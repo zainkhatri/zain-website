@@ -320,24 +320,40 @@ const isBBlocked = () => {
 };
 
 p.draw = () => {
-  p.background(240);
+  // Modern gradient background
+  let bgGradient = p.drawingContext.createLinearGradient(0, 0, p.width, p.height);
+  bgGradient.addColorStop(0, '#1a1a2e');
+  bgGradient.addColorStop(1, '#16213e');
+  p.drawingContext.fillStyle = bgGradient;
+  p.drawingContext.fillRect(0, 0, p.width, p.height);
 
-  // Draw grid
-  p.stroke(200);
+  // Draw subtle grid
+  p.stroke(255, 255, 255, 20);
+  p.strokeWeight(0.5);
   for (let i = 0; i < p.width; i += 50) {
     p.line(i, 0, i, p.height);
   }
   for (let i = 0; i < p.height; i += 50) {
     p.line(0, i, p.width, i);
   }
+  p.noStroke();
 
-  // Draw waypoints
+  // Draw waypoints with glow
   for (let wp of waypoints) {
-    p.fill(255, 255, 0); // Yellow color
-    p.ellipse(wp.x * p.width, wp.y * p.height, 30, 30);
-    p.fill(0);
+    // Outer glow
+    p.fill(255, 215, 0, 100);
+    p.noStroke();
+    p.ellipse(wp.x * p.width, wp.y * p.height, 45, 45);
+
+    // Main waypoint
+    p.fill(255, 215, 0);
+    p.ellipse(wp.x * p.width, wp.y * p.height, 35, 35);
+
+    // Label
+    p.fill(30, 30, 50);
     p.textFont('Fahkwang');
-    p.textSize(24);
+    p.textSize(20);
+    p.textStyle(p.BOLD);
     p.textAlign(p.CENTER, p.CENTER);
     p.text(wp.label, wp.x * p.width, wp.y * p.height);
   }
@@ -347,7 +363,18 @@ p.draw = () => {
     // Skip if this obstacle was destroyed in the Easter egg
     if (easterEggTriggered && destroyedObstacles.includes(index)) return;
 
-    p.fill(255, 100, 100);
+    // Obstacle shadow/glow
+    p.fill(80, 120, 255, 100);
+    p.noStroke();
+    p.ellipse(
+      obstacle.x * p.width,
+      obstacle.y * p.height,
+      obstacle.size + 10,
+      obstacle.size + 10
+    );
+
+    // Main obstacle
+    p.fill(100, 150, 255);
     p.ellipse(
       obstacle.x * p.width,
       obstacle.y * p.height,
@@ -405,57 +432,58 @@ p.draw = () => {
     );
 
                 // Check for B being truly unreachable or if rover is trapped
-    if (currentWaypointIndex === 1 && rover.obstacleStuckCounter > 40) { // Reduced time to check
+    if (currentWaypointIndex === 1 && rover.obstacleStuckCounter > 60) {
       // Only do the expensive path check when the rover has been stuck for a while
       console.log("Checking if rover can get closer to B...");
-      
-      // Get the closest reachable point to B
-      const closestPoint = getPathToB();
 
-      // Safety check - if pathfinding failed, trigger easter egg
-      if (!closestPoint || closestPoint.x === undefined || closestPoint.y === undefined) {
-        console.log("Pathfinding failed - triggering easter egg");
+      try {
+        // Get the closest reachable point to B
+        const closestPoint = getPathToB();
+
+        // Safety check - if pathfinding failed, trigger easter egg
+        if (!closestPoint || closestPoint.x === undefined || closestPoint.y === undefined) {
+          console.log("Pathfinding failed - triggering easter egg");
+          easterEggTriggered = true;
+          easterEggPhase = 1;
+          isMoving = false;
+          rover.obstacleStuckCounter = 0;
+          return;
+        }
+
+        // If we're already at or very close to the closest possible point to B
+        const distToClosestPossible = p.dist(rover.x, rover.y, closestPoint.x, closestPoint.y);
+        console.log(`Distance to closest possible point: ${distToClosestPossible}`);
+
+        if (distToClosestPossible < rover.size * 1.5 || rover.obstacleStuckCounter > 120) {
+          console.log("Rover is as close to B as possible or has been stuck too long!");
+          rover.obstacleStuckCounter = 0;
+
+          // Trigger the Easter egg - we've tried to get as close as possible
+          console.log("EASTER EGG TRIGGERED - AT CLOSEST POSSIBLE POINT TO B!");
+          easterEggTriggered = true;
+          easterEggPhase = 1; // Start growing cannon
+          isMoving = false; // Pause normal movement during Easter egg
+        } else {
+          // We can actually get closer to B - reset stuck counter and try to move there
+          rover.obstacleStuckCounter = Math.floor(rover.obstacleStuckCounter / 2);
+
+          // Help the rover by giving it a small "nudge" toward the closest point
+          const angleToClosest = p.atan2(closestPoint.y - rover.y, closestPoint.x - rover.x);
+          rover.angle = angleToClosest;
+          rover.x += p.cos(rover.angle) * 8;
+          rover.y += p.sin(rover.angle) * 8;
+
+          // Constrain to canvas bounds
+          rover.x = p.constrain(rover.x, rover.size, p.width - rover.size);
+          rover.y = p.constrain(rover.y, rover.size, p.height - rover.size);
+        }
+      } catch (e) {
+        console.error("Pathfinding error:", e);
+        // On error, trigger easter egg to prevent crash
         easterEggTriggered = true;
         easterEggPhase = 1;
         isMoving = false;
         rover.obstacleStuckCounter = 0;
-        return;
-      }
-
-      // If we're already at or very close to the closest possible point to B
-      const distToClosestPossible = p.dist(rover.x, rover.y, closestPoint.x, closestPoint.y);
-      console.log(`Distance to closest possible point: ${distToClosestPossible}`);
-      
-      if (distToClosestPossible < rover.size || rover.obstacleStuckCounter > 100) {
-        console.log("Rover is as close to B as possible or has been stuck too long!");
-        rover.obstacleStuckCounter = 0;
-        
-        // Trigger the Easter egg - we've tried to get as close as possible
-        console.log("EASTER EGG TRIGGERED - AT CLOSEST POSSIBLE POINT TO B!");
-        easterEggTriggered = true;
-        easterEggPhase = 1; // Start growing cannon
-        isMoving = false; // Pause normal movement during Easter egg
-      } else {
-        // We can actually get closer to B - reset stuck counter and try to move there
-        rover.obstacleStuckCounter = 0;
-        
-        // Update the waypoint to be this closest reachable point instead of actual B
-        // This will let the rover approach B as closely as possible
-        const tempWaypoint = {
-          x: closestPoint.x / p.width,
-          y: closestPoint.y / p.height,
-          label: 'B'
-        };
-
-        // Temporarily replace waypoint B with this closest reachable point
-        const originalB = waypoints[1];
-        waypoints[1] = tempWaypoint;
-        
-        // Help the rover by giving it a small "nudge" toward the closest point
-        const angleToClosest = p.atan2(closestPoint.y - rover.y, closestPoint.x - rover.x);
-        rover.angle = angleToClosest;
-        rover.x += p.cos(rover.angle) * 5;
-        rover.y += p.sin(rover.angle) * 5;
       }
     }
 
@@ -875,46 +903,68 @@ class Rover {
     this.y = y;
     this.speed = 3;
     this.angle = 0;
-    this.size = 20;
-    this.sensorRange = 100;
+    this.size = 25;
+    this.sensorRange = 120;
     this.numSensors = 3; // Left, Center, Right
     this.sensorAngles = [-p.radians(45), 0, p.radians(45)];
     this.maxAngularVelocity = p.radians(3);
-    this.dangerZone = 30;
+    this.dangerZone = 40;
     this.obstacleStuckCounter = 0; // Track how long the rover is stuck
-    this.maxStuckThreshold = 50; // Threshold for being stuck
+    this.maxStuckThreshold = 45; // Threshold for being stuck
     this.pathToFollow = []; // Path to follow from pathfinding
     this.currentPathIndex = 0; // Current index in the path
+
+    // Learning memory - track positions that led to being stuck
+    this.stuckPositions = []; // Array of {x, y, timestamp}
+    this.lastPosition = {x: x, y: y};
+    this.positionHistory = []; // Track recent positions
+    this.loopDetectionWindow = 60; // Check last 60 frames for loops
+    this.minMovementThreshold = 5; // Minimum distance to consider as movement
   }
 
   show() {
     p.push();
     p.translate(this.x, this.y);
     p.rotate(this.angle);
-    p.fill(100, 100, 255);
-    p.rectMode(p.CENTER);
-    p.rect(0, 0, this.size * 1.5, this.size);
 
-    // Draw sensors
-    p.stroke(0, 0, 255, 100);
+    // Draw rover shadow/glow
+    p.fill(255, 80, 100, 120);
+    p.noStroke();
+    p.rectMode(p.CENTER);
+    p.rect(0, 0, this.size * 1.6, this.size * 1.1, 3);
+
+    // Draw main body
+    p.fill(255, 60, 80);
+    p.rect(0, 0, this.size * 1.5, this.size, 3);
+
+    // Draw sensors (subtle)
+    p.stroke(255, 120, 140, 80);
+    p.strokeWeight(1);
     for (let sensorAngle of this.sensorAngles) {
       p.line(
         0,
         0,
-        this.sensorRange * p.cos(sensorAngle),
-        this.sensorRange * p.sin(sensorAngle)
+        this.sensorRange * 0.6 * p.cos(sensorAngle),
+        this.sensorRange * 0.6 * p.sin(sensorAngle)
       );
     }
     p.noStroke();
 
-    p.fill(255);
+    // Draw wheels
+    p.fill(40, 40, 60);
+    p.rectMode(p.CENTER);
+    p.rect(-this.size * 0.3, -this.size * 0.55, this.size * 0.6, this.size * 0.25, 2);
+    p.rect(-this.size * 0.3, this.size * 0.55, this.size * 0.6, this.size * 0.25, 2);
+
+    // Draw front indicator (brighter)
+    p.fill(255, 200, 210);
     p.triangle(
       this.size * 0.75,
       0,
       this.size * 0.5,
-      -this.size * 0.25,
+      -this.size * 0.3,
       this.size * 0.5,
-      this.size * 0.25
+      this.size * 0.3
     );
     p.pop();
     
@@ -950,22 +1000,23 @@ class Rover {
     p.translate(this.x, this.y);
     p.rotate(this.angle);
 
-    // Draw the rover body
-    p.fill(100, 100, 255);
+    // Draw the rover body (red)
+    p.fill(255, 60, 80);
     p.rectMode(p.CENTER);
-    p.rect(0, 0, this.size * 1.5, this.size);
+    p.rect(0, 0, this.size * 1.5, this.size, 3);
 
     // Draw the cannon
     p.fill(50, 50, 50);
     p.rectMode(p.CENTER);
-    p.rect(this.size * 0.75, 0, cannonSize, this.size / 3);
+    p.rect(this.size * 0.75, 0, cannonSize, this.size / 3, 2);
 
     // Draw cannon tip
-    p.fill(200, 0, 0);
-    p.ellipse(this.size * 0.75 + cannonSize / 2, 0, 8, 8);
+    p.fill(255, 220, 0);
+    p.ellipse(this.size * 0.75 + cannonSize / 2, 0, 10, 10);
 
     // Draw sensors (dimmer during easter egg)
-    p.stroke(0, 0, 255, 50);
+    p.stroke(255, 120, 140, 50);
+    p.strokeWeight(1);
     for (let sensorAngle of this.sensorAngles) {
       p.line(
         0,
@@ -975,22 +1026,79 @@ class Rover {
       );
     }
     p.noStroke();
-    
+
+    // Draw wheels
+    p.fill(40, 40, 60);
+    p.rectMode(p.CENTER);
+    p.rect(-this.size * 0.3, -this.size * 0.55, this.size * 0.6, this.size * 0.25, 2);
+    p.rect(-this.size * 0.3, this.size * 0.55, this.size * 0.6, this.size * 0.25, 2);
+
     // Draw rover front indicator
-    p.fill(255);
+    p.fill(255, 200, 210);
     p.triangle(
       this.size * 0.5,
       0,
       this.size * 0.25,
-      -this.size * 0.25,
+      -this.size * 0.3,
       this.size * 0.25,
-      this.size * 0.25
+      this.size * 0.3
     );
-    
+
     p.pop();
   }
 
   update(target, obstacles) {
+    // Track position history for loop detection
+    this.positionHistory.push({x: this.x, y: this.y, angle: this.angle});
+    if (this.positionHistory.length > this.loopDetectionWindow) {
+      this.positionHistory.shift();
+    }
+
+    // Detect if rover is in a loop (visiting same positions repeatedly)
+    if (this.positionHistory.length >= 40) {
+      const recentPos = this.positionHistory.slice(-8); // Last 8 positions
+      const olderPos = this.positionHistory.slice(5, 25); // Earlier positions (not too old)
+
+      let loopCount = 0;
+      for (let recent of recentPos) {
+        for (let older of olderPos) {
+          const dist = p.dist(recent.x, recent.y, older.x, older.y);
+          if (dist < this.size * 1.5) {
+            loopCount++;
+          }
+        }
+      }
+
+      // If we've detected multiple loop instances, mark this area as problematic
+      if (loopCount > 5) {
+        console.log("Loop detected! Marking area as stuck");
+
+        // Check if we already have a stuck position nearby (don't duplicate)
+        let alreadyMarked = false;
+        for (let stuck of this.stuckPositions) {
+          if (p.dist(this.x, this.y, stuck.x, stuck.y) < this.size * 3) {
+            alreadyMarked = true;
+            break;
+          }
+        }
+
+        if (!alreadyMarked) {
+          this.stuckPositions.push({x: this.x, y: this.y, radius: this.size * 4});
+
+          // Limit the number of remembered stuck positions to prevent memory issues
+          if (this.stuckPositions.length > 8) {
+            this.stuckPositions.shift(); // Remove oldest
+          }
+        }
+
+        // Clear position history to avoid repeated triggers
+        this.positionHistory = [];
+
+        // Don't teleport - just mark the area and let normal avoidance handle it
+        this.obstacleStuckCounter = 0;
+      }
+    }
+
     // If we have a path to follow from pathfinding
     if (this.pathToFollow && this.pathToFollow.length > 0 && this.currentPathIndex < this.pathToFollow.length) {
       const gridSize = 25; // Same as in getPathToB
@@ -1046,6 +1154,17 @@ class Rover {
         let avoidanceStrength = p.map(reading, this.dangerZone, this.sensorRange, 1, 0);
         let avoidanceAngle = this.angle + this.sensorAngles[i] + p.PI;
         avoidanceVector.add(p5.Vector.fromAngle(avoidanceAngle).mult(avoidanceStrength));
+      }
+    }
+
+    // Avoid previously stuck positions (learning)
+    for (let stuckPos of this.stuckPositions) {
+      const distToStuck = p.dist(this.x, this.y, stuckPos.x, stuckPos.y);
+      if (distToStuck < stuckPos.radius) {
+        // Apply strong repulsion from stuck position
+        const repulsionStrength = p.map(distToStuck, 0, stuckPos.radius, 5, 0.5);
+        const angleAway = p.atan2(this.y - stuckPos.y, this.x - stuckPos.x);
+        avoidanceVector.add(p5.Vector.fromAngle(angleAway).mult(repulsionStrength));
       }
     }
 
@@ -1185,6 +1304,10 @@ class Rover {
     this.y = y;
     this.angle = 0;
     this.obstacleStuckCounter = 0;
+    // Keep learned stuck positions across resets so rover learns over time
+    // this.stuckPositions = []; // Uncomment to reset learning on restart
+    this.positionHistory = [];
+    this.lastPosition = {x: x, y: y};
   }
 }
 };

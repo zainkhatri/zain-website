@@ -93,30 +93,6 @@ function Projects() {
             />
           </div>
 
-          {/* MeetYourMaker Project */}
-          <div className="project">
-            <div className="project-content">
-              <h3 className="project-title">
-                <a
-                  href="https://meetyourmaker.vercel.app/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  meetyourmaker - Digital Twin Chat
-                </a>
-              </h3>
-              <div className="project-description">
-                <p className="project-summary">ai chatbot trained on my personal writing to create a digital twin with my voice and personality</p>
-                <ul className="project-features">
-                  <li>professional/casual mode switching for different conversation contexts</li>
-                  <li>voice interaction with speech-to-text and text-to-speech capabilities</li>
-                  <li>word hunt puzzle game using my actual vocabulary patterns</li>
-                </ul>
-              </div>
-              <MeetYourMaker />
-            </div>
-          </div>
-
           {/* UC Berkeley Exoskeleton Brainwave Algorithm Project */}
           <div className="project">
             <div className="project-content">
@@ -140,6 +116,30 @@ function Projects() {
               <Suspense fallback={null}>
                 <BrainwaveAnimation />
               </Suspense>
+            </div>
+          </div>
+
+          {/* MeetYourMaker Project */}
+          <div className="project">
+            <div className="project-content">
+              <h3 className="project-title">
+                <a
+                  href="https://meetyourmaker.vercel.app/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  meetyourmaker - Digital Twin Chat
+                </a>
+              </h3>
+              <div className="project-description">
+                <p className="project-summary">ai chatbot trained on my personal writing to create a digital twin with my voice and personality</p>
+                <ul className="project-features">
+                  <li>professional/casual mode switching for different conversation contexts</li>
+                  <li>voice interaction with speech-to-text and text-to-speech capabilities</li>
+                  <li>word hunt puzzle game using my actual vocabulary patterns</li>
+                </ul>
+              </div>
+              <MeetYourMaker />
             </div>
           </div>
 

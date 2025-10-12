@@ -8,7 +8,7 @@
 
 .demo-container {
   display: flex;
-  gap: 16px;
+  gap: 0;
   width: 100%;
 }
 
@@ -16,11 +16,19 @@
   flex: 1;
   background: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(10px);
-  border-radius: 12px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   padding: 20px;
   display: flex;
   flex-direction: column;
+}
+
+.demo-section:first-child {
+  border-radius: 12px 0 0 12px;
+  border-right: none;
+}
+
+.demo-section:last-child {
+  border-radius: 0 12px 12px 0;
 }
 
 .section-header {
@@ -31,7 +39,7 @@
 
 .section-title {
   margin: 0;
-  font-size: 14px;
+  font-size: 18px;
   font-weight: 600;
   color: #ffffff;
   text-transform: uppercase;
@@ -40,7 +48,7 @@
 
 .section-subtitle {
   margin: 4px 0 0 0;
-  font-size: 11px;
+  font-size: 14px;
   color: rgba(255, 255, 255, 0.5);
   font-style: italic;
 }
@@ -63,6 +71,10 @@
   border-radius: 12px;
   backdrop-filter: blur(10px);
   touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 }
 
 .balance-grid.interactive {

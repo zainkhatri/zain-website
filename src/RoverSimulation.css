@@ -11,9 +11,12 @@
   height: 50vh;
   position: relative;
   touch-action: none; /* Prevent default touch actions */
-  border: 10px solid white; /* White border for classic arcade look */
+  border: 3px solid rgba(120, 115, 245, 0.5);
+  border-radius: 12px;
   box-sizing: border-box;
   overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
 }
 
 /* Wider simulation for desktop devices */
@@ -34,9 +37,27 @@
 }
 
 .controls button {
-  padding: 8px 12px;
-  font-size: 16px;
-  font-family: 'Fahkwang', sans-serif; /* Ensure buttons use Fahkwang font */
+  padding: 10px 20px;
+  font-size: 14px;
+  font-family: 'Fahkwang', sans-serif;
+  background: rgba(120, 115, 245, 0.2);
+  border: 2px solid rgba(120, 115, 245, 0.5);
+  border-radius: 8px;
+  color: #ffffff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 500;
+}
+
+.controls button:hover {
+  background: rgba(120, 115, 245, 0.4);
+  border-color: rgba(120, 115, 245, 0.8);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(120, 115, 245, 0.3);
+}
+
+.controls button:active {
+  transform: translateY(0);
 }
 
 /* Ensure the canvas fits the container */
@@ -56,13 +77,14 @@ canvas {
   }
 
   .sketch-container {
-    border-width: 3px;
+    border-width: 2px;
     height: 60vh;
     max-width: 100%;
+    border-radius: 8px;
   }
 
   .controls button {
-    padding: 10px 16px;
-    font-size: 14px;
+    padding: 8px 16px;
+    font-size: 13px;
   }
 }
