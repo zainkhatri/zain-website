@@ -84,7 +84,7 @@ img {
 
 @media screen and (max-width: 768px) {
   .App {
-    padding: 5px;
+    padding: 8px 5px;
   }
 }
 
@@ -127,7 +127,7 @@ img {
 /* Reduce margins on mobile */
 @media screen and (max-width: 768px) {
   .content-section {
-    padding: 0 8px;
+    padding: 0 10px;
   }
 }
 
@@ -301,15 +301,24 @@ button, a {
   }
 }
 
-/* Small screens: 2x4 layout with smaller images */
+/* Small screens: responsive font sizing */
 @media screen and (max-width: 767px) {
-  /* Disable font-size increase on click */
   .expandable-title {
-    font-size: 24px !important; /* Maintain default size */
+    font-size: 7vw !important;
   }
 
   .expandable-title.clicked {
-    font-size: 24px !important; /* Prevent increase on click */
+    font-size: 7vw !important;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .expandable-title {
+    font-size: 8.5vw !important;
+  }
+
+  .expandable-title.clicked {
+    font-size: 8.5vw !important;
   }
 }
 
@@ -333,15 +342,29 @@ body.ego-mode .footer p {
 .navigation-sections {
   display: flex;
   flex-direction: column;
-  gap: 100px; /* Increased gap for better separation between sections */
-  margin-top: -30px; /* Move sections up by 30px */
+  gap: 100px;
+  margin-top: -30px;
 }
 
 /* Add spacing on mobile and tablets */
 @media screen and (max-width: 1100px) {
   .navigation-sections {
-    margin-top: 0;
-    gap: 80px;
+    margin-top: 40px;
+    gap: 60px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .navigation-sections {
+    margin-top: 50px;
+    gap: 60px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .navigation-sections {
+    margin-top: 60px;
+    gap: 50px;
   }
 }
 

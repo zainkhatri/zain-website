@@ -235,23 +235,30 @@ body.ego-mode .gallery .expandable-title {
 /* Small screens: Match albums layout */
 @media screen and (max-width: 767.98px) {
   .gallery-grid {
-    grid-template-columns: repeat(2, 1fr); /* Match albums grid columns */
-    grid-auto-rows: 1fr; /* Use auto rows instead of fixed */
-    gap: 10px; /* Match albums gap */
-    padding: 0 3px 10px 3px; /* Add bottom padding to prevent cutoff */
-    overflow: visible; /* Allow content to show */
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: 1fr;
+    gap: 12px;
+    padding: 0 8px 15px 8px;
+    overflow: visible;
+    width: 95%;
+    margin: 0 auto;
   }
 
   .gallery-item {
-    width: 100%; /* Ensures full width within the grid cell */
-    margin: 0; /* Remove auto margin to prevent centering issues */
-    box-sizing: border-box; /* Include borders in width calculation */
+    width: 100%;
+    margin: 0;
+    box-sizing: border-box;
+    border-width: 2px;
   }
 
   .gallery-item img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    display: block; /* Prevents any unexpected margins */
+    display: block;
+  }
+
+  .gallery-item:hover img {
+    transform: none;
   }
 }

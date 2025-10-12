@@ -116,58 +116,85 @@
 /* For screens up to 768px */
 @media screen and (max-width: 768px) {
   .expandable-title {
-    font-size: 4vw;
-    margin-left: 20px;
+    font-size: 7vw;
+    margin-left: 0;
     cursor: pointer;
     transition: font-size 0.2s ease, transform 0.2s ease;
-    padding: 0;
+    padding: 0 10px;
     text-align: center;
   }
 
   .expandable-title:hover {
-    font-size: 4vw;
+    font-size: 7vw;
     transform: none;
   }
 
   .content {
-    font-size: 3.5vw;
-    margin-left: 20px;
+    font-size: 4vw;
+    margin-left: 0;
+    margin-right: 0;
+    padding: 0 15px;
     text-align: center;
   }
-  
+
   .bio-content {
     flex-direction: column;
-    gap: 30px;
+    gap: 20px;
     text-align: center;
+    padding: 0 5px;
+  }
+
+  .bio-text {
+    padding: 20px 15px;
+    border-radius: 12px;
+  }
+
+  .bio-text p {
+    line-height: 1.6;
+    margin-bottom: 15px;
+    font-size: 0.95em;
   }
 }
 
 /* For screens up to 480px */
 @media screen and (max-width: 480px) {
   .expandable-title {
-    margin-left: 10px;
-    font-size: 8vw;
+    margin-left: 0;
+    font-size: 8.5vw;
     cursor: pointer;
     transition: font-size 0.2s ease, transform 0.2s ease;
-    padding: 0;
+    padding: 0 8px;
     text-align: center;
   }
 
   .expandable-title:hover {
-    font-size: 10vw;
+    font-size: 8.5vw;
     transform: none;
   }
 
   .content {
-    font-size: 5vw;
-    margin-left: 10px;
-    margin-right: 10px;
+    font-size: 4.5vw;
+    margin-left: 0;
+    margin-right: 0;
+    padding: 0 12px;
     text-align: center;
   }
-  
+
   .bio-content {
-    gap: 20px;
+    gap: 15px;
     text-align: center;
+    padding: 0;
+  }
+
+  .bio-text {
+    padding: 18px 12px;
+    border-radius: 10px;
+  }
+
+  .bio-text p {
+    line-height: 1.55;
+    margin-bottom: 12px;
+    font-size: 0.92em;
   }
 }
 

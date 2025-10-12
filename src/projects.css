@@ -162,63 +162,65 @@
 /* Mobile styles */
 @media screen and (max-width: 1070px) {
   .project {
-    margin-bottom: 25px;
-    gap: 15px;
-    padding: 0 10px;
+    margin-bottom: 20px;
+    gap: 12px;
+    padding: 15px 12px;
     width: 100%;
     box-sizing: border-box;
   }
 
   .expandable-title {
-    font-size: 3.2vw;
-    margin-left: 20px;
+    font-size: 7vw;
+    margin-left: 0;
     cursor: pointer;
     transition: font-size 0.2s ease, transform 0.2s ease;
-    padding: 0;
+    padding: 0 10px;
     text-align: center;
   }
 
   .expandable-title:hover {
-    font-size: 3.2vw;
+    font-size: 7vw;
     transform: none;
   }
 
   .content {
-    font-size: 2.8vw;
-    margin-left: 20px;
+    font-size: 4vw;
+    margin-left: 0;
+    margin-right: 0;
+    padding: 0 12px;
     text-align: center;
     width: 100%;
     box-sizing: border-box;
   }
-  
+
   .content-section.projects .expandable-title {
     text-align: center !important;
     margin-left: 0 !important;
   }
-  
+
   .content-section.projects .content {
     text-align: center;
   }
-  
+
   .project {
     flex-direction: column;
     align-items: center;
     text-align: center;
     width: 100%;
-    padding: 0 10px;
+    padding: 15px 12px;
     box-sizing: border-box;
   }
 
   .project-image {
     width: 100%;
-    max-width: 300px;
+    max-width: 280px;
     margin: 0 auto;
   }
 
   .project-content {
     width: 100%;
     text-align: center;
-    padding: 10px 0;
+    padding: 8px 5px;
     overflow-wrap: break-word;
     word-wrap: break-word;
     max-width: 100%;
@@ -226,15 +228,29 @@
   }
 
   .project-title {
-    font-size: 18px;
-    margin: 10px auto;
+    font-size: 1.1em;
+    margin: 8px auto;
     text-align: center;
   }
 
+  .project-title a {
+    font-size: 20px;
+  }
+
+  .project-summary {
+    font-size: 0.9em;
+    margin-bottom: 10px;
+  }
+
+  .project-features li {
+    font-size: 0.85em;
+    padding: 5px 0 5px 16px;
+  }
+
   .project-description {
-    font-size: 16px;
-    margin: 10px auto;
-    padding: 10px;
+    font-size: 0.95em;
+    margin: 8px auto;
+    padding: 8px;
     text-align: center;
     width: 100%;
     box-sizing: border-box;
@@ -247,7 +263,7 @@
   .exoskeleton-image {
     display: none;
   }
-  
+
   .mania-project {
     display: none;
   }
@@ -256,51 +272,46 @@
 @media screen and (max-width: 480px) {
   .expandable-title {
     margin-left: 0;
-    font-size: 8vw;
+    font-size: 8.5vw;
     cursor: pointer;
     transition: font-size 0.2s ease, transform 0.2s ease;
-    padding: 0;
+    padding: 0 8px;
     text-align: center;
   }
 
   .expandable-title:hover {
-    font-size: 10vw;
+    font-size: 8.5vw;
     transform: none;
   }
 
   .content {
-    font-size: 5vw;
+    font-size: 4.5vw;
     margin-left: 0;
     margin-right: 0;
+    padding: 0 10px;
     text-align: center;
   }
-  
+
   .content-section.projects .expandable-title {
     text-align: center !important;
     margin-left: 0 !important;
   }
-  
+
   .content-section.projects .content {
     text-align: center;
-  }
-  
-  .project-header h3 {
-    font-size: 1.1rem;
-  }
-
-  .project-tag {
-    font-size: 0.7rem;
-    padding: 0.25rem 0.6rem;
   }
 
   .project {
     flex-direction: column;
     align-items: center;
     text-align: center;
+    padding: 12px 10px;
+    margin-bottom: 15px;
   }
 
   .project-image {
     width: 100%;
+    max-width: 260px;
     margin: 0 auto;
   }
 
@@ -308,24 +319,38 @@
     margin: 0 auto;
     text-align: center;
     width: 100%;
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 255, 255, 0.08);
     border-radius: 10px;
-    padding: 15px 10px;
+    padding: 12px 8px;
   }
 
   .project-title {
-    font-size: 18px;
-    margin: 10px auto;
+    font-size: 1.05em;
+    margin: 8px auto;
     text-align: center;
   }
 
+  .project-title a {
+    font-size: 18px;
+  }
+
+  .project-summary {
+    font-size: 0.88em;
+    margin-bottom: 8px;
+  }
+
+  .project-features li {
+    font-size: 0.82em;
+    padding: 4px 0 4px 14px;
+  }
+
   .project-description {
-    font-size: 16px;
-    margin: 10px auto;
-    padding: 10px;
+    font-size: 0.92em;
+    margin: 8px auto;
+    padding: 8px;
     text-align: center;
   }
-  
+
   .mania-project {
     display: none;
   }
