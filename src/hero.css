@@ -2,7 +2,7 @@
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    padding: 40px 0 0 0; /* Reduced padding to bring sections closer */
+    padding: 40px 0 0 0;
     min-height: auto;
 }
 
@@ -109,12 +109,16 @@
 .description-line {
     margin-bottom: 0px; /* Reduced from 10px to bring lines closer together */
     text-align: left;
+    width: 100%;
+    max-width: none;
 }
 
 .description-line p {
     margin: 0;
     line-height: 1.4;
     text-align: left;
+    width: 100%;
+    max-width: none;
 }
 
 .greeting-line {
@@ -204,6 +208,7 @@
         margin-top: 0;
         margin-left: 0;
         margin-right: 0;
+        transform: none !important;
         flex-direction: column;
         align-items: center;
     }
@@ -316,6 +321,7 @@
         order: 1;
         align-self: center;
         margin: 0;
+        transform: none !important;
         flex-direction: column;
     }
 
@@ -512,17 +518,19 @@ body.ego-mode .Typewriter * {
 body.ego-mode .typewriter-text {
     font-family: 'titles', sans-serif !important;
     font-size: 2.5em !important;
-    color: #ff3333 !important;
-    text-shadow: 2px 2px 8px rgba(255, 50, 50, 0.6) !important;
+    color: #ffffff !important;
+    text-shadow: 0 0 30px rgba(255, 255, 255, 1), 0 0 60px rgba(255, 255, 255, 0.8) !important;
     font-weight: normal !important;
+    filter: drop-shadow(2px 2px 4px rgba(255, 255, 255, 0.7)) brightness(1.2) !important;
 }
 
 body.ego-mode h2 {
     font-family: 'titles', sans-serif !important;
     font-size: 1.3em !important;
     color: #ffffff !important;
-    text-shadow: 1px 1px 4px rgba(255, 255, 255, 0.3) !important;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.3), 0 0 16px rgba(255, 255, 255, 0.2) !important;
     font-weight: normal !important;
+    filter: drop-shadow(1px 1px 2px rgba(255, 255, 255, 0.2)) !important;
 }
 
 body.ego-mode .description-line p {
@@ -539,7 +547,29 @@ body.ego-mode .greeting-line p {
     font-size: 1.2em !important;
     color: #ffffff !important;
     opacity: 1 !important;
-    text-shadow: 1px 1px 4px rgba(255, 255, 255, 0.3) !important;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 0 0 40px rgba(255, 255, 255, 0.6) !important;
+    font-weight: normal !important;
+    filter: drop-shadow(2px 2px 4px rgba(255, 255, 255, 0.5)) !important;
+}
+
+/* Override ego mode font for specific description text */
+body.ego-mode .description-line.regular-font p {
+    font-family: 'titles', sans-serif !important;
+    font-weight: normal !important;
+    color: #ffffff !important;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.3), 0 0 16px rgba(255, 255, 255, 0.2) !important;
+    filter: drop-shadow(1px 1px 2px rgba(255, 255, 255, 0.2)) !important;
+    white-space: nowrap !important;
+    overflow: visible !important;
+    word-break: keep-all !important;
+}
+
+/* Override for spans to allow individual colors - more specific selector */
+body.ego-mode .description-line.regular-font p span[style*="color"] {
+    color: inherit !important;
+    text-shadow: none !important;
+    filter: none !important;
+    font-family: 'titles', sans-serif !important;
     font-weight: normal !important;
 }
 

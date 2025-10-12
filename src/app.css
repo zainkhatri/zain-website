@@ -75,6 +75,13 @@ img {
   flex-direction: column;
 }
 
+/* Wider layout for desktop devices */
+@media screen and (min-width: 1200px) {
+  .App {
+    max-width: 1600px;
+  }
+}
+
 @media screen and (max-width: 768px) {
   .App {
     padding: 5px;
@@ -88,6 +95,33 @@ img {
   padding: 0 20px;
   box-sizing: border-box;
   transition: all 0.6s ease;
+}
+
+/* Wider content sections for desktop devices */
+@media screen and (min-width: 1200px) {
+  .content-section {
+    max-width: 1600px;
+    padding-left: calc((100% - 1200px) / 2 + 20px);
+  }
+
+  .content-section .expandable-title {
+    margin-left: 0;
+  }
+
+  .content-section .content-wrapper {
+    margin-left: calc(-1 * ((100% - 1200px) / 2 + 20px));
+    padding-left: 0;
+    padding-right: 0;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .content-section .content-wrapper .content {
+    max-width: 1600px;
+    margin: 0 auto;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
 }
 
 /* Reduce margins on mobile */

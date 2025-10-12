@@ -1,63 +1,30 @@
 import React, { useState, useRef, useEffect, memo } from 'react';
-import { Loader } from '@googlemaps/js-api-loader';
+import { importLibrary, setOptions } from '@googlemaps/js-api-loader';
 import './Egomaniac.css';
 
 // Sample food recommendations data
 const foodRecommendations = [
   {
     id: 1,
-    name: "Phil's BBQ",
-    description: "Legendary San Diego BBQ spot with massive portions and incredible brisket. The sauce is what dreams are made of.",
-    food: "Brisket Sandwich, Ribs, Mac & Cheese",
-    city: "San Diego, CA",
-    region: "Point Loma",
-    rating: 9,
-    coordinates: { lat: 32.7313, lng: -117.2131 },
-    address: "3750 Sports Arena Blvd, San Diego, CA 92110"
+    name: "Chutney",
+    description: "Authentic Indian cuisine in the heart of San Francisco. Rich, flavorful dishes that hit every time.",
+    food: "Chicken Tikka Masala, Lamb Masala, Chicken Tandoori Leg",
+    city: "San Francisco, CA",
+    region: "Tenderloin",
+    rating: 9.5,
+    coordinates: { lat: 37.7825, lng: -122.4131 },
+    address: "511 Jones St, San Francisco, CA 94102"
   },
   {
     id: 2,
-    name: "Tacos El Gordo",
-    description: "Authentic Tijuana-style tacos that will blow your mind. The adobada is absolutely insane.",
-    food: "Adobada Tacos, Carne Asada, Al Pastor",
-    city: "San Diego, CA",
-    region: "Chula Vista",
+    name: "Zareens",
+    description: "The pinnacle of Pakistani-Indian cuisine in the Bay Area. Every dish is an absolute masterpiece.",
+    food: "Chicken Sizzler, Chicken Tikka Masala, Lamb Gosht, Chapli Kabob, Mango Lassi",
+    city: "Palo Alto, CA",
+    region: "Downtown Palo Alto",
     rating: 10,
-    coordinates: { lat: 32.6401, lng: -117.0842 },
-    address: "689 H St, Chula Vista, CA 91910"
-  },
-  {
-    id: 3,
-    name: "Sushi Ota",
-    description: "Hidden gem with the freshest fish in San Diego. Omakase experience that rivals LA spots at half the price.",
-    food: "Omakase, Uni, Toro, Yellowtail",
-    city: "San Diego, CA",
-    region: "Pacific Beach",
-    rating: 9,
-    coordinates: { lat: 32.7973, lng: -117.2553 },
-    address: "4529 Mission Bay Dr, San Diego, CA 92109"
-  },
-  {
-    id: 4,
-    name: "The Crack Shack",
-    description: "Gourmet fried chicken that's crispy on the outside, juicy on the inside. The deviled eggs are next level.",
-    food: "Fried Chicken Sandwich, Deviled Eggs, Biscuits",
-    city: "San Diego, CA",
-    region: "Little Italy",
-    rating: 8,
-    coordinates: { lat: 32.7226, lng: -117.1686 },
-    address: "2266 Kettner Blvd, San Diego, CA 92101"
-  },
-  {
-    id: 5,
-    name: "Lucha Libre Gourmet Taco Shop",
-    description: "Wrestling-themed taco shop with creative combinations and massive portions. The Surfin' California burrito is legendary.",
-    food: "Surfin' California Burrito, Queso Tacos, Churros",
-    city: "San Diego, CA",
-    region: "Mission Hills",
-    rating: 8,
-    coordinates: { lat: 32.7489, lng: -117.1631 },
-    address: "1810 W Washington St, San Diego, CA 92103"
+    coordinates: { lat: 37.4292, lng: -122.1381 },
+    address: "365 California Ave, Palo Alto, CA 94306"
   }
 ];
 
@@ -95,6 +62,7 @@ function Egomaniac() {
   const [isMunchVisible, setIsMunchVisible] = useState(false);
   const [selectedRestaurant, setSelectedRestaurant] = useState(null);
   const [map, setMap] = useState(null);
+  const [markers, setMarkers] = useState([]);
   const flicksRef = useRef(null);
   const munchRef = useRef(null);
   const mapRef = useRef(null);
@@ -102,19 +70,22 @@ function Egomaniac() {
   // Initialize Google Maps
   useEffect(() => {
     const initMap = async () => {
-      const loader = new Loader({
+      // Set API key and options
+      setOptions({
         apiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY || 'YOUR_API_KEY_HERE',
         version: 'weekly',
-        libraries: ['places']
       });
 
       try {
-        const { Map } = await loader.importLibrary('maps');
-        
+        // Import the maps and marker libraries
+        const { Map } = await importLibrary('maps');
+        const { AdvancedMarkerElement } = await importLibrary('marker');
+
         if (mapRef.current) {
           const newMap = new Map(mapRef.current, {
-            center: { lat: 32.7157, lng: -117.1611 }, // San Diego center
-            zoom: 11,
+            center: { lat: 37.5, lng: -122.2 }, // Bay Area center
+            zoom: 9,
+            mapId: 'DEMO_MAP_ID',
             styles: [
               {
                 featureType: 'all',
@@ -139,6 +110,34 @@ function Egomaniac() {
             ]
           });
           setMap(newMap);
+
+          // Create markers for all restaurants
+          const { PinElement } = await importLibrary('marker');
+
+          const newMarkers = foodRecommendations.map((restaurant) => {
+            // Create a custom pin
+            const pin = new PinElement({
+              background: '#ff6b6b',
+              borderColor: '#ffffff',
+              glyphColor: '#ffffff',
+              scale: 1.2,
+            });
+
+            const marker = new AdvancedMarkerElement({
+              map: newMap,
+              position: restaurant.coordinates,
+              title: restaurant.name,
+              content: pin.element,
+            });
+
+            marker.addListener('click', () => {
+              setSelectedRestaurant(restaurant);
+            });
+
+            return marker;
+          });
+
+          setMarkers(newMarkers);
         }
       } catch (error) {
         console.error('Error loading Google Maps:', error);
@@ -148,15 +147,45 @@ function Egomaniac() {
     if (isMunchVisible) {
       initMap();
     }
+
+    // Cleanup function
+    return () => {
+      markers.forEach(marker => {
+        if (marker.map) {
+          marker.map = null;
+        }
+      });
+    };
   }, [isMunchVisible]);
 
   // Update map when restaurant is selected
   useEffect(() => {
-    if (map && selectedRestaurant) {
-      map.setCenter(selectedRestaurant.coordinates);
-      map.setZoom(15);
-    }
-  }, [map, selectedRestaurant]);
+    const updateMarkers = async () => {
+      if (map && selectedRestaurant && markers.length > 0) {
+        map.setCenter(selectedRestaurant.coordinates);
+        map.setZoom(13);
+
+        // Dynamically import PinElement for updating markers
+        const { PinElement } = await importLibrary('marker');
+
+        // Update marker colors
+        markers.forEach((marker, index) => {
+          const isSelected = foodRecommendations[index].id === selectedRestaurant.id;
+
+          const pin = new PinElement({
+            background: isSelected ? '#00ff00' : '#ff6b6b',
+            borderColor: '#ffffff',
+            glyphColor: '#ffffff',
+            scale: isSelected ? 1.5 : 1.2,
+          });
+
+          marker.content = pin.element;
+        });
+      }
+    };
+
+    updateMarkers();
+  }, [map, selectedRestaurant, markers]);
 
   const toggleFlicks = () => {
     setIsFlicksVisible(!isFlicksVisible);
@@ -182,7 +211,7 @@ function Egomaniac() {
     <div className="egomaniac-container">
       {/* Flicks Section */}
       <section className="egomaniac-section flicks-section">
-        <h2 onClick={toggleFlicks} className="egomaniac-title">
+        <h2 onClick={toggleFlicks} className="egomaniac-title regular-font">
           flicks <span className="toggle-symbol">{isFlicksVisible ? '-' : '+'}</span>
         </h2>
         {isFlicksVisible && (
@@ -200,7 +229,7 @@ function Egomaniac() {
 
       {/* Good Munch Section */}
       <section className="egomaniac-section munch-section">
-        <h2 onClick={toggleMunch} className="egomaniac-title">
+        <h2 onClick={toggleMunch} className="egomaniac-title regular-font">
           good munch <span className="toggle-symbol">{isMunchVisible ? '-' : '+'}</span>
         </h2>
         {isMunchVisible && (

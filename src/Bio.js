@@ -92,13 +92,6 @@ function Bio() {
                 </svg>
               </button>
             </div>
-            <div className="bio-image desktop-only">
-              <img
-                src={piperImage}
-                alt="Air"
-                className="air-image"
-              />
-            </div>
           </div>
         </div>
       </div>

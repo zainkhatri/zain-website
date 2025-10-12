@@ -36,13 +36,43 @@
   font-size: 1em;
   color: #ffffff;
   margin-top: 0;
-  margin-bottom: 15px;
+  margin-bottom: 8px;
   font-style: italic;
+  font-weight: 600;
 }
 
 .project-description {
+  margin-top: 12px;
+}
+
+.project-summary {
+  font-size: 0.95em;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.5;
+  margin: 0 0 12px 0;
+  font-style: italic;
+}
+
+.project-features {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.project-features li {
   font-size: 0.85em;
-  color: #ffffff;
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.7;
+  padding: 6px 0 6px 20px;
+  position: relative;
+}
+
+.project-features li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 1.2em;
 }
 
 .project p {
@@ -321,5 +351,6 @@
   .rover-simulation {
     width: calc(100% + 222.5px + 25px);
     margin-right: -247.5px;
+    margin-top: 60px;
   }
 }

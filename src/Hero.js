@@ -232,11 +232,15 @@ const Hero = memo(function Hero() {
           />
           </h1>
           <h2>{isEgomaniacMode ? "vprezzy, mcfoot, humblemaniac, etc" : "machine learning & software engineer"}</h2>
-          <div className="description-line">
-            <p>{isEgomaniacMode ? "i built nasa, uc berkeley, and mohsin." : "i've built for nasa, uc berkeley, and more."}</p>
+          <div className={`description-line ${isEgomaniacMode ? 'regular-font' : ''}`}>
+            <p>{isEgomaniacMode ? (
+              <>
+                i built <span style={{color: '#0066cc'}}>nasa</span>, <span style={{color: '#ffd700'}}>uc berkeley</span>, and <span style={{color: '#000000'}}>mohsin</span>.
+              </>
+            ) : "i've built for nasa, uc berkeley, and more."}</p>
           </div>
           <div className="greeting-line">
-            <p>{isEgomaniacMode ? "I AM THE EGO" : "peace be upon you."}</p>
+            <p>{isEgomaniacMode ? "" : "peace be upon you."}</p>
           </div>
         </div>
         <div className="image-and-contact">

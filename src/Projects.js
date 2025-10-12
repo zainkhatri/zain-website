@@ -9,6 +9,7 @@ const MLGame = lazy(() => import('./MLGame'));
 const RoverSimulation = lazy(() => import('./RoverSimulation'));
 const MunchMate = lazy(() => import('./MunchMate'));
 const ManiaJournal = lazy(() => import('./ManiaJournal'));
+const BrainwaveAnimation = lazy(() => import('./BrainwaveAnimation'));
 
 function Projects() {
   const [areProjectsVisible, setAreProjectsVisible] = useState(false);
@@ -67,9 +68,14 @@ function Projects() {
                   NASA Autonomous Rover
                 </a>
               </h3>
-              <p className="project-description">
-                built a gps guided rover using c and arduino. handled obstacle avoidance, waypoint logic, and custom chassis design. integrated magnetometer + gps data to autonomously navigate rough terrain. included soldering, 3d printing, and full system calibration.
-              </p>
+              <div className="project-description">
+                <p className="project-summary">gps-guided autonomous rover built with c and arduino for navigating rough terrain</p>
+                <ul className="project-features">
+                  <li>obstacle avoidance with ultrasonic sensors and waypoint navigation logic</li>
+                  <li>magnetometer + gps integration for autonomous path planning</li>
+                  <li>custom chassis design with 3d printing and full electronics assembly</li>
+                </ul>
+              </div>
               {/* Rover Simulation */}
               <div className="rover-simulation">
                 <Suspense fallback={null}>
@@ -99,10 +105,41 @@ function Projects() {
                   meetyourmaker - Digital Twin Chat
                 </a>
               </h3>
-              <p className="project-description">
-                built an ai-powered chat app that lets people talk to my digital ghost by training on my actual writing samples. features professional/casual modes, voice interaction, and a word hunt puzzle using my vocabulary; basically turned myself into a chatbot.
-              </p>
+              <div className="project-description">
+                <p className="project-summary">ai chatbot trained on my personal writing to create a digital twin with my voice and personality</p>
+                <ul className="project-features">
+                  <li>professional/casual mode switching for different conversation contexts</li>
+                  <li>voice interaction with speech-to-text and text-to-speech capabilities</li>
+                  <li>word hunt puzzle game using my actual vocabulary patterns</li>
+                </ul>
+              </div>
               <MeetYourMaker />
+            </div>
+          </div>
+
+          {/* UC Berkeley Exoskeleton Brainwave Algorithm Project */}
+          <div className="project">
+            <div className="project-content">
+              <h3 className="project-title">
+                <a
+                  href="https://github.com/zainkhatri/exoskeleton-brainwave-algorithm"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  UC Berkeley URAP Exoskeleton Brainwave Algorithm
+                </a>
+              </h3>
+              <div className="project-description">
+                <p className="project-summary">python toolkit for analyzing eeg/eog signals to predict gaze direction using machine learning</p>
+                <ul className="project-features">
+                  <li>signal processing pipeline with bandpass filtering and artifact removal</li>
+                  <li>trained random forest, svm, and neural networks for gaze prediction</li>
+                  <li>real-time brainwave visualization across delta, theta, alpha, beta, gamma bands</li>
+                </ul>
+              </div>
+              <Suspense fallback={null}>
+                <BrainwaveAnimation />
+              </Suspense>
             </div>
           </div>
 
@@ -118,9 +155,14 @@ function Projects() {
                   mania - Digital Journaling App
                 </a>
               </h3>
-              <p className="project-description">
-                built for myself to make journaling feel less like typing into a google doc and more like keeping a real notebook. implemented features to upload photos, write freely, auto save entries, and export everything to pdf. it pulls colors from images to theme the page, and uses gpt-4 to suggest prompts when people get stuck.
-              </p>
+              <div className="project-description">
+                <p className="project-summary">digital journaling app designed to recreate the feel of a physical notebook</p>
+                <ul className="project-features">
+                  <li>photo uploads with automatic color extraction for dynamic theming</li>
+                  <li>gpt-4 powered writing prompts for creative inspiration</li>
+                  <li>auto-save functionality and pdf export for all entries</li>
+                </ul>
+              </div>
               <Suspense fallback={null}>
                 <ManiaJournal />
               </Suspense>
@@ -139,9 +181,14 @@ function Projects() {
                   Eagle Eye
                 </a>
               </h3>
-              <p className="project-description">
-                speed based number clicking game from 1 to 50. tracks time, accuracy, and leaderboard position. built in react and deployed as a web app.
-              </p>
+              <div className="project-description">
+                <p className="project-summary">speed-based number clicking game challenging players to find numbers 1-50 as fast as possible</p>
+                <ul className="project-features">
+                  <li>real-time performance tracking with accuracy metrics</li>
+                  <li>global leaderboard system for competitive play</li>
+                  <li>responsive design built in react with optimized rendering</li>
+                </ul>
+              </div>
               <Suspense fallback={null}>
                 <MLGame />
               </Suspense>
@@ -160,9 +207,14 @@ function Projects() {
                   MunchMate - AI Recipe Generator
                 </a>
               </h3>
-              <p className="project-description">
-                ai powered meal generator that converts leftover ingredients into recipes, macros, and optional workouts. built with react and openai gpt-3.5. added dietary filters, goal-based suggestions, and a lightweight frontend for fast user input/output.
-              </p>
+              <div className="project-description">
+                <p className="project-summary">ai recipe generator that transforms leftover ingredients into meals with nutrition info</p>
+                <ul className="project-features">
+                  <li>openai gpt-3.5 integration for creative recipe suggestions</li>
+                  <li>dietary filters and goal-based recommendations (weight loss, muscle gain, etc)</li>
+                  <li>optional workout suggestions paired with meal macros</li>
+                </ul>
+              </div>
               <Suspense fallback={null}>
                 <MunchMate />
               </Suspense>
