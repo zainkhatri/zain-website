@@ -1,8 +1,22 @@
-import React, { useState, useRef, useEffect, memo } from 'react';
-import { importLibrary, setOptions } from '@googlemaps/js-api-loader';
+import React, { useState, useEffect, useMemo, useCallback, memo } from 'react';
+import { MapContainer, TileLayer, Marker, useMap } from 'react-leaflet';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
 import './Egomaniac.css';
 
-// Sample food recommendations data
+import ego1 from './images/ego-optimized/ego1.jpg';
+import ego2 from './images/ego-optimized/ego2.jpg';
+import ego3 from './images/ego-optimized/ego3.jpg';
+import ego4 from './images/ego-optimized/ego4.jpg';
+import ego5 from './images/ego-optimized/ego5.jpg';
+import ego6 from './images/ego-optimized/ego6.jpg';
+import ego7 from './images/ego-optimized/ego7.jpg';
+import ego8 from './images/ego-optimized/ego8.jpg';
+import ego9 from './images/ego-optimized/ego9.jpg';
+import ego10 from './images/ego-optimized/ego10.jpg';
+import ego11 from './images/ego-optimized/ego11.jpg';
+import ego12 from './images/ego-optimized/ego12.jpg';
+
 const foodRecommendations = [
   {
     id: 1,
@@ -28,20 +42,6 @@ const foodRecommendations = [
   }
 ];
 
-// Ego mode images
-import ego1 from './images/ego-optimized/ego1.jpg';
-import ego2 from './images/ego-optimized/ego2.jpg';
-import ego3 from './images/ego-optimized/ego3.jpg';
-import ego4 from './images/ego-optimized/ego4.jpg';
-import ego5 from './images/ego-optimized/ego5.jpg';
-import ego6 from './images/ego-optimized/ego6.jpg';
-import ego7 from './images/ego-optimized/ego7.jpg';
-import ego8 from './images/ego-optimized/ego8.jpg';
-import ego9 from './images/ego-optimized/ego9.jpg';
-import ego10 from './images/ego-optimized/ego10.jpg';
-import ego11 from './images/ego-optimized/ego11.jpg';
-import ego12 from './images/ego-optimized/ego12.jpg';
-
 const egoImages = [
   { id: 1, title: "Ego 1", image: ego1 },
   { id: 2, title: "Ego 2", image: ego2 },
@@ -57,147 +57,91 @@ const egoImages = [
   { id: 12, title: "Ego 12", image: ego12 }
 ];
 
+const DEFAULT_CENTER = [37.5, -122.2];
+const DEFAULT_ZOOM = 8;
+
+const MapFocus = ({ restaurant }) => {
+  const map = useMap();
+
+  useEffect(() => {
+    if (!map) {
+      return;
+    }
+
+    const zoom = restaurant ? 13 : DEFAULT_ZOOM;
+    const baseLatLng = restaurant
+      ? L.latLng(restaurant.coordinates.lat, restaurant.coordinates.lng)
+      : L.latLng(DEFAULT_CENTER[0], DEFAULT_CENTER[1]);
+
+    const mapSize = map.getSize();
+    const offsetFactor = restaurant ? 0.24 : 0.18;
+    const verticalOffset = Math.min(mapSize.y * offsetFactor, restaurant ? 160 : 120);
+
+    const projected = map.project(baseLatLng, zoom);
+    const offsetPoint = projected.add([0, verticalOffset]);
+    const targetLatLng = map.unproject(offsetPoint, zoom);
+
+    map.flyTo(targetLatLng, zoom, { duration: 0.6 });
+  }, [map, restaurant]);
+
+  return null;
+};
+
+const RestaurantMarkers = memo(function RestaurantMarkers({ restaurants, icons, onSelect }) {
+  return (
+    <>
+      {restaurants.map((restaurant) => (
+        <Marker
+          key={restaurant.id}
+          position={[restaurant.coordinates.lat, restaurant.coordinates.lng]}
+          icon={icons[restaurant.id]}
+          eventHandlers={{ click: () => onSelect(restaurant) }}
+        />
+      ))}
+    </>
+  );
+});
+
 function Egomaniac() {
   const [isFlicksVisible, setIsFlicksVisible] = useState(false);
   const [isMunchVisible, setIsMunchVisible] = useState(false);
-  const [selectedRestaurant, setSelectedRestaurant] = useState(null);
-  const [map, setMap] = useState(null);
-  const [markers, setMarkers] = useState([]);
-  const flicksRef = useRef(null);
-  const munchRef = useRef(null);
-  const mapRef = useRef(null);
+  const [selectedRestaurant, setSelectedRestaurant] = useState(foodRecommendations[0]);
+  const [mapInstance, setMapInstance] = useState(null);
 
-  // Initialize Google Maps
   useEffect(() => {
-    const initMap = async () => {
-      // Set API key and options
-      setOptions({
-        apiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY || 'YOUR_API_KEY_HERE',
-        version: 'weekly',
-      });
-
-      try {
-        // Import the maps and marker libraries
-        const { Map } = await importLibrary('maps');
-        const { AdvancedMarkerElement } = await importLibrary('marker');
-
-        if (mapRef.current) {
-          const newMap = new Map(mapRef.current, {
-            center: { lat: 37.5, lng: -122.2 }, // Bay Area center
-            zoom: 9,
-            mapId: 'DEMO_MAP_ID',
-            styles: [
-              {
-                featureType: 'all',
-                elementType: 'geometry.fill',
-                stylers: [{ color: '#1a1a1a' }]
-              },
-              {
-                featureType: 'water',
-                elementType: 'geometry.fill',
-                stylers: [{ color: '#0f3460' }]
-              },
-              {
-                featureType: 'road',
-                elementType: 'geometry.fill',
-                stylers: [{ color: '#2d2d2d' }]
-              },
-              {
-                featureType: 'poi',
-                elementType: 'labels.text.fill',
-                stylers: [{ color: '#ffffff' }]
-              }
-            ]
-          });
-          setMap(newMap);
-
-          // Create markers for all restaurants
-          const { PinElement } = await importLibrary('marker');
-
-          const newMarkers = foodRecommendations.map((restaurant) => {
-            // Create a custom pin
-            const pin = new PinElement({
-              background: '#ff6b6b',
-              borderColor: '#ffffff',
-              glyphColor: '#ffffff',
-              scale: 1.2,
-            });
-
-            const marker = new AdvancedMarkerElement({
-              map: newMap,
-              position: restaurant.coordinates,
-              title: restaurant.name,
-              content: pin.element,
-            });
-
-            marker.addListener('click', () => {
-              setSelectedRestaurant(restaurant);
-            });
-
-            return marker;
-          });
-
-          setMarkers(newMarkers);
-        }
-      } catch (error) {
-        console.error('Error loading Google Maps:', error);
-      }
-    };
-
-    if (isMunchVisible) {
-      initMap();
+    if (mapInstance && isMunchVisible) {
+      setTimeout(() => {
+        mapInstance.invalidateSize();
+      }, 180);
     }
+  }, [mapInstance, isMunchVisible]);
 
-    // Cleanup function
-    return () => {
-      markers.forEach(marker => {
-        if (marker.map) {
-          marker.map = null;
-        }
+  const markerIcons = useMemo(() => {
+    return foodRecommendations.reduce((acc, restaurant) => {
+      const isSelected = selectedRestaurant?.id === restaurant.id;
+
+      acc[restaurant.id] = L.divIcon({
+        className: 'ego-marker-wrapper',
+        html: `<span class="ego-marker ${isSelected ? 'active' : ''}"></span>`,
+        iconSize: [20, 20],
+        iconAnchor: [10, 10],
       });
-    };
-  }, [isMunchVisible]);
 
-  // Update map when restaurant is selected
-  useEffect(() => {
-    const updateMarkers = async () => {
-      if (map && selectedRestaurant && markers.length > 0) {
-        map.setCenter(selectedRestaurant.coordinates);
-        map.setZoom(13);
-
-        // Dynamically import PinElement for updating markers
-        const { PinElement } = await importLibrary('marker');
-
-        // Update marker colors
-        markers.forEach((marker, index) => {
-          const isSelected = foodRecommendations[index].id === selectedRestaurant.id;
-
-          const pin = new PinElement({
-            background: isSelected ? '#00ff00' : '#ff6b6b',
-            borderColor: '#ffffff',
-            glyphColor: '#ffffff',
-            scale: isSelected ? 1.5 : 1.2,
-          });
-
-          marker.content = pin.element;
-        });
-      }
-    };
-
-    updateMarkers();
-  }, [map, selectedRestaurant, markers]);
+      return acc;
+    }, {});
+  }, [selectedRestaurant]);
 
   const toggleFlicks = () => {
-    setIsFlicksVisible(!isFlicksVisible);
+    setIsFlicksVisible((prev) => !prev);
   };
 
   const toggleMunch = () => {
-    setIsMunchVisible(!isMunchVisible);
+    setIsMunchVisible((prev) => !prev);
   };
 
-  const handleRestaurantClick = (restaurant) => {
+  const handleRestaurantClick = useCallback((restaurant) => {
     setSelectedRestaurant(restaurant);
-  };
+  }, []);
 
   const renderStars = (rating) => {
     return Array.from({ length: 10 }, (_, i) => (
@@ -209,7 +153,6 @@ function Egomaniac() {
 
   return (
     <div className="egomaniac-container">
-      {/* Flicks Section */}
       <section className="egomaniac-section flicks-section">
         <h2 onClick={toggleFlicks} className="egomaniac-title regular-font">
           flicks <span className="toggle-symbol">{isFlicksVisible ? '-' : '+'}</span>
@@ -227,7 +170,6 @@ function Egomaniac() {
         )}
       </section>
 
-      {/* Good Munch Section */}
       <section className="egomaniac-section munch-section">
         <h2 onClick={toggleMunch} className="egomaniac-title regular-font">
           good munch <span className="toggle-symbol">{isMunchVisible ? '-' : '+'}</span>
@@ -237,43 +179,73 @@ function Egomaniac() {
             <div className="munch-layout">
               <div className="restaurants-list">
                 {foodRecommendations.map((restaurant) => (
-                  <div 
+                  <div
                     key={restaurant.id}
                     className={`restaurant-card ${selectedRestaurant?.id === restaurant.id ? 'selected' : ''}`}
                     onClick={() => handleRestaurantClick(restaurant)}
                   >
                     <div className="restaurant-header">
                       <h3 className="restaurant-name">{restaurant.name}</h3>
-                      <div className="restaurant-rating">
-                        <span className="rating-number">{restaurant.rating}/10</span>
-                        <div className="stars">{renderStars(restaurant.rating)}</div>
-                      </div>
                     </div>
-                    <p className="restaurant-description">{restaurant.description}</p>
-                    <div className="restaurant-details">
-                      <div className="detail-item">
-                        <strong>Food:</strong> {restaurant.food}
-                      </div>
-                      <div className="detail-item">
-                        <strong>Location:</strong> {restaurant.city}, {restaurant.region}
-                      </div>
-                      <div className="detail-item">
-                        <strong>Address:</strong> {restaurant.address}
-                      </div>
+                    <div className="restaurant-score">
+                      <span className="score-value">{restaurant.rating}</span>
+                      <span className="score-max">/10</span>
+                    </div>
+                    <div className="restaurant-stars">
+                      <div className="stars">{renderStars(restaurant.rating)}</div>
                     </div>
                   </div>
                 ))}
               </div>
-              
+
               <div className="map-container">
-                <div ref={mapRef} className="map" />
+                <MapContainer
+                  center={DEFAULT_CENTER}
+                  zoom={DEFAULT_ZOOM}
+                  minZoom={4}
+                  maxZoom={16}
+                  scrollWheelZoom={false}
+                  className="ego-map"
+                  whenReady={({ target }) => setMapInstance(target)}
+                >
+                  <TileLayer
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                  />
+                  <RestaurantMarkers
+                    restaurants={foodRecommendations}
+                    icons={markerIcons}
+                    onSelect={handleRestaurantClick}
+                  />
+                  <MapFocus restaurant={selectedRestaurant} />
+                </MapContainer>
+
                 {selectedRestaurant && (
-                  <div className="selected-restaurant-info">
-                    <h4>{selectedRestaurant.name}</h4>
-                    <p>{selectedRestaurant.description}</p>
-                    <div className="rating-display">
-                      <span className="rating-number">{selectedRestaurant.rating}/10</span>
-                      <div className="stars">{renderStars(selectedRestaurant.rating)}</div>
+                  <div className="selected-restaurant-info" key={selectedRestaurant.id}>
+                    <div className="info-wrap">
+                      <h4>{selectedRestaurant.name}</h4>
+                      <p>{selectedRestaurant.description}</p>
+                      <div className="rating-display">
+                        <div className="rating-badge">
+                          <span className="rating-number">{selectedRestaurant.rating}</span>
+                          <span className="rating-max">/10</span>
+                        </div>
+                        <div className="stars">{renderStars(selectedRestaurant.rating)}</div>
+                      </div>
+                      <div className="info-detail">
+                        <span className="info-label">Location</span>
+                        <span className="info-value">
+                          {selectedRestaurant.city} &middot; {selectedRestaurant.region}
+                        </span>
+                      </div>
+                      <div className="info-detail">
+                        <span className="info-label">Standouts</span>
+                        <span className="info-value">{selectedRestaurant.food}</span>
+                      </div>
+                      <div className="info-detail">
+                        <span className="info-label">Address</span>
+                        <span className="info-value">{selectedRestaurant.address}</span>
+                      </div>
                     </div>
                   </div>
                 )}
