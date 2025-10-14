@@ -4,7 +4,6 @@ import './BrainwaveAnimation.css';
 const BrainwaveAnimation = () => {
   const canvasRef = useRef(null);
   const animationRef = useRef(null);
-  const [brainState, setBrainState] = useState('processing');
   const timeRef = useRef(0);
   const [isDragging, setIsDragging] = useState(false);
   const [dotPosition, setDotPosition] = useState({ x: 50, y: 50 });
@@ -88,23 +87,27 @@ const BrainwaveAnimation = () => {
     }
   };
 
-  const [currentAmplitudes, setCurrentAmplitudes] = useState(stateConfigs.processing);
-  const [targetAmplitudes, setTargetAmplitudes] = useState(stateConfigs.processing);
+  const currentAmplitudesRef = useRef({ ...stateConfigs.processing });
+  const targetAmplitudesRef = useRef({ ...stateConfigs.processing });
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    if (!canvas) return;
+    if (!canvas) {
+      return undefined;
+    }
 
     const ctx = canvas.getContext('2d');
+    if (!ctx) {
+      return undefined;
+    }
+
     const resizeCanvas = () => {
       const rect = canvas.getBoundingClientRect();
-      canvas.width = rect.width * window.devicePixelRatio;
-      canvas.height = rect.height * window.devicePixelRatio;
-      ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+      const ratio = window.devicePixelRatio || 1;
+      canvas.width = rect.width * ratio;
+      canvas.height = rect.height * ratio;
+      ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
     };
-
-    resizeCanvas();
-    window.addEventListener('resize', resizeCanvas);
 
     const drawWave = (wave, amplitude, time, canvasWidth, canvasHeight) => {
       const { frequency, color, phase, speed } = wave;
@@ -118,9 +121,11 @@ const BrainwaveAnimation = () => {
       ctx.shadowColor = color;
 
       for (let x = 0; x < canvasWidth; x += 2) {
-        const y = midY +
+        const y =
+          midY +
           Math.sin((x / wavelength + time * speed + phase) * Math.PI * 2) *
-          amplitude * (canvasHeight / 400);
+            amplitude *
+            (canvasHeight / 400);
 
         if (x === 0) {
           ctx.moveTo(x, y);
@@ -133,6 +138,9 @@ const BrainwaveAnimation = () => {
       ctx.shadowBlur = 0;
     };
 
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
     const animate = () => {
       const rect = canvas.getBoundingClientRect();
       const canvasWidth = rect.width;
@@ -142,40 +150,46 @@ const BrainwaveAnimation = () => {
 
       // Smooth amplitude transitions
       const smoothingFactor = 0.05;
-      const newAmplitudes = {};
+      const currentAmplitudes = currentAmplitudesRef.current;
+      const targetAmplitudes = targetAmplitudesRef.current;
+      const updatedAmplitudes = { ...currentAmplitudes };
       let needsUpdate = false;
 
-      Object.keys(currentAmplitudes).forEach(wave => {
-        const current = currentAmplitudes[wave];
-        const target = targetAmplitudes[wave];
-        const diff = Math.abs(current - target);
+      Object.keys(waveConfigs).forEach((wave) => {
+        const current = currentAmplitudes[wave] ?? 0;
+        const target = targetAmplitudes[wave] ?? 0;
+        const diff = target - current;
 
-        if (diff > 0.01) {
+        if (Math.abs(diff) > 0.005) {
           needsUpdate = true;
-          newAmplitudes[wave] = current + (target - current) * smoothingFactor;
+          updatedAmplitudes[wave] = current + diff * smoothingFactor;
         } else {
-          newAmplitudes[wave] = target;
+          updatedAmplitudes[wave] = target;
         }
       });
 
-      if (needsUpdate) {
-        setCurrentAmplitudes(newAmplitudes);
-      }
+      currentAmplitudesRef.current = needsUpdate ? updatedAmplitudes : targetAmplitudes;
 
       // Draw each wave with current amplitude
       timeRef.current += 0.01;
-      Object.keys(waveConfigs).forEach(waveKey => {
+      Object.keys(waveConfigs).forEach((waveKey) => {
         const wave = waveConfigs[waveKey];
-        const amplitudeMultiplier = currentAmplitudes[waveKey] || 0;
+        const amplitudeMultiplier = currentAmplitudesRef.current[waveKey] || 0;
         if (amplitudeMultiplier > 0.05) {
-          drawWave(wave, wave.amplitude * amplitudeMultiplier, timeRef.current, canvasWidth, canvasHeight);
+          drawWave(
+            wave,
+            wave.amplitude * amplitudeMultiplier,
+            timeRef.current,
+            canvasWidth,
+            canvasHeight
+          );
         }
       });
 
       animationRef.current = requestAnimationFrame(animate);
     };
 
-    animate();
+    animationRef.current = requestAnimationFrame(animate);
 
     return () => {
       window.removeEventListener('resize', resizeCanvas);
@@ -183,12 +197,7 @@ const BrainwaveAnimation = () => {
         cancelAnimationFrame(animationRef.current);
       }
     };
-  }, [currentAmplitudes, targetAmplitudes]);
-
-  const handleStateChange = (state) => {
-    setBrainState(state);
-    setTargetAmplitudes(stateConfigs[state]);
-  };
+  }, []);
 
   // Handle mouse/touch events for dragging
   const handleDragStart = (e) => {
@@ -250,7 +259,7 @@ const BrainwaveAnimation = () => {
       gamma: Math.max(0.1, 0.3 - yOffset * 0.7 + Math.abs(xOffset) * 0.5) // Increase forward and on sides
     };
 
-    setTargetAmplitudes(newAmplitudes);
+    targetAmplitudesRef.current = newAmplitudes;
   }, [dotPosition]);
 
   const isUnstable = Math.abs(dotPosition.x - 50) > 22 || Math.abs(dotPosition.y - 50) > 22;
