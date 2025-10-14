@@ -19,7 +19,7 @@ body.ego-mode .movies .expandable-title {
 
 body.ego-mode .movies .expandable-title:hover {
   font-size: 2.9em !important;
-  color: #ff6b6b !important;
+  color: #CCE6FF !important;
   transform: scale(1.02);
 }
 

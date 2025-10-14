@@ -13,6 +13,8 @@ const Albums = lazy(() => import('./Albums'));
 const Movies = lazy(() => import('./Movies'));
 const Egomaniac = lazy(() => import('./Egomaniac'));
 
+const EGO_MODE_IRIDESCENCE_COLOR = [0.8, 0.8, 1];
+
 function App() {
   const [isContentExpanded, setIsContentExpanded] = useState(false);
   const [showNavigation, setShowNavigation] = useState(false);
@@ -124,7 +126,7 @@ function App() {
     <div className="App">
       <div style={{ width: '100%', height: '100vh', position: 'fixed', top: 0, left: 0, zIndex: -1 }}>
         <Iridescence
-          color={isEgoMode ? [1, 0, 0.5] : backgroundColor}
+          color={isEgoMode ? EGO_MODE_IRIDESCENCE_COLOR : backgroundColor}
           mouseReact={!isMobile}
           amplitude={0.1}
           speed={isEgoMode ? 1 : (isMobile ? 0.5 : 0.7)}

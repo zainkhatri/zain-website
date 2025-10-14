@@ -517,9 +517,9 @@ function Egomaniac() {
 
     return Array.from({ length: totalStars }, (_, i) => {
       const diff = normalized - i;
-      if (diff >= 1) return <span key={i} className="star filled">★</span>;
-      if (diff >= 0.5) return <span key={i} className="star half">★</span>;
-      return <span key={i} className="star empty">★</span>;
+      if (diff >= 1) return <span key={i} className="star filled"></span>;
+      if (diff >= 0.5) return <span key={i} className="star half"></span>;
+      return <span key={i} className="star empty"></span>;
     });
   };
 
@@ -557,36 +557,32 @@ function Egomaniac() {
 
   return (
     <div className="egomaniac-container">
-      <section className="egomaniac-section flicks-section">
-        <h2 onClick={toggleFlicks} className="egomaniac-title regular-font">
+      <section
+        className={`content-section egomaniac-section flicks-section ${isFlicksVisible ? 'expanded' : ''}`}
+      >
+        <h2 onClick={toggleFlicks} className="expandable-title egomaniac-title regular-font">
           flicks <span className="toggle-symbol">{isFlicksVisible ? '-' : '+'}</span>
         </h2>
-        <div
-          className={`egomaniac-collapse ${isFlicksVisible ? 'expanded' : ''}`}
-          style={{ '--content-height': `${flicksHeight}px` }}
-          aria-hidden={!isFlicksVisible}
-        >
-          <div ref={flicksContentRef} className="egomaniac-collapse-content">
-            <div className="egomaniac-content">
-              <div className="ego-grid">
-                {egoImages.map((egoImage, index) => (
-                  <div 
-                    key={egoImage.id} 
-                    className="ego-item clickable"
-                    onClick={() => openFlick(index)}
-                    role="button"
-                    tabIndex={0}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        openFlick(index);
-                      }
-                    }}
-                  >
-                    <img src={egoImage.image} alt={egoImage.title} />
-                  </div>
-                ))}
-              </div>
+        <div className="content-wrapper" style={{ '--content-height': `${flicksHeight}px` }}>
+          <div ref={flicksContentRef} className="content egomaniac-content">
+            <div className="ego-grid">
+              {egoImages.map((egoImage, index) => (
+                <div 
+                  key={egoImage.id} 
+                  className="ego-item clickable"
+                  onClick={() => openFlick(index)}
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      openFlick(index);
+                    }
+                  }}
+                >
+                  <img src={egoImage.image} alt={egoImage.title} />
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -628,91 +624,87 @@ function Egomaniac() {
         )}
       </AnimatePresence>
 
-      <section className="egomaniac-section munch-section">
-        <h2 onClick={toggleMunch} className="egomaniac-title regular-font">
+      <section
+        className={`content-section egomaniac-section munch-section ${isMunchVisible ? 'expanded' : ''}`}
+      >
+        <h2 onClick={toggleMunch} className="expandable-title egomaniac-title regular-font">
           good munch <span className="toggle-symbol">{isMunchVisible ? '-' : '+'}</span>
         </h2>
-        <div
-          className={`egomaniac-collapse ${isMunchVisible ? 'expanded' : ''}`}
-          style={{ '--content-height': `${munchHeight}px` }}
-          aria-hidden={!isMunchVisible}
-        >
-          <div ref={munchContentRef} className="egomaniac-collapse-content">
-            <div className="egomaniac-content">
-              <div className="munch-layout">
-                <div className="restaurants-list">
-                  {foodRecommendations.map((restaurant) => (
-                    <div
-                      key={restaurant.id}
-                      className={`restaurant-card ${selectedRestaurant?.id === restaurant.id ? 'selected' : ''}`}
-                      onClick={() => handleRestaurantClick(restaurant)}
-                    >
-                      <div className="restaurant-header">
-                        <h3 className="restaurant-name">{restaurant.name}</h3>
-                      </div>
-                      <div className="restaurant-score">
-                        <span className="score-value">{restaurant.rating}</span>
-                        <span className="score-max">/10</span>
-                      </div>
-                      <div className="restaurant-stars">
-                        <div className="stars">{renderStars(restaurant.rating)}</div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="map-container">
-                  <MapContainer
-                    center={DEFAULT_CENTER}
-                    zoom={DEFAULT_ZOOM}
-                    minZoom={4}
-                    maxZoom={16}
-                    scrollWheelZoom={false}
-                    className="ego-map"
-                    whenReady={({ target }) => setMapInstance(target)}
+        <div className="content-wrapper" style={{ '--content-height': `${munchHeight}px` }}>
+          <div ref={munchContentRef} className="content egomaniac-content">
+            <div className="munch-layout">
+              <div className="restaurants-list">
+                {foodRecommendations.map((restaurant) => (
+                  <div
+                    key={restaurant.id}
+                    className={`restaurant-card ${selectedRestaurant?.id === restaurant.id ? 'selected' : ''}`}
+                    onClick={() => handleRestaurantClick(restaurant)}
                   >
-                    <TileLayer
-                      url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                      attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                    />
-                    <RestaurantMarkers
-                      restaurants={foodRecommendations}
-                      icons={markerIcons}
-                      onSelect={handleRestaurantClick}
-                    />
-                    <MapFocus restaurant={selectedRestaurant} isVisible={isMunchVisible} />
-                  </MapContainer>
+                    <div className="restaurant-header">
+                      <h3 className="restaurant-name">{restaurant.name}</h3>
+                    </div>
+                    <div className="restaurant-score">
+                      <span className="score-value">{restaurant.rating}</span>
+                      <span className="score-max">/10</span>
+                    </div>
+                    <div className="restaurant-stars">
+                      <div className="stars">{renderStars(restaurant.rating)}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
 
-                  {selectedRestaurant && (
-                    <div className="selected-restaurant-info" key={selectedRestaurant.id}>
-                      <div className="info-wrap">
-                        <h4>{selectedRestaurant.name}</h4>
-                        <p>{selectedRestaurant.description}</p>
-                        <div className="rating-display">
-                          <div className="rating-badge">
-                            <span className="rating-number">{selectedRestaurant.rating}</span>
-                            <span className="rating-max">/10</span>
-                          </div>
-                          <div className="stars">{renderStars(selectedRestaurant.rating)}</div>
+              <div className="map-container">
+                <MapContainer
+                  center={DEFAULT_CENTER}
+                  zoom={DEFAULT_ZOOM}
+                  minZoom={4}
+                  maxZoom={16}
+                  scrollWheelZoom={false}
+                  className="ego-map"
+                  whenReady={({ target }) => setMapInstance(target)}
+                >
+                  <TileLayer
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                  />
+                  <RestaurantMarkers
+                    restaurants={foodRecommendations}
+                    icons={markerIcons}
+                    onSelect={handleRestaurantClick}
+                  />
+                  <MapFocus restaurant={selectedRestaurant} isVisible={isMunchVisible} />
+                </MapContainer>
+
+                {selectedRestaurant && (
+                  <div className="selected-restaurant-info" key={selectedRestaurant.id}>
+                    <div className="info-wrap">
+                      <h4>{selectedRestaurant.name}</h4>
+                      <p>{selectedRestaurant.description}</p>
+                      <div className="rating-display">
+                        <div className="rating-badge">
+                          <span className="rating-number">{selectedRestaurant.rating}</span>
+                          <span className="rating-max">/10</span>
                         </div>
-                        <div className="info-detail">
-                          <span className="info-label">Location</span>
-                          <span className="info-value">
-                            {selectedRestaurant.city} &middot; {selectedRestaurant.region}
-                          </span>
-                        </div>
-                        <div className="info-detail">
-                          <span className="info-label">Standouts</span>
-                          <span className="info-value">{selectedRestaurant.food}</span>
-                        </div>
-                        <div className="info-detail">
-                          <span className="info-label">Address</span>
-                          <span className="info-value">{selectedRestaurant.address}</span>
-                        </div>
+                        <div className="stars">{renderStars(selectedRestaurant.rating)}</div>
+                      </div>
+                      <div className="info-detail">
+                        <span className="info-label">Location</span>
+                        <span className="info-value">
+                          {selectedRestaurant.city} &middot; {selectedRestaurant.region}
+                        </span>
+                      </div>
+                      <div className="info-detail">
+                        <span className="info-label">Standouts</span>
+                        <span className="info-value">{selectedRestaurant.food}</span>
+                      </div>
+                      <div className="info-detail">
+                        <span className="info-label">Address</span>
+                        <span className="info-value">{selectedRestaurant.address}</span>
                       </div>
                     </div>
-                  )}
-                </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>
