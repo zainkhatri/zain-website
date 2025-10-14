@@ -195,42 +195,36 @@ function Gallery() {
       {/* Image Viewer Modal */}
       <AnimatePresence>
         {selectedImage && (
-          <motion.div 
-            className="image-viewer-overlay"
+          <motion.div
+            className="gallery-lightbox"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
             onClick={closeImageViewer}
           >
-            <motion.div 
-              className="image-viewer-content"
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.8, opacity: 0 }}
-              transition={{ type: "spring", damping: 25, stiffness: 300 }}
-              onClick={e => e.stopPropagation()}
+            <button type="button" className="lightbox-close" onClick={closeImageViewer} aria-label="Close photo">
+              ×
+            </button>
+            <button 
+              type="button" 
+              className="lightbox-nav lightbox-prev" 
+              onClick={(e) => { e.stopPropagation(); goToPrevImage(); }}
+              aria-label="Previous photo"
             >
-              <button className="nav-button prev" onClick={goToPrevImage}>
-                <span>←</span>
-              </button>
-              <div className="image-container">
-                <motion.img 
-                  key={currentIndex}
-                  src={selectedImage} 
-                  alt={`Gallery ${currentIndex + 1}`}
-                  initial={{ opacity: 0, x: 100 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -100 }}
-                  transition={{ type: "spring", damping: 25, stiffness: 300 }}
-                />
-              </div>
-              <button className="nav-button next" onClick={goToNextImage}>
-                <span>→</span>
-              </button>
-              <button className="close-button" onClick={closeImageViewer}>
-                ×
-              </button>
-            </motion.div>
+              ‹
+            </button>
+            <button 
+              type="button" 
+              className="lightbox-nav lightbox-next" 
+              onClick={(e) => { e.stopPropagation(); goToNextImage(); }}
+              aria-label="Next photo"
+            >
+              ›
+            </button>
+            <div className="lightbox-content" onClick={(e) => e.stopPropagation()}>
+              <img src={selectedImage} alt={`Gallery ${currentIndex + 1}`} />
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

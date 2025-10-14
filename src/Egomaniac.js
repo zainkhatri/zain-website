@@ -239,6 +239,8 @@ function Egomaniac() {
   const munchContentRef = useRef(null);
   const [flicksHeight, setFlicksHeight] = useState(0);
   const [munchHeight, setMunchHeight] = useState(0);
+  const [selectedFlickIndex, setSelectedFlickIndex] = useState(null);
+  const selectedFlick = selectedFlickIndex !== null ? egoImages[selectedFlickIndex] : null;
 
   useEffect(() => {
     if (!mapInstance || !isMunchVisible) {
@@ -462,9 +464,52 @@ function Egomaniac() {
     setIsMunchVisible((prev) => !prev);
   };
 
+  const openFlick = useCallback((index) => {
+    setSelectedFlickIndex(index);
+  }, []);
+
+  const closeFlick = useCallback(() => {
+    setSelectedFlickIndex(null);
+  }, []);
+
+  const goToNextFlick = useCallback(() => {
+    setSelectedFlickIndex((prevIndex) => 
+      prevIndex !== null ? (prevIndex + 1) % egoImages.length : 0
+    );
+  }, []);
+
+  const goToPrevFlick = useCallback(() => {
+    setSelectedFlickIndex((prevIndex) => 
+      prevIndex !== null ? (prevIndex - 1 + egoImages.length) % egoImages.length : 0
+    );
+  }, []);
+
   const handleRestaurantClick = useCallback((restaurant) => {
     setSelectedRestaurant(restaurant);
   }, []);
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (selectedFlickIndex === null) return;
+      
+      switch (e.key) {
+        case 'ArrowRight':
+          goToNextFlick();
+          break;
+        case 'ArrowLeft':
+          goToPrevFlick();
+          break;
+        case 'Escape':
+          closeFlick();
+          break;
+        default:
+          break;
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [selectedFlickIndex, goToNextFlick, goToPrevFlick, closeFlick]);
 
   const renderStars = (rating) => {
     const totalStars = 5;
@@ -524,8 +569,20 @@ function Egomaniac() {
           <div ref={flicksContentRef} className="egomaniac-collapse-content">
             <div className="egomaniac-content">
               <div className="ego-grid">
-                {egoImages.map((egoImage) => (
-                  <div key={egoImage.id} className="ego-item">
+                {egoImages.map((egoImage, index) => (
+                  <div 
+                    key={egoImage.id} 
+                    className="ego-item clickable"
+                    onClick={() => openFlick(index)}
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        openFlick(index);
+                      }
+                    }}
+                  >
                     <img src={egoImage.image} alt={egoImage.title} />
                   </div>
                 ))}
@@ -534,6 +591,42 @@ function Egomaniac() {
           </div>
         </div>
       </section>
+
+      <AnimatePresence>
+        {selectedFlick && (
+          <motion.div
+            className="egomaniac-lightbox flicks-lightbox"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            onClick={closeFlick}
+          >
+            <button type="button" className="lightbox-close" onClick={closeFlick} aria-label="Close photo">
+              ×
+            </button>
+            <button 
+              type="button" 
+              className="lightbox-nav lightbox-prev" 
+              onClick={(e) => { e.stopPropagation(); goToPrevFlick(); }}
+              aria-label="Previous photo"
+            >
+              ‹
+            </button>
+            <button 
+              type="button" 
+              className="lightbox-nav lightbox-next" 
+              onClick={(e) => { e.stopPropagation(); goToNextFlick(); }}
+              aria-label="Next photo"
+            >
+              ›
+            </button>
+            <div className="lightbox-content" onClick={(e) => e.stopPropagation()}>
+              <img src={selectedFlick.image} alt={selectedFlick.title} />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <section className="egomaniac-section munch-section">
         <h2 onClick={toggleMunch} className="egomaniac-title regular-font">

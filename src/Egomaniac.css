@@ -110,10 +110,19 @@
   transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
 
+.ego-item.clickable {
+  cursor: pointer;
+}
+
 .ego-item:hover {
   transform: translateY(-5px);
   box-shadow: 0 8px 25px rgba(255, 107, 157, 0.3);
   border-color: rgba(255, 107, 157, 0.6);
+}
+
+.ego-item.clickable:focus {
+  outline: 2px solid rgba(255, 107, 157, 0.8);
+  outline-offset: 3px;
 }
 
 .ego-item img {
@@ -402,7 +411,7 @@
 
 .selected-restaurant-info p {
   font-family: 'zain', sans-serif !important;
-  font-size: 1.05rem;
+  font-size: 1.15rem;
   line-height: 1.7;
   color: rgba(255, 255, 255, 0.95) !important;
   margin: 0;
@@ -603,6 +612,23 @@
   padding: 2rem;
 }
 
+.egomaniac-lightbox .lightbox-content {
+  position: relative;
+  max-width: 90vw;
+  max-height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.egomaniac-lightbox .lightbox-content img {
+  max-width: 100%;
+  max-height: 90vh;
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+  object-fit: contain;
+}
+
 .egomaniac-lightbox .lightbox-figure {
   position: relative;
   max-width: min(86vw, 960px);
@@ -673,11 +699,11 @@
   cursor: pointer;
 }
 
-.egomaniac-lightbox .lightbox-nav.prev {
+.egomaniac-lightbox .lightbox-nav.lightbox-prev {
   left: 2rem;
 }
 
-.egomaniac-lightbox .lightbox-nav.next {
+.egomaniac-lightbox .lightbox-nav.lightbox-next {
   right: 2rem;
 }
 
@@ -694,11 +720,11 @@
     max-height: 60vh;
   }
 
-  .egomaniac-lightbox .lightbox-nav.prev {
+  .egomaniac-lightbox .lightbox-nav.lightbox-prev {
     left: 1rem;
   }
 
-  .egomaniac-lightbox .lightbox-nav.next {
+  .egomaniac-lightbox .lightbox-nav.lightbox-next {
     right: 1rem;
   }
 }

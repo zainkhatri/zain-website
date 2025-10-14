@@ -91,144 +91,103 @@ body.ego-mode .gallery .expandable-title {
 }
 
 /* Image Viewer Modal */
-.image-viewer-overlay {
+.gallery-lightbox {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.9);
+  inset: 0;
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
-  padding: 20px;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  background: rgba(6, 7, 16, 0.9);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  z-index: 1200;
+  padding: 2rem;
 }
 
-.image-viewer-content {
+.gallery-lightbox .lightbox-content {
   position: relative;
-  max-width: 80vw;
-  max-height: 80vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 20px;
-  padding: 0 60px; /* Make space for arrows */
-}
-
-.image-container {
-  position: relative;
-  height: 80vh;
+  max-width: 90vw;
+  max-height: 90vh;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.image-container img {
-  max-height: 75vh;
+.gallery-lightbox .lightbox-content img {
+  max-width: 100%;
+  max-height: 90vh;
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+  object-fit: contain;
   max-width: 70vw;
   object-fit: contain;
   border-radius: 10px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
 }
 
-.nav-button {
+.gallery-lightbox .lightbox-close {
   position: absolute;
-  background: rgba(255, 255, 255, 0.1);
-  border: none;
-  color: white;
-  width: 50px;
-  height: 50px;
-  border-radius: 25px;
+  top: 1.5rem;
+  right: 1.75rem;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 1.6rem;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
-  font-size: 24px;
-  transition: all 0.3s ease;
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
+}
+
+.gallery-lightbox .lightbox-close:hover {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.gallery-lightbox .lightbox-nav {
+  position: absolute;
   top: 50%;
   transform: translateY(-50%);
-}
-
-.nav-button.prev {
-  left: 0;
-}
-
-.nav-button.next {
-  right: 0;
-}
-
-.nav-button:hover {
-  background: rgba(255, 255, 255, 0.2);
-  transform: scale(1.1);
-}
-
-.close-button {
-  position: absolute;
-  top: -40px;
-  right: -40px;
-  background: rgba(255, 255, 255, 0.1);
-  border: none;
-  color: white;
-  width: 40px;
-  height: 40px;
-  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: rgba(255, 255, 255, 0.9);
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  font-size: 1.6rem;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  font-size: 24px;
-  transition: all 0.3s ease;
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
 }
 
-.close-button:hover {
-  background: rgba(255, 255, 255, 0.2);
-  transform: scale(1.1);
+.gallery-lightbox .lightbox-nav.lightbox-prev {
+  left: 2rem;
+}
+
+.gallery-lightbox .lightbox-nav.lightbox-next {
+  right: 2rem;
+}
+
+.gallery-lightbox .lightbox-nav:hover {
+  background: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
 }
 
 @media (max-width: 768px) {
-  .image-viewer-content {
-    max-width: 95vw;
-    padding: 0 45px; /* Slightly reduced padding for arrows */
+  .gallery-lightbox {
+    padding: 1.5rem;
   }
 
-  .nav-button {
-    width: 40px;
-    height: 40px;
-    font-size: 20px;
+  .gallery-lightbox .lightbox-nav.lightbox-prev {
+    left: 1rem;
   }
 
-  .nav-button.prev {
-    left: 5px;
-  }
-
-  .nav-button.next {
-    right: 5px;
-  }
-
-  .nav-button:hover {
-    transform: translateY(-50%) scale(1.1); /* Keep vertical centering when scaling */
-  }
-
-  .close-button {
-    top: -50px;
-    right: 50%;
-    transform: translateX(50%);
-  }
-
-  .close-button:hover {
-    transform: translateX(50%) scale(1.1);
-  }
-
-  .image-container img {
-    max-width: 85vw;
-    max-height: 70vh;
+  .gallery-lightbox .lightbox-nav.lightbox-next {
+    right: 1rem;
   }
 }
 
