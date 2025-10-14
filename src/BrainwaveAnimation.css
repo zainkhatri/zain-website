@@ -255,6 +255,7 @@
   width: 100%;
   max-width: 350px;
   border: 2px solid;
+  white-space: nowrap;
 }
 
 .lean-indicator.safe {

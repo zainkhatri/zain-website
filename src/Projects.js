@@ -148,7 +148,7 @@ function Projects() {
             <div className="project-content">
               <h3 className="project-title">
                 <a
-                  href="https://github.com/zainkhatri/mania"
+                  href="https://maniajournal.org"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
