@@ -1,12 +1,3 @@
-# Robots.txt for zainkhatri.com
-# Allow all search engines to crawl the site
-# https://www.robotstxt.org/robotstxt.html
-
 User-agent: *
 Allow: /
-
-# Disallow crawling of API endpoints
-Disallow: /api/
-
-# Sitemap location
 Sitemap: https://zainkhatri.com/sitemap.xml
