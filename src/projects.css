@@ -263,10 +263,6 @@
   .exoskeleton-image {
     display: none;
   }
-
-  .mania-project {
-    display: none;
-  }
 }
 
 @media screen and (max-width: 480px) {
@@ -349,10 +345,6 @@
     margin: 8px auto;
     padding: 8px;
     text-align: center;
-  }
-
-  .mania-project {
-    display: none;
   }
 }
 
