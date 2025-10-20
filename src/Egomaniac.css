@@ -9,6 +9,16 @@
   margin-top: -40px;
 }
 
+/* Blurred background for ego mode sections */
+.egomaniac-section .content {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 24px;
+  padding: 2.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
 /* Egomaniac Section Styling */
 .egomaniac-section {
   margin: 0;
@@ -749,6 +759,159 @@
   }
 }
 
+/* Top 10 Lists Styling - Bold Statement Style */
+.top-10-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.top-10-item {
+  display: grid;
+  grid-template-columns: 100px 80px 1fr;
+  gap: 1.5rem;
+  align-items: center;
+  padding: 0;
+  transition: all 0.3s ease;
+}
+
+.top-10-item:hover {
+  transform: translateX(10px);
+}
+
+.nba-section.expanded .top-10-item,
+.rappers-section.expanded .top-10-item {
+  opacity: 1;
+}
+
+.rank-badge {
+  width: 100px;
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'titles', sans-serif !important;
+  font-size: 5rem;
+  font-weight: normal !important;
+  color: #ffffff !important;
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.5) !important;
+  transition: all 0.3s ease;
+  line-height: 1;
+}
+
+.rapper-avatar {
+  width: 80px;
+  height: 80px;
+  flex-shrink: 0;
+}
+
+.rapper-avatar-image {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center center;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+.rapper-avatar-image:hover {
+  transform: scale(1.05);
+  border-color: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+}
+
+/* NBA player specific image positioning */
+.nba-section .top-10-item:nth-child(2) .rapper-avatar-image {
+  object-position: center 20%;
+}
+
+.nba-section .top-10-item:nth-child(6) .rapper-avatar-image {
+  object-position: center 60%;
+}
+
+.nba-section .top-10-item:nth-child(7) .rapper-avatar-image {
+  object-position: center 15%;
+}
+
+.top-10-item:hover .rank-badge {
+  text-shadow: 0 0 30px rgba(255, 255, 255, 0.8) !important;
+  transform: scale(1.1);
+}
+
+.item-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  width: 100%;
+}
+
+.item-header {
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.item-header:hover {
+  transform: translateX(5px);
+}
+
+.item-name {
+  font-family: 'titles', sans-serif !important;
+  font-size: 2rem;
+  font-weight: normal !important;
+  color: #ffffff !important;
+  margin: 0;
+  letter-spacing: 0.02em;
+  text-shadow: 0 0 15px rgba(255, 255, 255, 0.3) !important;
+  transition: all 0.3s ease;
+  line-height: 1.2;
+  display: inline;
+}
+
+.item-toggle {
+  font-family: 'titles', sans-serif !important;
+  font-size: 2rem;
+  color: #ffffff !important;
+  margin-left: 0.5rem;
+  user-select: none;
+  transition: all 0.3s ease;
+  display: inline;
+}
+
+.item-description {
+  font-family: 'zain', sans-serif !important;
+  font-size: 1.75rem;
+  font-weight: 500;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.95) !important;
+  margin: 0;
+  margin-top: 0.5rem;
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.rapper-profile-expanded {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-top: 0.5rem;
+}
+
+.spotify-embed-container {
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+.spotify-embed {
+  border-radius: 12px;
+}
+
+
 /* Override ego mode fonts for specific text elements */
 .egomaniac-container .egomaniac-title.regular-font,
 .egomaniac-section .egomaniac-title.regular-font {
@@ -797,7 +960,11 @@
   .egomaniac-title:hover {
     transform: none;
   }
-  
+
+  .egomaniac-section .content {
+    padding: 1.75rem;
+  }
+
   .ego-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
     grid-auto-rows: 1fr;
@@ -862,6 +1029,35 @@
   .restaurant-gallery-item figcaption {
     font-size: 0.72rem;
   }
+
+  .top-10-list {
+    gap: 2rem;
+  }
+
+  .top-10-item {
+    grid-template-columns: 80px 60px 1fr;
+    gap: 1rem;
+  }
+
+  .rank-badge {
+    font-size: 4rem;
+  }
+
+  .rapper-avatar {
+    width: 60px;
+    height: 60px;
+  }
+
+  .item-name {
+    font-size: 1.6rem;
+  }
+
+  .item-description {
+    font-size: 1.5rem;
+    font-weight: 500;
+    line-height: 1.5;
+  }
+
 }
 
 @media (max-width: 480px) {
@@ -873,7 +1069,12 @@
   .egomaniac-title:hover {
     transform: none;
   }
-  
+
+  .egomaniac-section .content {
+    padding: 1.5rem;
+    border-radius: 24px;
+  }
+
   .restaurant-card {
     padding: 0.8rem 0.85rem;
   }
@@ -911,4 +1112,33 @@
   .restaurant-gallery-grid {
     grid-template-columns: 1fr;
   }
+
+  .top-10-list {
+    gap: 1.75rem;
+  }
+
+  .top-10-item {
+    grid-template-columns: 60px 50px 1fr;
+    gap: 1rem;
+  }
+
+  .rank-badge {
+    font-size: 3rem;
+  }
+
+  .rapper-avatar {
+    width: 50px;
+    height: 50px;
+  }
+
+  .item-name {
+    font-size: 1.4rem;
+  }
+
+  .item-description {
+    font-size: 1.35rem;
+    font-weight: 500;
+    line-height: 1.5;
+  }
+
 }

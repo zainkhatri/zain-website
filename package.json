@@ -11,7 +11,10 @@
     "dev": "concurrently \"npm start\" \"npm run server\"",
     "vercel-build": "npm run build",
     "vercel-dev": "vercel dev",
-    "setup-dev": "node setup-dev.js"
+    "setup-dev": "node scripts/setup-dev.js",
+    "optimize:albums": "node scripts/optimize-albums.js",
+    "optimize:gallery": "node scripts/optimize-gallery.js",
+    "optimize:movies": "node scripts/optimize-movies.js"
   },
   "dependencies": {
     "@vercel/analytics": "^1.3.1",
