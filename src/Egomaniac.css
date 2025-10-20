@@ -826,11 +826,11 @@
 
 /* NBA player specific image positioning */
 .nba-section .top-10-item:nth-child(2) .rapper-avatar-image {
-  object-position: center 20%;
+  object-position: center 10%;
 }
 
 .nba-section .top-10-item:nth-child(6) .rapper-avatar-image {
-  object-position: center 60%;
+  object-position: center 40%;
 }
 
 .nba-section .top-10-item:nth-child(7) .rapper-avatar-image {
