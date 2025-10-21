@@ -24,6 +24,7 @@ uniform vec3 uResolution;
 uniform vec2 uMouse;
 uniform float uAmplitude;
 uniform float uSpeed;
+uniform float uDarkMode;
 
 varying vec2 vUv;
 
@@ -40,13 +41,28 @@ void main() {
     d += sin(uv.y * i + a);
   }
   d += uTime * 0.5 * uSpeed;
-  vec3 col = vec3(cos(uv * vec2(d, a)) * 0.6 + 0.4, cos(a + d) * 0.5 + 0.5);
-  col = cos(col * cos(vec3(d, a, 2.5)) * 0.5 + 0.5) * uColor;
+
+  vec3 col;
+  if (uDarkMode > 0.5) {
+    // Dark mode: smoother flow with blacks
+    col = vec3(cos(uv * vec2(d, a)) * 0.5 + 0.5, cos(a + d) * 0.5 + 0.5);
+    col = cos(col * cos(vec3(d, a, 2.5)) * 0.5 + 0.5);
+
+    // Smooth gradient to black
+    float brightness = (col.r + col.g + col.b) / 3.0;
+    brightness = pow(brightness, 1.5); // darken midtones
+    col = col * brightness * uColor;
+  } else {
+    // Normal mode
+    col = vec3(cos(uv * vec2(d, a)) * 0.6 + 0.4, cos(a + d) * 0.5 + 0.5);
+    col = cos(col * cos(vec3(d, a, 2.5)) * 0.5 + 0.5) * uColor;
+  }
+
   gl_FragColor = vec4(col, 1.0);
 }
 `;
 
-export default function Iridescence({ color = [1, 1, 1], speed = 1.0, amplitude = 0.1, mouseReact = true, ...rest }) {
+export default function Iridescence({ color = [1, 1, 1], speed = 1.0, amplitude = 0.1, mouseReact = true, darkMode = false, ...rest }) {
   const ctnDom = useRef(null);
   const mousePos = useRef({ x: 0.5, y: 0.5 });
 
@@ -87,7 +103,8 @@ export default function Iridescence({ color = [1, 1, 1], speed = 1.0, amplitude 
         },
         uMouse: { value: new Float32Array([mousePos.current.x, mousePos.current.y]) },
         uAmplitude: { value: amplitude },
-        uSpeed: { value: speed }
+        uSpeed: { value: speed },
+        uDarkMode: { value: darkMode ? 1.0 : 0.0 }
       }
     });
 
@@ -123,7 +140,7 @@ export default function Iridescence({ color = [1, 1, 1], speed = 1.0, amplitude 
       ctn.removeChild(gl.canvas);
       gl.getExtension('WEBGL_lose_context')?.loseContext();
     };
-  }, [color, speed, amplitude, mouseReact]);
+  }, [color, speed, amplitude, mouseReact, darkMode]);
 
   return <div ref={ctnDom} className="iridescence-container" {...rest} />;
 }

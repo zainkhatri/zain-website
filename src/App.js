@@ -13,7 +13,7 @@ const Albums = lazy(() => import('./Albums'));
 const Movies = lazy(() => import('./Movies'));
 const Egomaniac = lazy(() => import('./Egomaniac'));
 
-const EGO_MODE_IRIDESCENCE_COLOR = [0.8, 0.8, 1];
+const EGO_MODE_IRIDESCENCE_COLOR = [0.4, 0.3, 0.6];
 
 function App() {
   const [isContentExpanded, setIsContentExpanded] = useState(false);
@@ -130,6 +130,7 @@ function App() {
           mouseReact={!isMobile}
           amplitude={0.1}
           speed={isEgoMode ? 1 : (isMobile ? 0.5 : 0.7)}
+          darkMode={isEgoMode}
         />
       </div>
       <Hero />

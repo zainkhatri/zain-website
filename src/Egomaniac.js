@@ -807,7 +807,7 @@ function Egomaniac() {
         className={`content-section egomaniac-section nba-section ${isNBAVisible ? 'expanded' : ''}`}
       >
         <h2 onClick={toggleNBA} className="expandable-title egomaniac-title regular-font">
-          Top 10 NBA Players <span className="toggle-symbol">{isNBAVisible ? '-' : '+'}</span>
+          Top 10 NBA Players of All Time <span className="toggle-symbol">{isNBAVisible ? '-' : '+'}</span>
         </h2>
         <div className="content-wrapper" style={{ '--content-height': `${nbaHeight}px` }}>
           <div ref={nbaContentRef} className="content egomaniac-content">
@@ -855,7 +855,7 @@ function Egomaniac() {
         className={`content-section egomaniac-section rappers-section ${isRappersVisible ? 'expanded' : ''}`}
       >
         <h2 onClick={toggleRappers} className="expandable-title egomaniac-title regular-font">
-          My Favorite 10 Rappers <span className="toggle-symbol">{isRappersVisible ? '-' : '+'}</span>
+          My Top 10 Rappers <span className="toggle-symbol">{isRappersVisible ? '-' : '+'}</span>
         </h2>
         <div className="content-wrapper" style={{ '--content-height': `${rappersHeight}px` }}>
           <div ref={rappersContentRef} className="content egomaniac-content">
