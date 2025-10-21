@@ -855,7 +855,7 @@ function Egomaniac() {
         className={`content-section egomaniac-section rappers-section ${isRappersVisible ? 'expanded' : ''}`}
       >
         <h2 onClick={toggleRappers} className="expandable-title egomaniac-title regular-font">
-          Top 10 Rappers <span className="toggle-symbol">{isRappersVisible ? '-' : '+'}</span>
+          My Favorite 10 Rappers <span className="toggle-symbol">{isRappersVisible ? '-' : '+'}</span>
         </h2>
         <div className="content-wrapper" style={{ '--content-height': `${rappersHeight}px` }}>
           <div ref={rappersContentRef} className="content egomaniac-content">
