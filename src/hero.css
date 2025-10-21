@@ -314,12 +314,13 @@
         margin: 0;
         transform: none !important;
         flex-direction: column;
+        gap: 0; /* No gap between image and contact icons */
     }
 
     .hero-image {
         width: 200px;
         height: 200px;
-        margin: 0 auto 0;
+        margin: 0 auto;
     }
 
     .hero-content h1 {
@@ -369,8 +370,8 @@
     }
 
     .contact-section {
-        margin-top: 20px;
-        margin-bottom: 0;
+        margin-top: -80px !important;
+        margin-bottom: 0 !important;
         display: flex;
         gap: 20px;
         justify-content: center;
