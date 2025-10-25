@@ -14,7 +14,7 @@ const ManiaJournal = () => {
     <div className="mania-journal-container">
       <div className="mania-journal-iframe-wrapper">
         <iframe
-          src="https://www.maniajournal.org/journal"
+          src="https://www.maniajournal.org"
           title="Mania Journal"
           className="mania-journal-iframe"
           frameBorder="0"
